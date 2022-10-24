@@ -31,7 +31,9 @@ public class VoxelTemplate : MonoBehaviour
 
     public static void CreateCube(VoxelWorld _world, Vector3Int _position, byte _type, Vector3Int _size)
     {
-        List<Chunk> chunksToUpdate = new List<Chunk>();
+        int count = (int)VoxelSettings.chunkSize.magnitude;
+        int c = 0;
+        Debug.Log(count);
 
         for (int x = -_size.x / 2; x < _size.x / 2; x++)
         {
@@ -39,22 +41,19 @@ public class VoxelTemplate : MonoBehaviour
             {
                 for (int z = -_size.z / 2; z < _size.z / 2; z++)
                 {
+                    c++;
+
                     Vector3Int pos = _position + new Vector3Int(x, y, z);
+
                     _world.EditVoxel(pos, _type, false);
 
-                    Chunk chunk = _world.GetChunk(pos);
-
-                    if (chunk != null)
+                    if (c > count)
                     {
-                        chunksToUpdate.Add(chunk);
+                        _world.GetChunk(pos).Update();
+                        c = 0;
                     }
                 }
             }
-        }
-
-        for (int i = 0; i < chunksToUpdate.Count; i++)
-        {
-            chunksToUpdate[i].Update();
         }
     }
 }

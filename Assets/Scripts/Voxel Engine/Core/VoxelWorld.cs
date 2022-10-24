@@ -27,7 +27,6 @@ public class VoxelWorld : MonoBehaviour
 
         VoxelTemplate.CreatePlane(this, Vector3Int.zero, 1, Vector2Int.one * 5);
         VoxelTemplate.CreateCube(this, new Vector3Int(-10, 0, 0), 3, Vector3Int.one * 10);
-        VoxelTemplate.CreateCube(this, new Vector3Int(10, 0, 0), 3, Vector3Int.one * 10);
     }
 
     private void Update()
