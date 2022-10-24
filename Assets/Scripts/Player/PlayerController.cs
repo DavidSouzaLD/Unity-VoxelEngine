@@ -34,7 +34,7 @@ namespace Game.Player
 
             // Move
             Vector2 moveAxis = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-            Vector3 direction = transform.forward * moveAxis.y + transform.right * moveAxis.x;
+            Vector3 direction = (transform.forward * moveAxis.y + transform.right * moveAxis.x).normalized;
             float currentSpeed = (!(Input.GetKey(PlayerKeys.Run) && moveAxis.y > 0) ? (Input.GetKey(PlayerKeys.Crouch) ? crouchSpeed : moveSpeed) : runSpeed) / 100f;
 
             controller.Move(direction * currentSpeed);
