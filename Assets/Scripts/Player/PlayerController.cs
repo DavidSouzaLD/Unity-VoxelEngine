@@ -10,6 +10,7 @@ namespace Game.Player
         [Header("Move")]
         [SerializeField] private float moveSpeed = 5f;
         [SerializeField] private float runSpeed = 8f;
+        [SerializeField] private float crouchSpeed = 2f;
         [SerializeField] private float jumpForce = 5f;
         [Space]
         [SerializeField] private float gravityScale = 1f;
@@ -32,9 +33,9 @@ namespace Game.Player
             }
 
             // Move
-            float currentSpeed = (!Input.GetKey(PlayerKeys.Run) ? moveSpeed : runSpeed) / 100f;
             Vector2 moveAxis = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
             Vector3 direction = transform.forward * moveAxis.y + transform.right * moveAxis.x;
+            float currentSpeed = (!(Input.GetKey(PlayerKeys.Run) && moveAxis.y > 0) ? (Input.GetKey(PlayerKeys.Crouch) ? crouchSpeed : moveSpeed) : runSpeed) / 100f;
 
             controller.Move(direction * currentSpeed);
 

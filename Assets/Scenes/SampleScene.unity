@@ -692,6 +692,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 5
   runSpeed: 8
+  crouchSpeed: 2
   jumpForce: 1.5
   gravityScale: 2
 --- !u!114 &1829756641
@@ -725,6 +726,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   runKey: 304
   jumpKey: 32
+  crouchKey: 306
   placeVoxel: 324
   destroyVoxel: 323
 --- !u!114 &1829756643
