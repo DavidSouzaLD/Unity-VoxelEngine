@@ -860,13 +860,13 @@ MonoBehaviour:
   autoGenerateCrosshair: 1
   showCrosshairIn3rdPerson: 0
   drawPrimitiveUI: 0
-  crosshairSprite: {fileID: 0}
+  crosshairSprite: {fileID: 21300000, guid: 18150e58101fc4b45afa20a23e1dda70, type: 3}
   cameraPerspective: 0
   automaticallySwitchPerspective: 1
   perspectiveSwitchingKey: 31
   mouseInputInversion: 0
-  Sensitivity: 8
-  rotationWeight: 4
+  Sensitivity: 20
+  rotationWeight: 2
   verticalRotationRange: 170
   standingEyeHeight: 0.8
   crouchingEyeHeight: 0.25
@@ -919,7 +919,7 @@ MonoBehaviour:
   decentMultiplier: 2.5
   tapJumpMultiplier: 2.1
   isSliding: 0
-  canSlide: 1
+  canSlide: 0
   slidingDeceleration: 150
   slidingTransitionSpeed: 4
   maxFlatSlideDistance: 10

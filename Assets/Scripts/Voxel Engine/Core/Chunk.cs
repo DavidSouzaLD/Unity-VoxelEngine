@@ -121,11 +121,11 @@ public class Chunk
 
                         try
                         {
-                            if (!VoxelEngine.Types[map[(int)voxelToCheck.x, (int)voxelToCheck.y, (int)voxelToCheck.z]].isSolid)
+                            if (!VoxelEngine.GetVoxelPack[map[(int)voxelToCheck.x, (int)voxelToCheck.y, (int)voxelToCheck.z]].isSolid)
                             {
                                 if (map[(int)voxelPos.x, (int)voxelPos.y, (int)voxelPos.z] != 0)
                                 {
-                                    AddFace(voxelPos, f, VoxelEngine.Types[map[x, y, z]].GetTextureID(f));
+                                    AddFace(voxelPos, f, VoxelEngine.GetVoxelPack[map[x, y, z]].GetTextureID(f));
                                     _destroyChunk = false;
                                 }
                             }
@@ -134,7 +134,7 @@ public class Chunk
                         {
                             if (map[(int)voxelPos.x, (int)voxelPos.y, (int)voxelPos.z] != 0)
                             {
-                                AddFace(voxelPos, f, VoxelEngine.Types[map[x, y, z]].GetTextureID(f));
+                                AddFace(voxelPos, f, VoxelEngine.GetVoxelPack[map[x, y, z]].GetTextureID(f));
                                 _destroyChunk = false;
                             }
                         }
@@ -211,7 +211,7 @@ public class Chunk
 
         try
         {
-            return VoxelEngine.Types[map[pos.x, pos.y, pos.z]].isSolid;
+            return VoxelEngine.GetVoxelPack[map[pos.x, pos.y, pos.z]].isSolid;
         }
         catch (System.Exception)
         {

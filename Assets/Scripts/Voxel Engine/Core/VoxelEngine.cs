@@ -1,9 +1,12 @@
+using System.IO;
 using UnityEngine;
 
 public class VoxelEngine : StaticInstance<VoxelEngine>
 {
-    public Material atlasMaterial;
-    public VoxelType[] types;
+    [Header("Settings")]
+    [SerializeField] private Material atlasMaterial;
+    [SerializeField] private string voxelsPath;
+    [SerializeField] private VoxelPack voxelPack;
 
     public static Material AtlasMaterial
     {
@@ -13,39 +16,54 @@ public class VoxelEngine : StaticInstance<VoxelEngine>
         }
     }
 
-    public static VoxelType[] Types
+    public static Voxel[] GetVoxelPack
     {
         get
         {
-            return Instance.types;
+            return Instance.voxelPack.Voxels;
         }
+    }
+
+    public override void Awake()
+    {
+        base.Awake();
+
+        // Get VoxelPack
+        string test = File.ReadAllText(Instance.voxelsPath + "/VoxelPack.cfg");
+        Instance.voxelPack = JsonUtility.FromJson<VoxelPack>(test);
     }
 }
 
 [System.Serializable]
-public class VoxelType
+public class VoxelPack
 {
-    public string voxelName = "Default";
+    public Voxel[] Voxels;
+}
+
+[System.Serializable]
+public class Voxel
+{
+    public string name = "Default";
     public bool isSolid = true;
 
     [Header("Texture Values")]
-    [SerializeField] private int Back;
-    [SerializeField] private int Front;
-    [SerializeField] private int Top;
-    [SerializeField] private int Bottom;
-    [SerializeField] private int Left;
-    [SerializeField] private int Right;
+    [SerializeField] private int back;
+    [SerializeField] private int front;
+    [SerializeField] private int top;
+    [SerializeField] private int bottom;
+    [SerializeField] private int left;
+    [SerializeField] private int right;
 
     public int GetTextureID(int _faceID)
     {
         switch (_faceID)
         {
-            case 0: return Back;
-            case 1: return Front;
-            case 2: return Top;
-            case 3: return Bottom;
-            case 4: return Left;
-            case 5: return Right;
+            case 0: return back;
+            case 1: return front;
+            case 2: return top;
+            case 3: return bottom;
+            case 4: return left;
+            case 5: return right;
             default:
                 Debug.Log("Error in GetTextureID; invalid face index");
                 return 0;

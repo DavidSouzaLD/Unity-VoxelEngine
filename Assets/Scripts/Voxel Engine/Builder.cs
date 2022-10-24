@@ -22,25 +22,25 @@ namespace Game.Player
                 highlightedBlock.gameObject.SetActive(true);
 
                 highlightedBlock.position = new Vector3(
-                    Mathf.RoundToInt(hit.point.x + (hit.normal.x * 0.5f)),
-                    Mathf.RoundToInt(hit.point.y + (hit.normal.y * 0.5f)),
-                    Mathf.RoundToInt(hit.point.z + (hit.normal.z * 0.5f))
-                );
-
-                Vector3 destroyPosition = new Vector3(
                     Mathf.RoundToInt(hit.point.x - (hit.normal.x * 0.5f)),
                     Mathf.RoundToInt(hit.point.y - (hit.normal.y * 0.5f)),
                     Mathf.RoundToInt(hit.point.z - (hit.normal.z * 0.5f))
                 );
 
+                Vector3 placePosition = new Vector3(
+                    Mathf.RoundToInt(hit.point.x + (hit.normal.x * 0.5f)),
+                    Mathf.RoundToInt(hit.point.y + (hit.normal.y * 0.5f)),
+                    Mathf.RoundToInt(hit.point.z + (hit.normal.z * 0.5f))
+                );
+
                 if (Systems.Input.GetBool("PlaceVoxel"))
                 {
-                    voxelWorld.EditVoxel(highlightedBlock.position.ToVector3Int(), type);
+                    voxelWorld.EditVoxel(placePosition.ToVector3Int(), type);
                 }
 
                 if (Systems.Input.GetBool("DestroyVoxel"))
                 {
-                    voxelWorld.EditVoxel(destroyPosition.ToVector3Int(), 0);
+                    voxelWorld.EditVoxel(highlightedBlock.position.ToVector3Int(), 0);
                 }
             }
             else

@@ -8,7 +8,7 @@ using UnityEngine;
 public abstract class StaticInstance<T> : MonoBehaviour where T : MonoBehaviour
 {
     protected static T Instance { get; private set; }
-    protected virtual void Awake() => Instance = this as T;
+    public virtual void Awake() => Instance = this as T;
 
     protected virtual void OnApplicationQuit()
     {
@@ -23,7 +23,7 @@ public abstract class StaticInstance<T> : MonoBehaviour where T : MonoBehaviour
 /// </summary>
 public abstract class Singleton<T> : StaticInstance<T> where T : MonoBehaviour
 {
-    protected override void Awake()
+    public override void Awake()
     {
         if (Instance != null) Destroy(gameObject);
         base.Awake();
@@ -37,7 +37,7 @@ public abstract class Singleton<T> : StaticInstance<T> where T : MonoBehaviour
 /// </summary>
 public abstract class PersistentSingleton<T> : Singleton<T> where T : MonoBehaviour
 {
-    protected override void Awake()
+    public override void Awake()
     {
         base.Awake();
         DontDestroyOnLoad(gameObject);
