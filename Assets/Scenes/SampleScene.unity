@@ -570,55 +570,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   atlasMaterial: {fileID: 2100000, guid: 384b057ed3c587044b11c592db81540a, type: 2}
-  types:
-  - voxelName: Air
-    isSolid: 0
-    Back: 1
-    Front: 1
-    Top: 1
-    Bottom: 1
-    Left: 1
-    Right: 1
-  - voxelName: Dirt
-    isSolid: 1
-    Back: 2
-    Front: 2
-    Top: 2
-    Bottom: 2
-    Left: 2
-    Right: 2
-  - voxelName: Grass
-    isSolid: 1
-    Back: 3
-    Front: 3
-    Top: 0
-    Bottom: 2
-    Left: 3
-    Right: 3
-  - voxelName: Stone
-    isSolid: 1
-    Back: 1
-    Front: 1
-    Top: 1
-    Bottom: 1
-    Left: 1
-    Right: 1
-  - voxelName: Cobblestone
-    isSolid: 1
-    Back: 16
-    Front: 16
-    Top: 16
-    Bottom: 16
-    Left: 16
-    Right: 16
-  - voxelName: Wood
-    isSolid: 1
-    Back: 4
-    Front: 4
-    Top: 4
-    Bottom: 4
-    Left: 4
-    Right: 4
+  voxelsPath: G:\Projetos\VoxelEngine REP\Unity-VoxelEngine\Assets\Scripts\Voxel
+    Engine
+  voxelPack:
+    Voxels: []
 --- !u!4 &4812299553266995863
 Transform:
   m_ObjectHideFlags: 0
@@ -1025,6 +980,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79734c67999e54a43b80073f108d946f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  raycastActived: 0
   type: 1
   layerMask:
     serializedVersion: 2

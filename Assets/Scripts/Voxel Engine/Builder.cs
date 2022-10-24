@@ -1,19 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Game.Player
 {
     public class Builder : MonoBehaviour
     {
-        public byte type;
+        [Header("Settings")]
         public LayerMask layerMask;
-        public VoxelWorld voxelWorld;
-        public Transform highlightedBlock;
-        public Transform m_camera;
         public float distance;
+        public byte type;
 
-        void Update()
+        [Header("Components")]
+        public VoxelWorld voxelWorld;
+        public Transform m_camera;
+        public Transform highlightedBlock;
+
+        private void Update()
+        {
+            UpdateRaycast();
+        }
+
+        private void UpdateRaycast()
         {
             RaycastHit hit;
 
@@ -46,31 +52,6 @@ namespace Game.Player
             else
             {
                 highlightedBlock.gameObject.SetActive(false);
-            }
-
-            if (Input.GetKey(KeyCode.Alpha1))
-            {
-                type = 1;
-            }
-
-            if (Input.GetKey(KeyCode.Alpha2))
-            {
-                type = 2;
-            }
-
-            if (Input.GetKey(KeyCode.Alpha3))
-            {
-                type = 3;
-            }
-
-            if (Input.GetKey(KeyCode.Alpha4))
-            {
-                type = 4;
-            }
-
-            if (Input.GetKey(KeyCode.Alpha5))
-            {
-                type = 5;
             }
         }
     }

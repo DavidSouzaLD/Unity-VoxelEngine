@@ -59,6 +59,18 @@ public class VoxelWorld : MonoBehaviour
         chunk.EditMap(_position, _type, _updateChunk);
     }
 
+    public bool ExistsVoxel(Vector3 _position)
+    {
+        try
+        {
+            return GetChunk(_position).ExistsVoxel(_position);
+        }
+        catch (System.Exception)
+        {
+            return false;
+        }
+    }
+
     // Returns the chunk based on position.
     public Chunk GetChunk(Vector3 _position)
     {

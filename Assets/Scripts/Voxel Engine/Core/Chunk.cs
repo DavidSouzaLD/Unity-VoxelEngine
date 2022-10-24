@@ -205,9 +205,9 @@ public class Chunk
     }
 
     // Checks if there is a solid voxel at that position.
-    public bool ExistsVoxel(Vector3Int _position)
+    public bool ExistsVoxel(Vector3 _position)
     {
-        Vector3Int pos = _position - position.ToVector3Int();
+        Vector3Int pos = _position.ToVector3Int() - position.ToVector3Int();
 
         try
         {
