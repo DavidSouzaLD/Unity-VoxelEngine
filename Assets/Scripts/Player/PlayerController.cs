@@ -8,11 +8,11 @@ namespace Game.Player
     public class PlayerController : MonoBehaviour
     {
         [Header("Move")]
-        public float moveSpeed = 5f;
-        public float runSpeed = 8f;
-        public float jumpForce = 5f;
+        [SerializeField] private float moveSpeed = 5f;
+        [SerializeField] private float runSpeed = 8f;
+        [SerializeField] private float jumpForce = 5f;
         [Space]
-        public float gravityScale = 1f;
+        [SerializeField] private float gravityScale = 1f;
 
         private bool jumpRequested;
         private Vector3 velocity;

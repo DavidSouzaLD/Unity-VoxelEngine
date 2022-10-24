@@ -5,14 +5,14 @@ namespace Game.Player
     public class PlayerBuilder : MonoBehaviour
     {
         [Header("Settings")]
-        public LayerMask layerMask;
-        public float distance;
-        public byte type;
+        [SerializeField] private LayerMask layerMask;
+        [SerializeField] private float distance;
+        [SerializeField] private byte type;
 
         [Header("Components")]
-        public VoxelWorld voxelWorld;
-        public Transform m_camera;
-        public Transform highlightedBlock;
+        [SerializeField] private VoxelWorld voxelWorld;
+        [SerializeField] private Transform m_camera;
+        [SerializeField] private Transform highlightedBlock;
 
         private void Update()
         {
