@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Game.Player
 {
-    public class Builder : MonoBehaviour
+    public class PlayerBuilder : MonoBehaviour
     {
         [Header("Settings")]
         public LayerMask layerMask;
@@ -39,12 +39,12 @@ namespace Game.Player
                     Mathf.RoundToInt(hit.point.z + (hit.normal.z * 0.5f))
                 );
 
-                if (Systems.Input.GetBool("PlaceVoxel"))
+                if (Input.GetKeyDown(PlayerKeys.PlaceVoxel))
                 {
                     voxelWorld.EditVoxel(placePosition.ToVector3Int(), type);
                 }
 
-                if (Systems.Input.GetBool("DestroyVoxel"))
+                if (Input.GetKeyDown(PlayerKeys.DestroyVoxel))
                 {
                     voxelWorld.EditVoxel(highlightedBlock.position.ToVector3Int(), 0);
                 }
