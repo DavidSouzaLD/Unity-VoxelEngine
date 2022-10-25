@@ -1009,11 +1009,42 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7335639962479187405, guid: 8524d6ce03244fc42b426b74399ff1da,
+        type: 3}
+      propertyPath: angleToCheck
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7335639962479187405, guid: 8524d6ce03244fc42b426b74399ff1da,
+        type: 3}
+      propertyPath: distanceCheck
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7335639962479187405, guid: 8524d6ce03244fc42b426b74399ff1da,
+        type: 3}
+      propertyPath: boundsMask.m_Bits
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7335639962479187405, guid: 8524d6ce03244fc42b426b74399ff1da,
+        type: 3}
+      propertyPath: maxExtentDistance
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 7335639962479187405, guid: 8524d6ce03244fc42b426b74399ff1da,
+        type: 3}
+      propertyPath: maxExtentAmplitude
+      value: -0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 7335639962479187406, guid: 8524d6ce03244fc42b426b74399ff1da,
         type: 3}
       propertyPath: voxelWorld
       value: 
       objectReference: {fileID: 152138098}
+    - target: {fileID: 7335639962479187406, guid: 8524d6ce03244fc42b426b74399ff1da,
+        type: 3}
+      propertyPath: highlightPrefab
+      value: 
+      objectReference: {fileID: 2343239023342767788, guid: 5e12ae5762825134586c356d92b7e906,
+        type: 3}
     - target: {fileID: 7335639962479187406, guid: 8524d6ce03244fc42b426b74399ff1da,
         type: 3}
       propertyPath: highlightedBlock

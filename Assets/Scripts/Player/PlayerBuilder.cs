@@ -8,9 +8,9 @@ namespace Game.Player
         [SerializeField] private LayerMask layerMask;
         [SerializeField] private float distance;
         [SerializeField] private byte type;
-        [SerializeField] private GameObject highlightPrefab;
+        [SerializeField] private Highlight highlightPrefab;
 
-        private Transform highlightTransform;
+        private Highlight highlight;
         private VoxelWorld voxelWorld;
         private Transform m_camera;
 
@@ -43,12 +43,12 @@ namespace Game.Player
 
             if (Physics.Raycast(m_camera.position, m_camera.forward, out hit, distance, layerMask))
             {
-                if (highlightTransform == null)
+                if (highlight == null)
                 {
-                    highlightTransform = Instantiate(highlightPrefab, Vector3.zero, Quaternion.identity).transform;
+                    highlight = Instantiate(highlightPrefab, Vector3.zero, Quaternion.identity).GetComponent<Highlight>();
                 }
 
-                highlightTransform.position = new Vector3(
+                highlight.transform.position = new Vector3(
                     Mathf.RoundToInt(hit.point.x - (hit.normal.x * 0.5f)),
                     Mathf.RoundToInt(hit.point.y - (hit.normal.y * 0.5f)),
                     Mathf.RoundToInt(hit.point.z - (hit.normal.z * 0.5f))
@@ -60,6 +60,8 @@ namespace Game.Player
                     Mathf.RoundToInt(hit.point.z + (hit.normal.z * 0.5f))
                 );
 
+                CheckDirections(hit.normal.ToVector3Int());
+
                 if (Input.GetKeyDown(PlayerKeys.PlaceVoxel))
                 {
                     voxelWorld.EditVoxel(placePosition.ToVector3Int(), type);
@@ -67,15 +69,43 @@ namespace Game.Player
 
                 if (Input.GetKeyDown(PlayerKeys.DestroyVoxel))
                 {
-                    voxelWorld.EditVoxel(highlightTransform.position.ToVector3Int(), 0);
+                    voxelWorld.EditVoxel(highlight.transform.position.ToVector3Int(), 0);
                 }
             }
             else
             {
-                if (highlightTransform != null)
+                if (highlight != null)
                 {
-                    Destroy(highlightTransform.gameObject);
+                    Destroy(highlight.gameObject);
                 }
+            }
+        }
+
+        private void CheckDirections(Vector3Int _direction)
+        {
+            if (_direction.y > 0)
+            {
+                highlight.ApplyDirection(Highlight.Directions.Top);
+            }
+            else if (_direction.y < 0)
+            {
+                highlight.ApplyDirection(Highlight.Directions.Bottom);
+            }
+            else if (_direction.x > 0)
+            {
+                highlight.ApplyDirection(Highlight.Directions.Right);
+            }
+            else if (_direction.x < 0)
+            {
+                highlight.ApplyDirection(Highlight.Directions.Left);
+            }
+            else if (_direction.z > 0)
+            {
+                highlight.ApplyDirection(Highlight.Directions.Front);
+            }
+            else if (_direction.z < 0)
+            {
+                highlight.ApplyDirection(Highlight.Directions.Back);
             }
         }
     }

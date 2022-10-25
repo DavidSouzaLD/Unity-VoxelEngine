@@ -16,9 +16,13 @@ namespace Game.Player
         public float jumpForce = 5f;
         public float gravityScale = 1f;
 
+        [Header("Crouch Extents")]
+        public float angleToCheck;
+
         private bool jumpRequested;
         private Vector3 velocity;
         private CharacterController controller;
+        Vector3 currentDirection;
 
         private void Start()
         {
@@ -37,8 +41,16 @@ namespace Game.Player
             Vector2 moveAxis = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
             Vector3 direction = (transform.forward * moveAxis.y + transform.right * moveAxis.x).normalized;
             float currentSpeed = (!(Input.GetKey(PlayerKeys.Run) && moveAxis.y > 0) ? (Input.GetKey(PlayerKeys.Crouch) ? crouchSpeed : moveSpeed) : runSpeed) / 100f;
+            currentDirection = direction;
 
-            controller.Move(direction * currentSpeed);
+            if (Input.GetKey(PlayerKeys.Crouch) && CrouchCheck(direction))
+            {
+                controller.Move(direction * currentSpeed);
+            }
+            else if (!Input.GetKey(PlayerKeys.Crouch))
+            {
+                controller.Move(direction * currentSpeed);
+            }
 
             // Jump
             if (jumpRequested)
@@ -57,6 +69,35 @@ namespace Game.Player
             if (Input.GetKeyDown(PlayerKeys.Jump) && controller.isGrounded)
             {
                 jumpRequested = true;
+            }
+        }
+
+        private bool CrouchCheck(Vector3 _direction)
+        {
+            Vector3 pos = new Vector3(
+                    transform.position.x + controller.center.x,
+                    transform.position.y + controller.center.y - controller.height / 2,
+                    transform.position.z + controller.center.z) - currentDirection * 0.1f;
+
+            return Physics.Raycast(pos, new Vector3(_direction.x, _direction.y - angleToCheck, _direction.z), .5f);
+        }
+
+        private void OnDrawGizmosSelected()
+        {
+            if (controller != null)
+            {
+                Gizmos.color = Color.red;
+
+                Vector3 pos = new Vector3(
+                    transform.position.x + controller.center.x,
+                    transform.position.y + controller.center.y - controller.height / 2,
+                    transform.position.z + controller.center.z);
+
+                Gizmos.DrawRay(pos, new Vector3(currentDirection.x, currentDirection.y - angleToCheck, currentDirection.z));
+            }
+            else
+            {
+                controller = GetComponent<CharacterController>();
             }
         }
     }
