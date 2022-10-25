@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VoxelWorld : MonoBehaviour
+public class VoxelWorld : StaticInstance<VoxelWorld>
 {
     [HideInInspector] public ChunkCoord[,,] coordMap = new ChunkCoord[VoxelSettings.worldSize.x, VoxelSettings.worldSize.y, VoxelSettings.worldSize.z];
     [HideInInspector] public List<Chunk> activeChunks = new List<Chunk>();
@@ -10,6 +10,8 @@ public class VoxelWorld : MonoBehaviour
 
     private void Start()
     {
+        float startTime = Time.realtimeSinceStartup;
+
         // Setting and creating all ChunkCoords.
         for (int x = 0; x < VoxelSettings.worldSize.x; x++)
         {
@@ -24,8 +26,9 @@ public class VoxelWorld : MonoBehaviour
                 }
             }
         }
+        Debug.Log(((startTime = Time.realtimeSinceStartup) * 1000f) + " ms");
 
-        VoxelTemplate.CreatePlane(this, Vector3Int.zero, 1, Vector2Int.one * 10);
+        EditVoxel(Vector3Int.zero, 1);
     }
 
     private void Update()
@@ -50,7 +53,7 @@ public class VoxelWorld : MonoBehaviour
         if (chunk == null)
         {
             ChunkCoord coord = GetChunkCoord(_position);
-            chunk = new Chunk(coord, this);
+            chunk = new Chunk(coord);
             coord.chunk = chunk;
             activeChunks.Add(chunk);
         }
@@ -72,7 +75,7 @@ public class VoxelWorld : MonoBehaviour
     }
 
     // Returns the chunk based on position.
-    public Chunk GetChunk(Vector3Int _position)
+    public Chunk GetChunk(Vector3 _position)
     {
         return GetChunkCoord(_position).chunk;
     }

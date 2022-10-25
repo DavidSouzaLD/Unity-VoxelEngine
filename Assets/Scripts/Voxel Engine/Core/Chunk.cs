@@ -44,7 +44,7 @@ public class Chunk
     private List<Vector2> uvs = new List<Vector2>();
 
     // Create the chunk based on past information.
-    public Chunk(ChunkCoord _coord, VoxelWorld _world)
+    public Chunk(ChunkCoord _coord)
     {
         // Generate map
         map = new byte[VoxelSettings.chunkSize.x, VoxelSettings.chunkSize.y, VoxelSettings.chunkSize.z];
@@ -52,7 +52,7 @@ public class Chunk
         // Creating object
         gameObject = new GameObject();
         gameObject.name = "Chunk [X:" + _coord.position.x + " / " + _coord.position.y + " / " + _coord.position.z + "]";
-        gameObject.transform.parent = _world.transform;
+        gameObject.transform.parent = VoxelWorld.Instance.transform;
         gameObject.transform.position = _coord.position;
         gameObject.layer = LayerMask.NameToLayer("Voxel");
 
@@ -222,7 +222,7 @@ public class Chunk
     }
 
     // Check if a block is inside chunk
-    private bool IsVoxelInChunk(Vector3Int _position)
+    public bool IsVoxelInChunk(Vector3Int _position)
     {
         return !(
             _position.x < 0 || _position.x > VoxelSettings.chunkSize.x - 1 ||
