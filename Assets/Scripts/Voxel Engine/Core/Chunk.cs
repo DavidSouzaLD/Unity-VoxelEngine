@@ -1,32 +1,31 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Chunk
 {
     // Voxel position map
-    byte[,,] map = new byte[VoxelSettings.chunkSize.x, VoxelSettings.chunkSize.y, VoxelSettings.chunkSize.z];
+    public byte[,,] map { get; private set; }
 
     // Chunk mesh
-    private Mesh mesh;
+    public Mesh mesh { get; private set; }
 
     // Chunk material
-    private Material material;
+    public Material material { get; private set; }
 
     // Chunk MeshCollider
-    private MeshCollider meshCollider;
+    public MeshCollider meshCollider { get; private set; }
 
     // GameObject of the chunk
-    public GameObject gameObject;
+    public GameObject gameObject { get; private set; }
 
     // ChunkCoord responsible for the actual location of the chunk.
-    public ChunkCoord coord;
+    public ChunkCoord coord { get; private set; }
 
     // VoxelWorld responsible for creating the chunk.
-    public VoxelWorld world;
+    public VoxelWorld world { get; private set; }
 
     // If chunk was destroyed in that frame.
-    public bool isDestroyed;
+    public bool isDestroyed { get; private set; }
 
     // Returns whether the chunk is on or off.
     public bool isActived
@@ -39,14 +38,17 @@ public class Chunk
     public Vector3 position { get { return coord.position; } }
 
     // Mesh informations.
-    int vertexIndex = 0;
-    List<Vector3> vertices = new List<Vector3>();
-    List<int> triangles = new List<int>();
-    List<Vector2> uvs = new List<Vector2>();
+    private int vertexIndex = 0;
+    private List<Vector3> vertices = new List<Vector3>();
+    private List<int> triangles = new List<int>();
+    private List<Vector2> uvs = new List<Vector2>();
 
     // Create the chunk based on past information.
     public Chunk(ChunkCoord _coord, VoxelWorld _world)
     {
+        // Generate map
+        map = new byte[VoxelSettings.chunkSize.x, VoxelSettings.chunkSize.y, VoxelSettings.chunkSize.z];
+
         // Creating object
         gameObject = new GameObject();
         gameObject.name = "Chunk [X:" + _coord.position.x + " / " + _coord.position.y + " / " + _coord.position.z + "]";
