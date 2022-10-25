@@ -41,7 +41,7 @@ namespace Game.Player
             float currentSpeed = (!(Input.GetKey(PlayerKeys.Run) && moveAxis.y > 0) ? (Input.GetKey(PlayerKeys.Crouch) ? crouchSpeed : moveSpeed) : runSpeed) / 100f;
             currentDirection = direction;
 
-            if (Input.GetKey(PlayerKeys.Crouch) && CrouchCheck(direction))
+            if (Input.GetKey(PlayerKeys.Crouch) && controller.isGrounded && CrouchCheck(direction))
             {
                 controller.Move(direction * currentSpeed);
             }

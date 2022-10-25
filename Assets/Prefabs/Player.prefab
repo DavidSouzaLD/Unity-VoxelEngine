@@ -172,6 +172,7 @@ MonoBehaviour:
   crouchSpeed: 2
   jumpForce: 1.5
   gravityScale: 2
+  angleToCheck: 0.1
 --- !u!114 &7335639962479187404
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -206,7 +207,7 @@ MonoBehaviour:
     m_Bits: 8
   distance: 8
   type: 1
-  highlightPrefab: {fileID: 9049487791097207818, guid: 01be9ce1b85ebbb4aae19099a3516303,
+  highlightPrefab: {fileID: 2343239023342767788, guid: 5e12ae5762825134586c356d92b7e906,
     type: 3}
 --- !u!114 &7335639962479187407
 MonoBehaviour:
