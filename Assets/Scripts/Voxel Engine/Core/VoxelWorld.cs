@@ -63,7 +63,7 @@ public class VoxelWorld : MonoBehaviour
     {
         try
         {
-            return GetChunk(_position).ExistsVoxel(_position);
+            return GetChunk(_position.ToVector3Int()).ExistsVoxel(_position);
         }
         catch (System.Exception)
         {
@@ -72,7 +72,7 @@ public class VoxelWorld : MonoBehaviour
     }
 
     // Returns the chunk based on position.
-    public Chunk GetChunk(Vector3 _position)
+    public Chunk GetChunk(Vector3Int _position)
     {
         return GetChunkCoord(_position).chunk;
     }

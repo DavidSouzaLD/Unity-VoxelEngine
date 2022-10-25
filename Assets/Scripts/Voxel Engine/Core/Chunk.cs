@@ -220,4 +220,14 @@ public class Chunk
             return false;
         }
     }
+
+    // Check if a block is inside chunk
+    private bool IsVoxelInChunk(Vector3Int _position)
+    {
+        return !(
+            _position.x < 0 || _position.x > VoxelSettings.chunkSize.x - 1 ||
+            _position.y < 0 || _position.y > VoxelSettings.chunkSize.y - 1 ||
+            _position.z < 0 || _position.z > VoxelSettings.chunkSize.z - 1
+        );
+    }
 }

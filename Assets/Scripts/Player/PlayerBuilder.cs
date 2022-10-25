@@ -8,11 +8,29 @@ namespace Game.Player
         [SerializeField] private LayerMask layerMask;
         [SerializeField] private float distance;
         [SerializeField] private byte type;
+        [SerializeField] private GameObject highlightPrefab;
 
-        [Header("Components")]
-        [SerializeField] private VoxelWorld voxelWorld;
-        [SerializeField] private Transform m_camera;
-        [SerializeField] private Transform highlightedBlock;
+        private Transform highlightTransform;
+        private VoxelWorld voxelWorld;
+        private Transform m_camera;
+
+        private void Start()
+        {
+            voxelWorld = GameObject.FindObjectOfType<VoxelWorld>();
+            m_camera = GetComponentInChildren<Camera>().transform;
+
+            if (voxelWorld == null)
+            {
+                Debug.Log("(PlayerBuilder) VoxelWorld not finded!");
+                this.enabled = false;
+            }
+
+            if (m_camera == null)
+            {
+                Debug.Log("(PlayerBuilder) Camera not finded!");
+                this.enabled = false;
+            }
+        }
 
         private void Update()
         {
@@ -25,9 +43,12 @@ namespace Game.Player
 
             if (Physics.Raycast(m_camera.position, m_camera.forward, out hit, distance, layerMask))
             {
-                highlightedBlock.gameObject.SetActive(true);
+                if (highlightTransform == null)
+                {
+                    highlightTransform = Instantiate(highlightPrefab, Vector3.zero, Quaternion.identity).transform;
+                }
 
-                highlightedBlock.position = new Vector3(
+                highlightTransform.position = new Vector3(
                     Mathf.RoundToInt(hit.point.x - (hit.normal.x * 0.5f)),
                     Mathf.RoundToInt(hit.point.y - (hit.normal.y * 0.5f)),
                     Mathf.RoundToInt(hit.point.z - (hit.normal.z * 0.5f))
@@ -46,12 +67,15 @@ namespace Game.Player
 
                 if (Input.GetKeyDown(PlayerKeys.DestroyVoxel))
                 {
-                    voxelWorld.EditVoxel(highlightedBlock.position.ToVector3Int(), 0);
+                    voxelWorld.EditVoxel(highlightTransform.position.ToVector3Int(), 0);
                 }
             }
             else
             {
-                highlightedBlock.gameObject.SetActive(false);
+                if (highlightTransform != null)
+                {
+                    Destroy(highlightTransform.gameObject);
+                }
             }
         }
     }
