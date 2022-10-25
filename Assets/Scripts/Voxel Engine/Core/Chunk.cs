@@ -103,6 +103,25 @@ public class Chunk
         }
     }
 
+    // Not used
+    public void UpdateSurroundVoxels(Vector3Int _position)
+    {
+        for (int i = 0; i < 6; i++)
+        {
+            Vector3 voxelToCheck = _position + VoxelData.directions[i];
+
+            if (!IsVoxelInChunk(voxelToCheck.ToVector3Int()))
+            {
+                Chunk chunk = VoxelWorld.Instance.GetChunk(voxelToCheck);
+
+                if (chunk != null)
+                {
+                    chunk.Update();
+                }
+            }
+        }
+    }
+
     // Edit the voxel map to change the mesh.
     public void EditMap(Vector3Int _position, byte _type, bool _updateChunk = true)
     {
@@ -237,10 +256,12 @@ public class Chunk
     // Check if a block is inside chunk
     public bool IsVoxelInChunk(Vector3Int _position)
     {
+        Vector3 pos = _position - position;
+
         return !(
-            _position.x < 0 || _position.x > VoxelSettings.chunkSize.x - 1 ||
-            _position.y < 0 || _position.y > VoxelSettings.chunkSize.y - 1 ||
-            _position.z < 0 || _position.z > VoxelSettings.chunkSize.z - 1
+            pos.x < 0 || pos.x > VoxelSettings.chunkSize.x - 1 ||
+            pos.y < 0 || pos.y > VoxelSettings.chunkSize.y - 1 ||
+            pos.z < 0 || pos.z > VoxelSettings.chunkSize.z - 1
         );
     }
 }

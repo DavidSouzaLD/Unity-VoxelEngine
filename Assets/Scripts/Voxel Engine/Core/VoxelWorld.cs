@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class VoxelWorld : StaticInstance<VoxelWorld>
 {
-    public Transform test;
     [HideInInspector] public ChunkCoord[,,] coordMap = new ChunkCoord[VoxelSettings.worldSize.x, VoxelSettings.worldSize.y, VoxelSettings.worldSize.z];
     [HideInInspector] public List<Chunk> activeChunks = new List<Chunk>();
 
@@ -51,6 +50,7 @@ public class VoxelWorld : StaticInstance<VoxelWorld>
     {
         Chunk chunk = GetChunk(_position);
 
+        // Create chunk
         if (chunk == null)
         {
             ChunkCoord coord = GetChunkCoord(_position);
