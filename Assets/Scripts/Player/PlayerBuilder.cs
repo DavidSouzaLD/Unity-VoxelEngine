@@ -79,6 +79,11 @@ namespace Game.Player
                     VoxelTemplate.CreateCube(placePosition.ToVector3Int(), type, cubeSize);
                 }
 
+                if (Input.GetKeyDown(KeyCode.F))
+                {
+                    VoxelTemplate.CreateSphere(placePosition.ToVector3Int(), type, cubeSize);
+                }
+
                 if (Input.GetKeyDown(PlayerKeys.DestroyVoxel))
                 {
                     voxelWorld.EditVoxel(highlight.transform.position.ToVector3Int(), 0);

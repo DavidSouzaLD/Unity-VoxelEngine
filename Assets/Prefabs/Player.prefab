@@ -111,8 +111,8 @@ MonoBehaviour:
   m_RenderPostProcessing: 1
   m_Antialiasing: 2
   m_AntialiasingQuality: 2
-  m_StopNaN: 1
-  m_Dithering: 1
+  m_StopNaN: 0
+  m_Dithering: 0
   m_ClearDepth: 1
   m_AllowXRRendering: 1
   m_RequiresDepthTexture: 0
@@ -205,8 +205,9 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 8
-  distance: 8
-  type: 1
+  distance: 200
+  type: 2
+  cubeSize: 5
   highlightPrefab: {fileID: 2343239023342767788, guid: 5e12ae5762825134586c356d92b7e906,
     type: 3}
 --- !u!114 &7335639962479187407
