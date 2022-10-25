@@ -9,6 +9,7 @@ namespace Game.Player
         [SerializeField] private LayerMask layerMask;
         [SerializeField] private float distance;
         [SerializeField] private byte type;
+        [SerializeField] private int cubeSize = 5;
         [SerializeField] private Highlight highlightPrefab;
 
         private Highlight highlight;
@@ -71,6 +72,11 @@ namespace Game.Player
                 if (Input.GetKeyDown(PlayerKeys.PlaceVoxel))
                 {
                     voxelWorld.EditVoxel(placePosition.ToVector3Int(), type);
+                }
+
+                if (Input.GetKeyDown(KeyCode.G))
+                {
+                    VoxelTemplate.CreateCube(placePosition.ToVector3Int(), type, cubeSize);
                 }
 
                 if (Input.GetKeyDown(PlayerKeys.DestroyVoxel))

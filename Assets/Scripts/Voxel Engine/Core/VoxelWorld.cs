@@ -29,6 +29,10 @@ public class VoxelWorld : StaticInstance<VoxelWorld>
         Debug.Log(((startTime = Time.realtimeSinceStartup) * 1000f) + " ms");
 
         EditVoxel(Vector3Int.zero, 1);
+
+        VoxelTemplate.CreateCube(Vector3Int.zero, 1, 5);
+        VoxelTemplate.CreateCube(new Vector3Int(20, 0, 0), 1, 20);
+        VoxelTemplate.CreateCube(new Vector3Int(-50, 0, 0), 1, 50);
     }
 
     private void Update()

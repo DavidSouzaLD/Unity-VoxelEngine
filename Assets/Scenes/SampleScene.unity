@@ -167,7 +167,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33cc4bd83a28410489e6317c4bda8418, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  test: {fileID: 1330285342}
   showGizmos: 1
 --- !u!1 &410087039
 GameObject:
@@ -484,6 +483,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7335639962479187406, guid: 8524d6ce03244fc42b426b74399ff1da,
+        type: 3}
+      propertyPath: type
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7335639962479187406, guid: 8524d6ce03244fc42b426b74399ff1da,
+        type: 3}
+      propertyPath: cubeSize
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7335639962479187406, guid: 8524d6ce03244fc42b426b74399ff1da,
+        type: 3}
+      propertyPath: distance
+      value: 200
+      objectReference: {fileID: 0}
     - target: {fileID: 7335639962479187440, guid: 8524d6ce03244fc42b426b74399ff1da,
         type: 3}
       propertyPath: m_Name
