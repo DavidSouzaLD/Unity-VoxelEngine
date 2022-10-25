@@ -9,8 +9,21 @@ namespace Game.Player
         [SerializeField] private LayerMask layerMask;
         [SerializeField] private float distance;
         [SerializeField] private byte type;
-        [SerializeField] private int cubeSize = 5;
         [SerializeField] private Highlight highlightPrefab;
+
+        [Header("Cube")]
+        [SerializeField] private int cubeSize = 5;
+
+        [Header("Sphere")]
+        [SerializeField] private int sphereRadius = 5;
+
+        [Header("Torus")]
+        [SerializeField] private int torusSize = 5;
+        [SerializeField] private int torusInner = 5;
+        [SerializeField] private int torusThickness = 5;
+
+        [Header("Pyramid")]
+        [SerializeField] private int pyramidMaxHeight = 10;
 
         private Highlight highlight;
         private VoxelWorld voxelWorld;
@@ -74,14 +87,24 @@ namespace Game.Player
                     voxelWorld.EditVoxel(placePosition.ToVector3Int(), type);
                 }
 
-                if (Input.GetKeyDown(KeyCode.G))
+                if (Input.GetKeyDown(KeyCode.F))
                 {
                     VoxelTemplate.CreateCube(placePosition.ToVector3Int(), type, cubeSize);
                 }
 
-                if (Input.GetKeyDown(KeyCode.F))
+                if (Input.GetKeyDown(KeyCode.G))
                 {
-                    VoxelTemplate.CreateSphere(placePosition.ToVector3Int(), type, cubeSize);
+                    VoxelTemplate.CreateSphere(placePosition.ToVector3Int(), type, sphereRadius);
+                }
+
+                if (Input.GetKeyDown(KeyCode.H))
+                {
+                    VoxelTemplate.CreateTorus(placePosition.ToVector3Int(), type, torusSize, torusInner, torusThickness);
+                }
+
+                if (Input.GetKeyDown(KeyCode.J))
+                {
+                    VoxelTemplate.CreatePyramid(placePosition.ToVector3Int(), type, pyramidMaxHeight);
                 }
 
                 if (Input.GetKeyDown(PlayerKeys.DestroyVoxel))

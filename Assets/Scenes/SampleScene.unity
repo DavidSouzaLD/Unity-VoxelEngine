@@ -457,10 +457,35 @@ PrefabInstance:
       propertyPath: runSpeed
       value: 12
       objectReference: {fileID: 0}
+    - target: {fileID: 7335639962479187405, guid: 8524d6ce03244fc42b426b74399ff1da,
+        type: 3}
+      propertyPath: moveSpeed
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 7335639962479187406, guid: 8524d6ce03244fc42b426b74399ff1da,
         type: 3}
       propertyPath: cubeSize
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7335639962479187406, guid: 8524d6ce03244fc42b426b74399ff1da,
+        type: 3}
+      propertyPath: torusSize
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 7335639962479187406, guid: 8524d6ce03244fc42b426b74399ff1da,
+        type: 3}
+      propertyPath: torusInner
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 7335639962479187406, guid: 8524d6ce03244fc42b426b74399ff1da,
+        type: 3}
+      propertyPath: sphereRadius
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7335639962479187406, guid: 8524d6ce03244fc42b426b74399ff1da,
+        type: 3}
+      propertyPath: torusThickness
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 7335639962479187440, guid: 8524d6ce03244fc42b426b74399ff1da,
         type: 3}
