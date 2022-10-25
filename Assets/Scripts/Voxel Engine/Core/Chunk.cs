@@ -60,6 +60,19 @@ public class Chunk
         meshCollider = gameObject.AddComponent<MeshCollider>();
         material = VoxelEngine.AtlasMaterial;
         coord = _coord;
+
+        for (int x = 0; x < VoxelSettings.chunkSize.x; x++)
+        {
+            for (int y = 0; y < VoxelSettings.chunkSize.y; y++)
+            {
+                for (int z = 0; z < VoxelSettings.chunkSize.z; z++)
+                {
+                    map[x, y, z] = 1;
+                }
+            }
+        }
+
+        Update();
     }
 
     // Render the chunk every frame on the gpu.

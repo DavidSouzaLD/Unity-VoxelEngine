@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class VoxelWorld : StaticInstance<VoxelWorld>
 {
+    public Transform test;
     [HideInInspector] public ChunkCoord[,,] coordMap = new ChunkCoord[VoxelSettings.worldSize.x, VoxelSettings.worldSize.y, VoxelSettings.worldSize.z];
     [HideInInspector] public List<Chunk> activeChunks = new List<Chunk>();
 
@@ -125,7 +126,7 @@ public class VoxelWorld : StaticInstance<VoxelWorld>
                             Vector3Int fix = ((VoxelSettings.worldSize * VoxelSettings.chunkSize) / 2);
                             Vector3Int pos = new Vector3Int(x, y, z) * VoxelSettings.chunkSize - fix;
 
-                            Gizmos.DrawWireCube(pos, VoxelSettings.chunkSize);
+                            Gizmos.DrawWireCube(pos + (VoxelSettings.chunkSize / 2), VoxelSettings.chunkSize);
                         }
                     }
                 }
@@ -153,6 +154,14 @@ public class ChunkCoord
         get
         {
             return new Vector3Int(x, y, z);
+        }
+    }
+
+    public Vector3Int worldPosition
+    {
+        get
+        {
+            return new Vector3Int(x, y, z) + (VoxelSettings.chunkSize / 2);
         }
     }
 }

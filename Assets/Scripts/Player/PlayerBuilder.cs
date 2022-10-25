@@ -15,6 +15,8 @@ namespace Game.Player
         private VoxelWorld voxelWorld;
         private Transform m_camera;
 
+        Vector3 pos;
+
         private void Start()
         {
             voxelWorld = GameObject.FindObjectOfType<VoxelWorld>();
@@ -55,11 +57,14 @@ namespace Game.Player
                     Mathf.RoundToInt(hit.point.z - (hit.normal.z * 0.5f))
                 );
 
+
                 Vector3 placePosition = new Vector3(
                     Mathf.RoundToInt(hit.point.x + (hit.normal.x * 0.5f)),
                     Mathf.RoundToInt(hit.point.y + (hit.normal.y * 0.5f)),
                     Mathf.RoundToInt(hit.point.z + (hit.normal.z * 0.5f))
                 );
+
+                pos = placePosition;
 
                 CheckDirections(hit.normal.ToVector3Int());
 
