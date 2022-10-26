@@ -114,11 +114,15 @@ public class VoxelWorld : MonoBehaviour
         {
             // Creating chunk.
             ChunkCoord coord = GetChunkCoord(_position);
-            chunk = new Chunk(coord, this);
-            coord.chunk = chunk;
 
-            // Sending to list and then rendering your mesh on GPU.
-            activeChunks.Add(chunk);
+            if (coord != null)
+            {
+                chunk = new Chunk(coord, this);
+                coord.chunk = chunk;
+
+                // Sending to list and then rendering your mesh on GPU.
+                activeChunks.Add(chunk);
+            }
 
             return chunk;
         }

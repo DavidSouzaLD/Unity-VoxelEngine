@@ -10,7 +10,6 @@ namespace Game.Player
         [SerializeField] private LayerMask layerMask;
         [SerializeField] private float distance;
         [SerializeField] private Highlight highlightPrefab;
-        [SerializeField] private DebugInfos debugInfos;
 
         [Header("Effects")]
         [SerializeField] private ParticleSystem destroyEffect;
@@ -72,8 +71,7 @@ namespace Game.Player
                     Mathf.RoundToInt(hit.point.z + (hit.normal.z * 0.5f))
                 );
 
-                debugInfos.viewPosition = highlight.transform.position;
-
+                DebugSystem.AddInfo("ViewPosition", "View Position (" + highlight.transform.position.x + ", " + highlight.transform.position.y + ", " + highlight.transform.position.z + ")");
                 CheckDirections(hit.normal.ToVector3Int());
 
                 if (Input.GetKeyDown(PlayerKeys.PlaceVoxel))
@@ -102,10 +100,9 @@ namespace Game.Player
             }
             else
             {
-                debugInfos.viewPosition = Vector3.one * -1;
-
                 if (highlight != null)
                 {
+                    DebugSystem.RemoveInfo("View Position");
                     Destroy(highlight.gameObject);
                 }
             }

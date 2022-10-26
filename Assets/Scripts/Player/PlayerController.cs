@@ -68,6 +68,9 @@ namespace Game.Player
             {
                 jumpRequested = true;
             }
+
+            // Debug
+            DebugSystem.AddInfo("Player Position", "Position in World (" + transform.position.x.ToString("0") + ", " + transform.position.y.ToString("0") + ", " + transform.position.z.ToString("0") + ")");
         }
 
         private bool CrouchCheck(Vector3 _direction)
