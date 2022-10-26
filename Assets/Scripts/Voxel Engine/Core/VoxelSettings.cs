@@ -1,7 +1,20 @@
 using UnityEngine;
 
+//float startTime = Time.realtimeSinceStartup;
+// Debug.Log(((startTime = Time.realtimeSinceStartup) * 1000f) + " ms");
+
+
 public static class VoxelSettings
 {
+    // Value of blocks by textures
+    public static int maxDistanceView
+    {
+        get
+        {
+            return 8;
+        }
+    }
+
     // Value of blocks by textures
     public static int textureAtlasSize
     {

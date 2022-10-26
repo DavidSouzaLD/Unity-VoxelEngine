@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 using Game.Player.Others;
 
 namespace Game.Player
@@ -8,31 +9,19 @@ namespace Game.Player
         [Header("Settings")]
         [SerializeField] private LayerMask layerMask;
         [SerializeField] private float distance;
-        [SerializeField] private byte type;
         [SerializeField] private Highlight highlightPrefab;
 
         [Header("Effects")]
         [SerializeField] private ParticleSystem destroyEffect;
 
-        [Header("Cube")]
-        [SerializeField] private int cubeSize = 5;
+        [Header("Events")]
+        [SerializeField] private UnityEvent onPlaceVoxel;
+        [SerializeField] private UnityEvent onDestroyVoxel;
 
-        [Header("Sphere")]
-        [SerializeField] private int sphereRadius = 5;
-
-        [Header("Torus")]
-        [SerializeField] private int torusSize = 5;
-        [SerializeField] private int torusInner = 5;
-        [SerializeField] private int torusThickness = 5;
-
-        [Header("Pyramid")]
-        [SerializeField] private int pyramidMaxHeight = 10;
-
+        private byte type;
         private Highlight highlight;
         private VoxelWorld voxelWorld;
         private Transform m_camera;
-
-        Vector3 pos;
 
         private void Start()
         {
@@ -55,16 +44,7 @@ namespace Game.Player
         private void Update()
         {
             UpdateRaycast();
-
-            // Scroll
-            if (Input.mouseScrollDelta.y > 0 && type < VoxelEngine.GetVoxelPack.Length - 1)
-            {
-                type++;
-            }
-            else if (Input.mouseScrollDelta.y < 0 && type > 1)
-            {
-                type--;
-            }
+            UpdateScroll();
         }
 
         private void UpdateRaycast()
@@ -91,13 +71,15 @@ namespace Game.Player
                     Mathf.RoundToInt(hit.point.z + (hit.normal.z * 0.5f))
                 );
 
-                pos = placePosition;
-
                 CheckDirections(hit.normal.ToVector3Int());
 
                 if (Input.GetKeyDown(PlayerKeys.PlaceVoxel))
                 {
+                    // Setting voxel
                     voxelWorld.EditVoxel(placePosition.ToVector3Int(), type);
+
+                    // Apply event
+                    onPlaceVoxel.Invoke();
                 }
 
                 if (Input.GetKeyDown(PlayerKeys.DestroyVoxel))
@@ -108,27 +90,11 @@ namespace Game.Player
                     ParticleSystem.MainModule ps = effect.main;
                     ps.startColor = VoxelEngine.GetVoxelPack[type].GetColor();
 
+                    // Setting the voxel like air
                     voxelWorld.EditVoxel(highlight.transform.position.ToVector3Int(), 0);
-                }
 
-                if (Input.GetKeyDown(KeyCode.F))
-                {
-                    VoxelTemplate.CreateCube(voxelWorld, placePosition.ToVector3Int(), type, cubeSize);
-                }
-
-                if (Input.GetKeyDown(KeyCode.G))
-                {
-                    VoxelTemplate.CreateSphere(voxelWorld, placePosition.ToVector3Int(), type, sphereRadius);
-                }
-
-                if (Input.GetKeyDown(KeyCode.H))
-                {
-                    VoxelTemplate.CreateTorus(voxelWorld, placePosition.ToVector3Int(), type, torusSize, torusInner, torusThickness);
-                }
-
-                if (Input.GetKeyDown(KeyCode.J))
-                {
-                    VoxelTemplate.CreatePyramid(voxelWorld, placePosition.ToVector3Int(), type, pyramidMaxHeight);
+                    // Apply event
+                    onDestroyVoxel.Invoke();
                 }
             }
             else
@@ -165,6 +131,23 @@ namespace Game.Player
             else if (_direction.z < 0)
             {
                 highlight.ApplyDirection(Highlight.Directions.Back);
+            }
+        }
+
+        private void UpdateScroll()
+        {
+            if (type < 1)
+            {
+                type = 1;
+            }
+
+            if (Input.mouseScrollDelta.y > 0 && type < VoxelEngine.GetVoxelPack.Length - 1)
+            {
+                type++;
+            }
+            else if (Input.mouseScrollDelta.y < 0 && type > 1)
+            {
+                type--;
             }
         }
     }

@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class VoxelEngine : StaticInstance<VoxelEngine>
 {
-    public byte type;
-    public Color color2;
     [Header("Settings")]
     [SerializeField] private Material atlasMaterial; // Material like all blocks as texture.
 
@@ -36,11 +34,6 @@ public class VoxelEngine : StaticInstance<VoxelEngine>
         // Get VoxelPack
         string test = File.ReadAllText(Instance.voxelsPath + "/VoxelPack.cfg");
         Instance.voxelPack = JsonUtility.FromJson<VoxelPack>(test);
-    }
-
-    private void Update()
-    {
-        color2 = GetVoxelPack[type].GetColor();
     }
 }
 

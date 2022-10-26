@@ -3,15 +3,23 @@ using UnityEngine;
 
 public class VoxelWorld : MonoBehaviour
 {
-    [HideInInspector] public ChunkCoord[,,] coordMap = new ChunkCoord[VoxelSettings.worldSize.x, VoxelSettings.worldSize.y, VoxelSettings.worldSize.z];
-    [HideInInspector] public List<Chunk> activeChunks = new List<Chunk>();
+    [Header("Settings")]
+    [SerializeField] private Transform player;
 
-    public bool showGizmos;
+    [Header("Distace View")]
+    [SerializeField] private bool useDistanceView;
+    [SerializeField] private float timeToCheckDistanceView = 10;
+
+    [Header("Gizmos")]
+    [SerializeField] private bool showGizmos;
+    [SerializeField] private bool showDistanceViewGizmos;
+
+    private ChunkCoord[,,] coordMap = new ChunkCoord[VoxelSettings.worldSize.x, VoxelSettings.worldSize.y, VoxelSettings.worldSize.z];
+    public List<Chunk> activeChunks = new List<Chunk>();
+    Vector3 lastPlayerPosition;
 
     private void Start()
     {
-        float startTime = Time.realtimeSinceStartup;
-
         // Setting and creating all ChunkCoords.
         for (int x = 0; x < VoxelSettings.worldSize.x; x++)
         {
@@ -26,11 +34,13 @@ public class VoxelWorld : MonoBehaviour
                 }
             }
         }
-        Debug.Log(((startTime = Time.realtimeSinceStartup) * 1000f) + " ms");
 
-        VoxelTemplate.CreateCube(this, Vector3Int.zero, 1, 5);
-        VoxelTemplate.CreateCube(this, new Vector3Int(20, 0, 0), 1, 20);
-        VoxelTemplate.CreateCube(this, new Vector3Int(-50, 0, 0), 1, 50);
+        VoxelTemplate.CreatePlane(this, Vector3Int.zero, 2, 10);
+
+        if (useDistanceView)
+        {
+            InvokeRepeating("UpdateViewDistance", 0f, timeToCheckDistanceView);
+        }
     }
 
     private void Update()
@@ -48,7 +58,52 @@ public class VoxelWorld : MonoBehaviour
         }
     }
 
-    // Checks if the chunk exists, if it doesn't exist it will create a new one
+    // Ativa all chunks that are in the player's view.
+    public void UpdateViewDistance()
+    {
+        float distance = Vector3.Distance(player.position, lastPlayerPosition);
+
+        if (distance > VoxelSettings.maxDistanceView)
+        {
+            for (int i = 0; i < activeChunks.Count; i++)
+            {
+                activeChunks[i].isActived = false;
+            }
+
+            activeChunks.Clear();
+
+            int distanceView = VoxelSettings.maxDistanceView / 2;
+            int height = VoxelSettings.worldSize.y / 2;
+
+            for (int x = -distanceView; x < distanceView; x++)
+            {
+                for (int y = -height; y < height + 1; y++)
+                {
+                    for (int z = -distanceView; z < distanceView; z++)
+                    {
+                        Vector3Int chunksPos = player.position.ToVector3Int() + new Vector3Int(x, y, z) * VoxelSettings.chunkSize + (VoxelSettings.chunkSize / 2);
+                        chunksPos.y -= (VoxelSettings.chunkSize.y / 2);
+
+                        ChunkCoord coord = GetChunkCoord(chunksPos);
+
+                        if (coord != null && coord.chunk != null)
+                        {
+                            activeChunks.Add(coord.chunk);
+                        }
+                    }
+                }
+            }
+
+            for (int i = 0; i < activeChunks.Count; i++)
+            {
+                activeChunks[i].isActived = true;
+            }
+
+            lastPlayerPosition = player.position;
+        }
+    }
+
+    // Checks if the chunk exists, if it doesn't exist it will create a new one.
     public Chunk CreateChunk(Vector3Int _position)
     {
         // Checks if a chunk already exists at that location.
@@ -57,9 +112,14 @@ public class VoxelWorld : MonoBehaviour
         // If it does not exist, it creates one and placed it in the coord.
         if (chunk == null)
         {
+            // Creating chunk.
             ChunkCoord coord = GetChunkCoord(_position);
             chunk = new Chunk(coord, this);
             coord.chunk = chunk;
+
+            // Sending to list and then rendering your mesh on GPU.
+            activeChunks.Add(chunk);
+
             return chunk;
         }
         else
@@ -73,9 +133,18 @@ public class VoxelWorld : MonoBehaviour
     public void EditVoxel(Vector3Int _position, byte _type, bool _updateChunk = true)
     {
         Chunk chunk = CreateChunk(_position);
-        chunk.EditMap(_position, _type, _updateChunk);
+
+        if (chunk != null)
+        {
+            chunk.EditMap(_position, _type, _updateChunk);
+        }
+        else
+        {
+            Debug.Log("sem chunk");
+        }
     }
 
+    // Get block type based on past position.
     public byte GetVoxelType(Vector3Int _position)
     {
         Chunk chunk = GetChunk(_position);
@@ -107,7 +176,14 @@ public class VoxelWorld : MonoBehaviour
     // Returns the chunk based on position.
     public Chunk GetChunk(Vector3Int _position)
     {
-        return GetChunkCoord(_position).chunk;
+        try
+        {
+            return GetChunkCoord(_position).chunk;
+        }
+        catch (System.Exception)
+        {
+            return null;
+        }
     }
 
     // Returns the ChunkCoord based on position.
@@ -120,7 +196,14 @@ public class VoxelWorld : MonoBehaviour
         int y = Mathf.RoundToInt(pos.y / VoxelSettings.chunkSize.y);
         int z = Mathf.RoundToInt(pos.z / VoxelSettings.chunkSize.z);
 
-        return coordMap[x, y, z];
+        try
+        {
+            return coordMap[x, y, z];
+        }
+        catch (System.Exception)
+        {
+            return null;
+        }
     }
 
 #if UNITY_EDITOR
@@ -156,6 +239,34 @@ public class VoxelWorld : MonoBehaviour
                             Vector3Int pos = new Vector3Int(x, y, z) * VoxelSettings.chunkSize - fix;
 
                             Gizmos.DrawWireCube(pos + (VoxelSettings.chunkSize / 2), VoxelSettings.chunkSize);
+                        }
+                    }
+                }
+            }
+
+            if (showDistanceViewGizmos)
+            {
+                Gizmos.color = Color.red;
+
+                int distanceView = VoxelSettings.maxDistanceView / 2;
+                int height = VoxelSettings.worldSize.y / 2;
+
+                for (int x = -distanceView; x < distanceView; x++)
+                {
+                    for (int y = -height; y < height + 1; y++)
+                    {
+                        for (int z = -distanceView; z < distanceView; z++)
+                        {
+                            Vector3Int chunksPos = player.position.ToVector3Int() + new Vector3Int(x, y, z) * VoxelSettings.chunkSize + (VoxelSettings.chunkSize / 2);
+                            chunksPos.y -= (VoxelSettings.chunkSize.y / 2);
+
+                            ChunkCoord coord = GetChunkCoord(chunksPos);
+
+                            if (coord != null)
+                            {
+                                Gizmos.color = Color.blue;
+                                Gizmos.DrawWireCube(coord.worldPosition, VoxelSettings.chunkSize);
+                            }
                         }
                     }
                 }
