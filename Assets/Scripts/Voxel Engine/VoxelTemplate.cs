@@ -1,12 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Unity.Jobs;
-using Unity.Burst;
-using Unity.Collections;
 
 public class VoxelTemplate : MonoBehaviour
 {
-    public static void CreateCube(Vector3Int _position, byte _type, int _size)
+    public static void CreateCube(VoxelWorld _world, Vector3Int _position, byte _type, int _size)
     {
         List<Chunk> chunksToUpdate = new List<Chunk>();
         Chunk lastChunk = null;
@@ -17,18 +14,19 @@ public class VoxelTemplate : MonoBehaviour
             {
                 for (int z = -_size / 2; z < _size / 2; z++)
                 {
-                    Vector3Int pos = _position + new Vector3Int(x, y, z);
+                    float height = Mathf.PerlinNoise(x, z);
+                    Vector3Int pos = _position + new Vector3Int(x, y - (int)(height * 10), z);
 
                     if (lastChunk == null)
                     {
                         // Try get chunk
-                        lastChunk = VoxelWorld.Instance.GetChunk(pos);
+                        lastChunk = _world.GetChunk(pos);
 
                         if (lastChunk == null)
                         {
                             // Create new chunk
-                            ChunkCoord coord = VoxelWorld.Instance.GetChunkCoord(pos);
-                            lastChunk = new Chunk(coord);
+                            ChunkCoord coord = _world.GetChunkCoord(pos);
+                            lastChunk = new Chunk(coord, _world);
                             coord.chunk = lastChunk;
                         }
                     }
@@ -44,12 +42,12 @@ public class VoxelTemplate : MonoBehaviour
                         // Change last chunk
                         if (!lastChunk.IsVoxelInChunk(pos))
                         {
-                            lastChunk = VoxelWorld.Instance.GetChunk(pos);
+                            lastChunk = _world.GetChunk(pos);
                         }
                     }
 
                     // Create voxel
-                    VoxelWorld.Instance.EditVoxel(pos, _type, false);
+                    _world.EditVoxel(pos, _type, false);
                 }
             }
         }
@@ -58,14 +56,14 @@ public class VoxelTemplate : MonoBehaviour
         {
             chunksToUpdate[i].Update();
 
-            if (!VoxelWorld.Instance.activeChunks.Contains(chunksToUpdate[i]))
+            if (!_world.activeChunks.Contains(chunksToUpdate[i]))
             {
-                VoxelWorld.Instance.activeChunks.Add(chunksToUpdate[i]);
+                _world.activeChunks.Add(chunksToUpdate[i]);
             }
         }
     }
 
-    public static void CreateSphere(Vector3Int _position, byte _type, int _radius)
+    public static void CreateSphere(VoxelWorld _world, Vector3Int _position, byte _type, int _radius)
     {
         List<Chunk> chunksToUpdate = new List<Chunk>();
         Chunk lastChunk = null;
@@ -84,13 +82,13 @@ public class VoxelTemplate : MonoBehaviour
                         if (lastChunk == null)
                         {
                             // Try get chunk
-                            lastChunk = VoxelWorld.Instance.GetChunk(pos);
+                            lastChunk = _world.GetChunk(pos);
 
                             if (lastChunk == null)
                             {
                                 // Create new chunk
-                                ChunkCoord coord = VoxelWorld.Instance.GetChunkCoord(pos);
-                                lastChunk = new Chunk(coord);
+                                ChunkCoord coord = _world.GetChunkCoord(pos);
+                                lastChunk = new Chunk(coord, _world);
                                 coord.chunk = lastChunk;
                             }
                         }
@@ -106,12 +104,12 @@ public class VoxelTemplate : MonoBehaviour
                             // Change last chunk
                             if (!lastChunk.IsVoxelInChunk(pos))
                             {
-                                lastChunk = VoxelWorld.Instance.GetChunk(pos);
+                                lastChunk = _world.GetChunk(pos);
                             }
                         }
 
                         // Create voxel
-                        VoxelWorld.Instance.EditVoxel(pos, _type, false);
+                        _world.EditVoxel(pos, _type, false);
                     }
                 }
             }
@@ -121,14 +119,14 @@ public class VoxelTemplate : MonoBehaviour
         {
             chunksToUpdate[i].Update();
 
-            if (!VoxelWorld.Instance.activeChunks.Contains(chunksToUpdate[i]))
+            if (!_world.activeChunks.Contains(chunksToUpdate[i]))
             {
-                VoxelWorld.Instance.activeChunks.Add(chunksToUpdate[i]);
+                _world.activeChunks.Add(chunksToUpdate[i]);
             }
         }
     }
 
-    public static void CreatePyramid(Vector3Int _position, byte _type, int _maxHeight)
+    public static void CreatePyramid(VoxelWorld _world, Vector3Int _position, byte _type, int _maxHeight)
     {
         List<Chunk> chunksToUpdate = new List<Chunk>();
         Chunk lastChunk = null;
@@ -148,13 +146,13 @@ public class VoxelTemplate : MonoBehaviour
                         if (lastChunk == null)
                         {
                             // Try get chunk
-                            lastChunk = VoxelWorld.Instance.GetChunk(pos);
+                            lastChunk = _world.GetChunk(pos);
 
                             if (lastChunk == null)
                             {
                                 // Create new chunk
-                                ChunkCoord coord = VoxelWorld.Instance.GetChunkCoord(pos);
-                                lastChunk = new Chunk(coord);
+                                ChunkCoord coord = _world.GetChunkCoord(pos);
+                                lastChunk = new Chunk(coord, _world);
                                 coord.chunk = lastChunk;
                             }
                         }
@@ -170,12 +168,12 @@ public class VoxelTemplate : MonoBehaviour
                             // Change last chunk
                             if (!lastChunk.IsVoxelInChunk(pos))
                             {
-                                lastChunk = VoxelWorld.Instance.GetChunk(pos);
+                                lastChunk = _world.GetChunk(pos);
                             }
                         }
 
                         // Create voxel
-                        VoxelWorld.Instance.EditVoxel(pos, _type, false);
+                        _world.EditVoxel(pos, _type, false);
                     }
                 }
             }
@@ -185,14 +183,14 @@ public class VoxelTemplate : MonoBehaviour
         {
             chunksToUpdate[i].Update();
 
-            if (!VoxelWorld.Instance.activeChunks.Contains(chunksToUpdate[i]))
+            if (!_world.activeChunks.Contains(chunksToUpdate[i]))
             {
-                VoxelWorld.Instance.activeChunks.Add(chunksToUpdate[i]);
+                _world.activeChunks.Add(chunksToUpdate[i]);
             }
         }
     }
 
-    public static void CreateTorus(Vector3Int _position, byte _type, int _size, int _innerRadius, int _thickness)
+    public static void CreateTorus(VoxelWorld _world, Vector3Int _position, byte _type, int _size, int _innerRadius, int _thickness)
     {
         List<Chunk> chunksToUpdate = new List<Chunk>();
         Chunk lastChunk = null;
@@ -219,13 +217,13 @@ public class VoxelTemplate : MonoBehaviour
                         if (lastChunk == null)
                         {
                             // Try get chunk
-                            lastChunk = VoxelWorld.Instance.GetChunk(realPos);
+                            lastChunk = _world.GetChunk(realPos);
 
                             if (lastChunk == null)
                             {
                                 // Create new chunk
-                                ChunkCoord coord = VoxelWorld.Instance.GetChunkCoord(realPos);
-                                lastChunk = new Chunk(coord);
+                                ChunkCoord coord = _world.GetChunkCoord(realPos);
+                                lastChunk = new Chunk(coord, _world);
                                 coord.chunk = lastChunk;
                             }
                         }
@@ -241,12 +239,12 @@ public class VoxelTemplate : MonoBehaviour
                             // Change last chunk
                             if (!lastChunk.IsVoxelInChunk(realPos))
                             {
-                                lastChunk = VoxelWorld.Instance.GetChunk(realPos);
+                                lastChunk = _world.GetChunk(realPos);
                             }
                         }
 
                         // Create voxel
-                        VoxelWorld.Instance.EditVoxel(realPos, _type, false);
+                        _world.EditVoxel(realPos, _type, false);
                     }
                 }
             }
@@ -256,9 +254,9 @@ public class VoxelTemplate : MonoBehaviour
         {
             chunksToUpdate[i].Update();
 
-            if (!VoxelWorld.Instance.activeChunks.Contains(chunksToUpdate[i]))
+            if (!_world.activeChunks.Contains(chunksToUpdate[i]))
             {
-                VoxelWorld.Instance.activeChunks.Add(chunksToUpdate[i]);
+                _world.activeChunks.Add(chunksToUpdate[i]);
             }
         }
     }

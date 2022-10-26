@@ -11,6 +11,9 @@ namespace Game.Player
         [SerializeField] private byte type;
         [SerializeField] private Highlight highlightPrefab;
 
+        [Header("Effects")]
+        [SerializeField] private ParticleSystem destroyEffect;
+
         [Header("Cube")]
         [SerializeField] private int cubeSize = 5;
 
@@ -52,6 +55,16 @@ namespace Game.Player
         private void Update()
         {
             UpdateRaycast();
+
+            // Scroll
+            if (Input.mouseScrollDelta.y > 0 && type < VoxelEngine.GetVoxelPack.Length - 1)
+            {
+                type++;
+            }
+            else if (Input.mouseScrollDelta.y < 0 && type > 1)
+            {
+                type--;
+            }
         }
 
         private void UpdateRaycast()
@@ -87,29 +100,35 @@ namespace Game.Player
                     voxelWorld.EditVoxel(placePosition.ToVector3Int(), type);
                 }
 
+                if (Input.GetKeyDown(PlayerKeys.DestroyVoxel))
+                {
+                    // Destroy effet
+                    byte type = voxelWorld.GetVoxelType(highlight.transform.position.ToVector3Int());
+                    ParticleSystem effect = Instantiate(destroyEffect, highlight.transform.position.ToVector3Int(), Quaternion.identity);
+                    ParticleSystem.MainModule ps = effect.main;
+                    ps.startColor = VoxelEngine.GetVoxelPack[type].GetColor();
+
+                    voxelWorld.EditVoxel(highlight.transform.position.ToVector3Int(), 0);
+                }
+
                 if (Input.GetKeyDown(KeyCode.F))
                 {
-                    VoxelTemplate.CreateCube(placePosition.ToVector3Int(), type, cubeSize);
+                    VoxelTemplate.CreateCube(voxelWorld, placePosition.ToVector3Int(), type, cubeSize);
                 }
 
                 if (Input.GetKeyDown(KeyCode.G))
                 {
-                    VoxelTemplate.CreateSphere(placePosition.ToVector3Int(), type, sphereRadius);
+                    VoxelTemplate.CreateSphere(voxelWorld, placePosition.ToVector3Int(), type, sphereRadius);
                 }
 
                 if (Input.GetKeyDown(KeyCode.H))
                 {
-                    VoxelTemplate.CreateTorus(placePosition.ToVector3Int(), type, torusSize, torusInner, torusThickness);
+                    VoxelTemplate.CreateTorus(voxelWorld, placePosition.ToVector3Int(), type, torusSize, torusInner, torusThickness);
                 }
 
                 if (Input.GetKeyDown(KeyCode.J))
                 {
-                    VoxelTemplate.CreatePyramid(placePosition.ToVector3Int(), type, pyramidMaxHeight);
-                }
-
-                if (Input.GetKeyDown(PlayerKeys.DestroyVoxel))
-                {
-                    voxelWorld.EditVoxel(highlight.transform.position.ToVector3Int(), 0);
+                    VoxelTemplate.CreatePyramid(voxelWorld, placePosition.ToVector3Int(), type, pyramidMaxHeight);
                 }
             }
             else

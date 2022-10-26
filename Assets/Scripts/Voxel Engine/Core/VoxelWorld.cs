@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VoxelWorld : StaticInstance<VoxelWorld>
+public class VoxelWorld : MonoBehaviour
 {
     [HideInInspector] public ChunkCoord[,,] coordMap = new ChunkCoord[VoxelSettings.worldSize.x, VoxelSettings.worldSize.y, VoxelSettings.worldSize.z];
     [HideInInspector] public List<Chunk> activeChunks = new List<Chunk>();
@@ -28,11 +28,9 @@ public class VoxelWorld : StaticInstance<VoxelWorld>
         }
         Debug.Log(((startTime = Time.realtimeSinceStartup) * 1000f) + " ms");
 
-        EditVoxel(Vector3Int.zero, 1);
-
-        VoxelTemplate.CreateCube(Vector3Int.zero, 1, 5);
-        VoxelTemplate.CreateCube(new Vector3Int(20, 0, 0), 1, 20);
-        VoxelTemplate.CreateCube(new Vector3Int(-50, 0, 0), 1, 50);
+        VoxelTemplate.CreateCube(this, Vector3Int.zero, 1, 5);
+        VoxelTemplate.CreateCube(this, new Vector3Int(20, 0, 0), 1, 20);
+        VoxelTemplate.CreateCube(this, new Vector3Int(-50, 0, 0), 1, 50);
     }
 
     private void Update()
@@ -50,28 +48,55 @@ public class VoxelWorld : StaticInstance<VoxelWorld>
         }
     }
 
-    public void EditVoxel(Vector3Int _position, byte _type, bool _updateChunk = true)
+    // Checks if the chunk exists, if it doesn't exist it will create a new one
+    public Chunk CreateChunk(Vector3Int _position)
     {
+        // Checks if a chunk already exists at that location.
         Chunk chunk = GetChunk(_position);
 
-        // Create chunk
+        // If it does not exist, it creates one and placed it in the coord.
         if (chunk == null)
         {
             ChunkCoord coord = GetChunkCoord(_position);
-            chunk = new Chunk(coord);
+            chunk = new Chunk(coord, this);
             coord.chunk = chunk;
-            activeChunks.Add(chunk);
+            return chunk;
         }
+        else
+        {
+            // If it exists it just returns.
+            return chunk;
+        }
+    }
 
-        // Adding or removing voxel
+    // Edit the world globally by reacting on all chunks.
+    public void EditVoxel(Vector3Int _position, byte _type, bool _updateChunk = true)
+    {
+        Chunk chunk = CreateChunk(_position);
         chunk.EditMap(_position, _type, _updateChunk);
     }
 
-    public bool ExistsVoxel(Vector3 _position)
+    public byte GetVoxelType(Vector3Int _position)
+    {
+        Chunk chunk = GetChunk(_position);
+        Vector3Int pos = _position - chunk.position;
+
+        if (chunk != null)
+        {
+            return chunk.GetVoxelType(pos);
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    // Checks if there is a voxel in global position.
+    public bool ExistsVoxel(Vector3Int _position)
     {
         try
         {
-            return GetChunk(_position.ToVector3Int()).ExistsVoxel(_position);
+            return GetChunk(_position).ExistsVoxel(_position);
         }
         catch (System.Exception)
         {
@@ -80,7 +105,7 @@ public class VoxelWorld : StaticInstance<VoxelWorld>
     }
 
     // Returns the chunk based on position.
-    public Chunk GetChunk(Vector3 _position)
+    public Chunk GetChunk(Vector3Int _position)
     {
         return GetChunkCoord(_position).chunk;
     }
@@ -98,8 +123,8 @@ public class VoxelWorld : StaticInstance<VoxelWorld>
         return coordMap[x, y, z];
     }
 
-    // Draw the positions of the chunks.
 #if UNITY_EDITOR
+    // Draw the positions of the chunks.
     private void OnDrawGizmos()
     {
         if (showGizmos)

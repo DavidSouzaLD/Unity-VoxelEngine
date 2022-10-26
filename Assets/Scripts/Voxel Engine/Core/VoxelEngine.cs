@@ -3,10 +3,15 @@ using UnityEngine;
 
 public class VoxelEngine : StaticInstance<VoxelEngine>
 {
+    public byte type;
+    public Color color2;
     [Header("Settings")]
-    [SerializeField] private Material atlasMaterial;
-    [SerializeField] private string voxelsPath;
-    [SerializeField] private VoxelPack voxelPack;
+    [SerializeField] private Material atlasMaterial; // Material like all blocks as texture.
+
+    [Header("Voxels")]
+    [SerializeField] private string voxelsPath; // Location where all voxel information is found.
+    [SerializeField] private Color colorReference; // Color reference for creating new voxels.
+    [SerializeField] private VoxelPack voxelPack; // Voxel class imported into Unity from JSON.
 
     public static Material AtlasMaterial
     {
@@ -32,6 +37,11 @@ public class VoxelEngine : StaticInstance<VoxelEngine>
         string test = File.ReadAllText(Instance.voxelsPath + "/VoxelPack.cfg");
         Instance.voxelPack = JsonUtility.FromJson<VoxelPack>(test);
     }
+
+    private void Update()
+    {
+        color2 = GetVoxelPack[type].GetColor();
+    }
 }
 
 [System.Serializable]
@@ -54,6 +64,11 @@ public class Voxel
     [SerializeField] private int left;
     [SerializeField] private int right;
 
+    [Header("Color")]
+    [SerializeField] private byte red;
+    [SerializeField] private byte green;
+    [SerializeField] private byte blue;
+
     public int GetTextureID(int _faceID)
     {
         switch (_faceID)
@@ -68,5 +83,10 @@ public class Voxel
                 Debug.Log("Error in GetTextureID; invalid face index");
                 return 0;
         }
+    }
+
+    public Color GetColor()
+    {
+        return new Color32(red, green, blue, 1);
     }
 }

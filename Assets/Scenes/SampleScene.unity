@@ -361,9 +361,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2904ad7ce23598443b80e20bb55dd4a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  type: 0
+  color2: {r: 0, g: 0, b: 0, a: 0}
   atlasMaterial: {fileID: 2100000, guid: 384b057ed3c587044b11c592db81540a, type: 2}
   voxelsPath: G:\Projetos\VoxelEngine REP\Unity-VoxelEngine\Assets\Scripts\Voxel
     Engine
+  colorReference: {r: 0.8431373, g: 0.8117648, b: 0.6313726, a: 1}
   voxelPack:
     Voxels: []
 --- !u!1001 &6313035319609705714
@@ -452,40 +455,35 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 7335639962479187405, guid: 8524d6ce03244fc42b426b74399ff1da,
-        type: 3}
-      propertyPath: runSpeed
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 7335639962479187405, guid: 8524d6ce03244fc42b426b74399ff1da,
-        type: 3}
-      propertyPath: moveSpeed
-      value: 7
-      objectReference: {fileID: 0}
     - target: {fileID: 7335639962479187406, guid: 8524d6ce03244fc42b426b74399ff1da,
         type: 3}
       propertyPath: cubeSize
-      value: 20
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7335639962479187406, guid: 8524d6ce03244fc42b426b74399ff1da,
         type: 3}
       propertyPath: torusSize
-      value: 30
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7335639962479187406, guid: 8524d6ce03244fc42b426b74399ff1da,
         type: 3}
       propertyPath: torusInner
-      value: 14
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7335639962479187406, guid: 8524d6ce03244fc42b426b74399ff1da,
         type: 3}
       propertyPath: sphereRadius
-      value: 20
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7335639962479187406, guid: 8524d6ce03244fc42b426b74399ff1da,
         type: 3}
       propertyPath: torusThickness
-      value: 8
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7335639962479187406, guid: 8524d6ce03244fc42b426b74399ff1da,
+        type: 3}
+      propertyPath: pyramidMaxHeight
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7335639962479187440, guid: 8524d6ce03244fc42b426b74399ff1da,
         type: 3}

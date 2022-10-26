@@ -35,7 +35,7 @@ public class Chunk
     }
 
     // Returns the position of the chunk.
-    public Vector3 position { get { return coord.position; } }
+    public Vector3Int position { get { return coord.position; } }
 
     // Mesh informations.
     private int vertexIndex = 0;
@@ -44,7 +44,7 @@ public class Chunk
     private List<Vector2> uvs = new List<Vector2>();
 
     // Create the chunk based on past information.
-    public Chunk(ChunkCoord _coord)
+    public Chunk(ChunkCoord _coord, VoxelWorld _world)
     {
         // Generate map
         map = new byte[VoxelSettings.chunkSize.x, VoxelSettings.chunkSize.y, VoxelSettings.chunkSize.z];
@@ -52,7 +52,7 @@ public class Chunk
         // Creating object
         gameObject = new GameObject();
         gameObject.name = "Chunk [X:" + _coord.position.x + " / " + _coord.position.y + " / " + _coord.position.z + "]";
-        gameObject.transform.parent = VoxelWorld.Instance.transform;
+        gameObject.transform.parent = _world.transform;
         gameObject.transform.position = _coord.position;
         gameObject.layer = LayerMask.NameToLayer("Voxel");
 
@@ -60,6 +60,7 @@ public class Chunk
         meshCollider = gameObject.AddComponent<MeshCollider>();
         material = VoxelEngine.AtlasMaterial;
         coord = _coord;
+        world = _world;
     }
 
     // Render the chunk every frame on the gpu.
@@ -91,15 +92,15 @@ public class Chunk
     }
 
     // Not used
-    public void UpdateSurroundVoxels(Vector3Int _position)
+    private void UpdateSurroundVoxels(Vector3Int _position)
     {
         for (int i = 0; i < 6; i++)
         {
-            Vector3 voxelToCheck = _position + VoxelData.directions[i];
+            Vector3Int voxelToCheck = _position + VoxelData.directions[i];
 
-            if (!IsVoxelInChunk(voxelToCheck.ToVector3Int()))
+            if (!IsVoxelInChunk(voxelToCheck))
             {
-                Chunk chunk = VoxelWorld.Instance.GetChunk(voxelToCheck);
+                Chunk chunk = world.GetChunk(voxelToCheck);
 
                 if (chunk != null)
                 {
@@ -112,7 +113,7 @@ public class Chunk
     // Edit the voxel map to change the mesh.
     public void EditMap(Vector3Int _position, byte _type, bool _updateChunk = true)
     {
-        Vector3Int pos = _position - position.ToVector3Int();
+        Vector3Int pos = _position - position;
         map[pos.x, pos.y, pos.z] = _type;
 
         if (_updateChunk)
@@ -214,21 +215,33 @@ public class Chunk
         float y = _textureID / VoxelSettings.textureAtlasSize;
         float x = _textureID - (y * VoxelSettings.textureAtlasSize);
 
-        x *= VoxelSettings.textureNomalizedSize;
-        y *= VoxelSettings.textureNomalizedSize;
+        x *= VoxelSettings.textureNormalizedSize;
+        y *= VoxelSettings.textureNormalizedSize;
 
-        y = 1f - y - VoxelSettings.textureNomalizedSize;
+        y = 1f - y - VoxelSettings.textureNormalizedSize;
 
         uvs.Add(new Vector2(x, y));
-        uvs.Add(new Vector2(x, y + VoxelSettings.textureNomalizedSize));
-        uvs.Add(new Vector2(x + VoxelSettings.textureNomalizedSize, y));
-        uvs.Add(new Vector2(x + VoxelSettings.textureNomalizedSize, y + VoxelSettings.textureNomalizedSize));
+        uvs.Add(new Vector2(x, y + VoxelSettings.textureNormalizedSize));
+        uvs.Add(new Vector2(x + VoxelSettings.textureNormalizedSize, y));
+        uvs.Add(new Vector2(x + VoxelSettings.textureNormalizedSize, y + VoxelSettings.textureNormalizedSize));
+    }
+
+    public byte GetVoxelType(Vector3Int _position)
+    {
+        try
+        {
+            return map[_position.x, _position.y, _position.z];
+        }
+        catch (System.Exception)
+        {
+            return world.GetVoxelType(_position);
+        }
     }
 
     // Checks if there is a solid voxel at that position.
-    public bool ExistsVoxel(Vector3 _position)
+    public bool ExistsVoxel(Vector3Int _position)
     {
-        Vector3Int pos = _position.ToVector3Int() - position.ToVector3Int();
+        Vector3Int pos = _position - position;
 
         try
         {
