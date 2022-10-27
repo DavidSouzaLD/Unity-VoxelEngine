@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using QFSW.QC;
 
 public class VoxelTemplate : MonoBehaviour
 {
@@ -11,7 +10,6 @@ public class VoxelTemplate : MonoBehaviour
         activeWorld = GetComponent<VoxelWorld>();
     }
 
-    [Command]
     public static void CreatePlane(Vector3Int position, byte type, int size)
     {
         List<Chunk> chunksToUpdate = new List<Chunk>();
@@ -68,7 +66,6 @@ public class VoxelTemplate : MonoBehaviour
         }
     }
 
-    [Command]
     public static void CreateCube(Vector3Int position, byte type, int size)
     {
         List<Chunk> chunksToUpdate = new List<Chunk>();
@@ -128,22 +125,21 @@ public class VoxelTemplate : MonoBehaviour
         }
     }
 
-    [Command]
-    public static void CreateSphere(Vector3Int position, byte type, int _radius)
+    public static void CreateSphere(Vector3Int position, byte type, int radius)
     {
         List<Chunk> chunksToUpdate = new List<Chunk>();
         Chunk lastChunk = null;
 
-        for (int x = -_radius / 2; x < _radius / 2; x++)
+        for (int x = -radius / 2; x < radius / 2; x++)
         {
-            for (int y = -_radius / 2; y < _radius / 2; y++)
+            for (int y = -radius / 2; y < radius / 2; y++)
             {
-                for (int z = -_radius / 2; z < _radius / 2; z++)
+                for (int z = -radius / 2; z < radius / 2; z++)
                 {
                     Vector3Int pos = position + new Vector3Int(x, y, z);
                     float distance = Vector3.Distance(position, pos);
 
-                    if (distance < _radius / 2)
+                    if (distance < radius / 2)
                     {
                         if (lastChunk == null)
                         {
@@ -192,15 +188,14 @@ public class VoxelTemplate : MonoBehaviour
         }
     }
 
-    [Command]
-    public static void CreatePyramid(Vector3Int position, byte type, int _maxHeight)
+    public static void CreatePyramid(Vector3Int position, byte type, int maxHeight)
     {
         List<Chunk> chunksToUpdate = new List<Chunk>();
         Chunk lastChunk = null;
 
-        for (int h = 0; h < _maxHeight; h++)
+        for (int h = 0; h < maxHeight; h++)
         {
-            int length = _maxHeight - h;
+            int length = maxHeight - h;
 
             for (int x = -length; x <= length; x++)
             {
@@ -257,8 +252,7 @@ public class VoxelTemplate : MonoBehaviour
         }
     }
 
-    [Command]
-    public static void CreateTorus(Vector3Int position, byte type, int size, int _innerRadius, int _thickness)
+    public static void CreateTorus(Vector3Int position, byte type, int size, int innerRadius, int thickness)
     {
         List<Chunk> chunksToUpdate = new List<Chunk>();
         Chunk lastChunk = null;
@@ -275,12 +269,12 @@ public class VoxelTemplate : MonoBehaviour
 
                     direction.Normalize();
 
-                    Vector3 donutCenter = direction * (_innerRadius + _thickness);
+                    Vector3 donutCenter = direction * (innerRadius + thickness);
 
                     if (x == 0 && z == 0)
                         continue;
 
-                    if (Vector3.Distance(pos, donutCenter) < _thickness)
+                    if (Vector3.Distance(pos, donutCenter) < thickness)
                     {
                         if (lastChunk == null)
                         {
