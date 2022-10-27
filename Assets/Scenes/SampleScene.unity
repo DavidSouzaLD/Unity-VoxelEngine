@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.09418266, g: 0.25431234, b: 0.27768648, a: 1}
+  m_IndirectSpecularColor: {r: 0.055667687, g: 0.23298174, b: 0.27413926, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -123,6 +123,12 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &127834105 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7335639962479187440, guid: 8524d6ce03244fc42b426b74399ff1da,
+    type: 3}
+  m_PrefabInstance: {fileID: 1816965967525328942}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &152138095
 GameObject:
   m_ObjectHideFlags: 0
@@ -178,6 +184,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1816965967525328942}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &278733542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 127834105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90c401ee9019856448694281c17df0d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &310762321 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6313035318971446521, guid: 9f0acb7f1587f31439493a8538a18801,
@@ -579,9 +597,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2eb0bb4ef1c01ad42bafe0fd014ece45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useRotationSun: 1
   sunLight: {fileID: 410087040}
   sun: {fileID: 329669190}
-  timeSpeed: 0.2
+  timeSpeed: 0.05
   colorSky:
     serializedVersion: 2
     key0: {r: 0.29411766, g: 0.4392157, b: 0.7529412, a: 1}
@@ -755,10 +774,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7335639962193597646, guid: 8524d6ce03244fc42b426b74399ff1da,
+        type: 3}
+      propertyPath: far clip plane
+      value: 10000
+      objectReference: {fileID: 0}
     - target: {fileID: 7335639962479187406, guid: 8524d6ce03244fc42b426b74399ff1da,
         type: 3}
       propertyPath: debugInfos
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7335639962479187407, guid: 8524d6ce03244fc42b426b74399ff1da,
+        type: 3}
+      propertyPath: openConsole
+      value: 96
       objectReference: {fileID: 0}
     - target: {fileID: 7335639962479187440, guid: 8524d6ce03244fc42b426b74399ff1da,
         type: 3}
