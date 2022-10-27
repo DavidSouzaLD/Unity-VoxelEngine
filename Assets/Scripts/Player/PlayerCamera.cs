@@ -13,6 +13,7 @@ namespace Game.Player
         [SerializeField] private float minClampY = -90f;
         [SerializeField] private float maxClampY = 90f;
 
+        bool lockCursor;
         Vector2 _mouseRotation = Vector2.zero;
         float rotTransformY;
         float rotCameraX;
@@ -22,7 +23,6 @@ namespace Game.Player
             _mouseRotation.y = rotTransformY;
             _mouseRotation.x = rotCameraX;
 
-            // Lock mouse
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
@@ -47,6 +47,22 @@ namespace Game.Player
                 transform.localRotation.x,
                 _mouseRotation.x,
                 transform.localRotation.z);
+
+            if (Input.GetKeyDown(PlayerKeys.LockCursor))
+            {
+                lockCursor = !lockCursor;
+
+                if (lockCursor)
+                {
+                    Cursor.lockState = CursorLockMode.Locked;
+                    Cursor.visible = false;
+                }
+                else
+                {
+                    Cursor.lockState = CursorLockMode.None;
+                    Cursor.visible = true;
+                }
+            }
         }
     }
 }

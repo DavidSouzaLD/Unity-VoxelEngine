@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(VoxelTemplate))]
 public class VoxelWorld : MonoBehaviour
 {
     [Header("Settings")]
@@ -35,7 +36,7 @@ public class VoxelWorld : MonoBehaviour
             }
         }
 
-        VoxelTemplate.CreatePlane(this, Vector3Int.zero, 2, 10);
+        VoxelTemplate.CreatePlane(Vector3Int.zero, 2, 10);
 
         if (useDistanceView)
         {

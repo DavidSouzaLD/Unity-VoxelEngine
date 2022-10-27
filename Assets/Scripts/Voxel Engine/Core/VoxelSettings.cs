@@ -11,7 +11,7 @@ public static class VoxelSettings
     {
         get
         {
-            return 8;
+            return 16;
         }
     }
 

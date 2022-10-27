@@ -129,11 +129,11 @@ public class Chunk
             {
                 for (int z = 0; z < VoxelSettings.chunkSize.z; z++)
                 {
-                    Vector3 voxelPos = new Vector3(x, y, z);
+                    Vector3Int voxelPos = new Vector3Int(x, y, z);
 
                     for (int f = 0; f < 6; f++)
                     {
-                        Vector3 voxelToCheck = voxelPos + VoxelData.directions[f];
+                        Vector3Int voxelToCheck = voxelPos + VoxelData.directions[f];
 
                         try
                         {
