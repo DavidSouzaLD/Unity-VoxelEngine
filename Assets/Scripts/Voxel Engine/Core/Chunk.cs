@@ -37,12 +37,6 @@ public class Chunk
     // Returns the position of the chunk.
     public Vector3Int position { get { return coord.position; } }
 
-    // Mesh informations.
-    private int vertexIndex = 0;
-    private List<Vector3> vertices = new List<Vector3>();
-    private List<int> triangles = new List<int>();
-    private List<Vector2> uvs = new List<Vector2>();
-
     // Create the chunk based on past information.
     public Chunk(ChunkCoord _coord, VoxelWorld _world)
     {
@@ -127,7 +121,7 @@ public class Chunk
     {
         _destroyChunk = true;
 
-        ClearMesh();
+        VoxelData.MeshData meshData = new VoxelData.MeshData();
 
         for (int x = 0; x < VoxelSettings.chunkSize.x; x++)
         {
@@ -147,7 +141,7 @@ public class Chunk
                             {
                                 if (map[(int)voxelPos.x, (int)voxelPos.y, (int)voxelPos.z] != 0)
                                 {
-                                    AddFace(voxelPos, f, VoxelEngine.GetVoxelPack[map[x, y, z]].GetTextureID(f));
+                                    AddFace(meshData, voxelPos, f, VoxelEngine.GetVoxelPack[map[x, y, z]].GetTextureID(f));
                                     _destroyChunk = false;
                                 }
                             }
@@ -156,7 +150,7 @@ public class Chunk
                         {
                             if (map[(int)voxelPos.x, (int)voxelPos.y, (int)voxelPos.z] != 0)
                             {
-                                AddFace(voxelPos, f, VoxelEngine.GetVoxelPack[map[x, y, z]].GetTextureID(f));
+                                AddFace(meshData, voxelPos, f, VoxelEngine.GetVoxelPack[map[x, y, z]].GetTextureID(f));
                                 _destroyChunk = false;
                             }
                         }
@@ -167,9 +161,9 @@ public class Chunk
 
         // Create mesh
         Mesh mesh1 = new Mesh();
-        mesh1.vertices = vertices.ToArray();
-        mesh1.triangles = triangles.ToArray();
-        mesh1.uv = uvs.ToArray();
+        mesh1.vertices = meshData.vertices.ToArray();
+        mesh1.triangles = meshData.triangles.ToArray();
+        mesh1.uv = meshData.uvs.ToArray();
 
         mesh1.RecalculateBounds();
         mesh1.RecalculateTangents();
@@ -178,39 +172,30 @@ public class Chunk
         return mesh1;
     }
 
-    // Clear mesh informations.
-    private void ClearMesh()
-    {
-        vertexIndex = 0;
-        vertices.Clear();
-        triangles.Clear();
-        uvs.Clear();
-    }
-
     // Adds a face in the desired position and direction.
-    private void AddFace(Vector3 _voxelPos, int _faceIndex, int _textureID)
+    private void AddFace(VoxelData.MeshData _meshData, Vector3 _voxelPos, int _faceIndex, int _textureID)
     {
         // Vertices
-        vertices.Add(_voxelPos - VoxelData.fixedPos + VoxelData.vertices[VoxelData.triangles[_faceIndex, 0]]);
-        vertices.Add(_voxelPos - VoxelData.fixedPos + VoxelData.vertices[VoxelData.triangles[_faceIndex, 1]]);
-        vertices.Add(_voxelPos - VoxelData.fixedPos + VoxelData.vertices[VoxelData.triangles[_faceIndex, 2]]);
-        vertices.Add(_voxelPos - VoxelData.fixedPos + VoxelData.vertices[VoxelData.triangles[_faceIndex, 3]]);
+        _meshData.vertices.Add(_voxelPos - VoxelData.fixedPos + VoxelData.vertices[VoxelData.triangles[_faceIndex, 0]]);
+        _meshData.vertices.Add(_voxelPos - VoxelData.fixedPos + VoxelData.vertices[VoxelData.triangles[_faceIndex, 1]]);
+        _meshData.vertices.Add(_voxelPos - VoxelData.fixedPos + VoxelData.vertices[VoxelData.triangles[_faceIndex, 2]]);
+        _meshData.vertices.Add(_voxelPos - VoxelData.fixedPos + VoxelData.vertices[VoxelData.triangles[_faceIndex, 3]]);
 
         // UVS
-        AddTexture(_textureID);
+        AddTexture(_meshData, _textureID);
 
         // Triangles
-        triangles.Add(vertexIndex);
-        triangles.Add(vertexIndex + 1);
-        triangles.Add(vertexIndex + 2);
-        triangles.Add(vertexIndex + 2);
-        triangles.Add(vertexIndex + 1);
-        triangles.Add(vertexIndex + 3);
-        vertexIndex += 4;
+        _meshData.triangles.Add(_meshData.vertexIndex);
+        _meshData.triangles.Add(_meshData.vertexIndex + 1);
+        _meshData.triangles.Add(_meshData.vertexIndex + 2);
+        _meshData.triangles.Add(_meshData.vertexIndex + 2);
+        _meshData.triangles.Add(_meshData.vertexIndex + 1);
+        _meshData.triangles.Add(_meshData.vertexIndex + 3);
+        _meshData.vertexIndex += 4;
     }
 
     // Reworks the UV map based on the Atlas map.
-    private void AddTexture(int _textureID)
+    private void AddTexture(VoxelData.MeshData _meshData, int _textureID)
     {
         float y = _textureID / VoxelSettings.textureAtlasSize;
         float x = _textureID - (y * VoxelSettings.textureAtlasSize);
@@ -220,12 +205,13 @@ public class Chunk
 
         y = 1f - y - VoxelSettings.textureNormalizedSize;
 
-        uvs.Add(new Vector2(x, y));
-        uvs.Add(new Vector2(x, y + VoxelSettings.textureNormalizedSize));
-        uvs.Add(new Vector2(x + VoxelSettings.textureNormalizedSize, y));
-        uvs.Add(new Vector2(x + VoxelSettings.textureNormalizedSize, y + VoxelSettings.textureNormalizedSize));
+        _meshData.uvs.Add(new Vector2(x, y));
+        _meshData.uvs.Add(new Vector2(x, y + VoxelSettings.textureNormalizedSize));
+        _meshData.uvs.Add(new Vector2(x + VoxelSettings.textureNormalizedSize, y));
+        _meshData.uvs.Add(new Vector2(x + VoxelSettings.textureNormalizedSize, y + VoxelSettings.textureNormalizedSize));
     }
 
+    // Get voxel type with position
     public byte GetVoxelType(Vector3Int _position)
     {
         try

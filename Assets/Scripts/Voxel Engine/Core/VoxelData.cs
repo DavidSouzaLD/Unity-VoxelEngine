@@ -1,7 +1,16 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public static class VoxelData
 {
+    public class MeshData
+    {
+        public int vertexIndex = 0;
+        public List<Vector3> vertices = new List<Vector3>();
+        public List<int> triangles = new List<int>();
+        public List<Vector2> uvs = new List<Vector2>();
+    }
+
     public static readonly Vector3 fixedPos = new Vector3(0.5f, 0.5f, 0.5f);
 
     public static readonly Vector3[] vertices = new Vector3[8]
