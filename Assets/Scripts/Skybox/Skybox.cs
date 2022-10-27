@@ -3,12 +3,14 @@ using UnityEngine;
 public class Skybox : MonoBehaviour
 {
     [Header("Settings")]
-    [Header("Colors")] Light sunLight;
-    [Header("Colors")] Transform sun;
-    [Header("Colors")] float timeSpeed;
+    public bool useRotationSun;
+    [SerializeField] private Light sunLight;
+    [SerializeField] private Transform sun;
+    [SerializeField] private float timeSpeed;
 
     [Header("Colors")]
-    [SerializeField] private Gradient colorSky, colorHorizon;
+    [SerializeField] private Gradient colorSky;
+    [SerializeField] private Gradient colorHorizon;
     [SerializeField] private Material skyboxMaterial;
 
     string shaderName = "_SunDirection";
@@ -20,8 +22,11 @@ public class Skybox : MonoBehaviour
 
     private void LateUpdate()
     {
-        // Rotate lighing sun
-        sunLight.transform.Rotate(new Vector3(1f, 0f, 0f) * Time.deltaTime * timeSpeed);
+        if (useRotationSun)
+        {
+            // Rotate lighing sun
+            sunLight.transform.Rotate(new Vector3(1f, 0f, 0f) * Time.deltaTime * timeSpeed);
+        }
 
         // Apply values of light
         skyboxMaterial.SetColor("_SkyColor", colorSky.Evaluate(sunLight.transform.localEulerAngles.x / 180f));
