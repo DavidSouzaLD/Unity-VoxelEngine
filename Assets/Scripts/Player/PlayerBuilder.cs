@@ -18,6 +18,8 @@ namespace Game.Player
         [SerializeField] private UnityEvent onPlaceVoxel;
         [SerializeField] private UnityEvent onDestroyVoxel;
 
+        [HideInInspector]
+        public bool canBuild;
         private byte type;
         private Highlight highlight;
         private VoxelWorld voxelWorld;
@@ -39,6 +41,8 @@ namespace Game.Player
                 Debug.Log("(PlayerBuilder) Camera not finded!");
                 this.enabled = false;
             }
+
+            canBuild = true;
         }
 
         private void Update()
@@ -49,6 +53,8 @@ namespace Game.Player
 
         private void UpdateRaycast()
         {
+            if (!canBuild) return;
+
             RaycastHit hit;
 
             if (Physics.Raycast(m_camera.position, m_camera.forward, out hit, distance, layerMask))

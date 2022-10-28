@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7335639962193597646}
   - component: {fileID: 7335639962193597647}
   - component: {fileID: 7335639962193597644}
+  - component: {fileID: 1919284287}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -58,7 +59,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.01
-  far clip plane: 1000
+  far clip plane: 10000
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -118,6 +119,23 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
+--- !u!114 &1919284287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7335639962193597682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IsGlobal: 1
+  priority: 0
+  blendDistance: 0
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: 2112b92e32a04ea47a673789cdc1e13f, type: 2}
 --- !u!1 &7335639962479187440
 GameObject:
   m_ObjectHideFlags: 0
@@ -174,6 +192,7 @@ MonoBehaviour:
   jumpForce: 1.5
   gravityScale: 2
   angleToCheck: 0.1
+  debugPanel: {fileID: 0}
 --- !u!114 &7335639962479187404
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -243,6 +262,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  canBuild: 0
 --- !u!114 &7335639962479187407
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -260,6 +280,7 @@ MonoBehaviour:
   crouchKey: 306
   placeVoxel: 324
   destroyVoxel: 323
+  openDebug: 96
 --- !u!143 &7335639962479187443
 CharacterController:
   m_ObjectHideFlags: 0

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using QFSW.QC;
 
 public class VoxelTemplate : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class VoxelTemplate : MonoBehaviour
         activeWorld = GetComponent<VoxelWorld>();
     }
 
+    [Command("Voxel.CreatePlane")]
     public static void CreatePlane(Vector3Int position, byte type, int size)
     {
         List<Chunk> chunksToUpdate = new List<Chunk>();
@@ -66,6 +68,7 @@ public class VoxelTemplate : MonoBehaviour
         }
     }
 
+    [Command("Voxel.CreateCube")]
     public static void CreateCube(Vector3Int position, byte type, int size)
     {
         List<Chunk> chunksToUpdate = new List<Chunk>();
@@ -125,6 +128,7 @@ public class VoxelTemplate : MonoBehaviour
         }
     }
 
+    [Command("Voxel.CreateSphere")]
     public static void CreateSphere(Vector3Int position, byte type, int radius)
     {
         List<Chunk> chunksToUpdate = new List<Chunk>();
@@ -188,6 +192,7 @@ public class VoxelTemplate : MonoBehaviour
         }
     }
 
+    [Command("Voxel.CreatePyramid")]
     public static void CreatePyramid(Vector3Int position, byte type, int maxHeight)
     {
         List<Chunk> chunksToUpdate = new List<Chunk>();
@@ -252,6 +257,7 @@ public class VoxelTemplate : MonoBehaviour
         }
     }
 
+    [Command("Voxel.CreateTorus")]
     public static void CreateTorus(Vector3Int position, byte type, int size, int innerRadius, int thickness)
     {
         List<Chunk> chunksToUpdate = new List<Chunk>();

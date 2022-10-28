@@ -1,7 +1,25 @@
+using System.Collections.Generic;
 using UnityEngine;
+using Game.Utilities;
 
 namespace Game.Player
 {
+    [System.Serializable]
+    public class PlayerStates : States
+    {
+        public PlayerStates()
+        {
+            states = new List<State>()
+            {
+               new State("Enabled"),
+               new State("Grounded"),
+               new State("Walking"),
+               new State("Running"),
+               new State("Crouching")
+            };
+        }
+    }
+
     [RequireComponent(typeof(CharacterController))]
     public class PlayerController : MonoBehaviour
     {
@@ -17,14 +35,37 @@ namespace Game.Player
         [Header("Crouch Extents")]
         public float angleToCheck;
 
+        [Header("Debug")]
+        public GameObject debugPanel;
+
+        // Private
         private bool jumpRequested;
+        private bool debugEnabled;
+        private Vector3 currentDirection;
         private Vector3 velocity;
+
+        // Components
         private CharacterController controller;
-        Vector3 currentDirection;
+        private PlayerCamera playerCamera;
+        private PlayerBuilder playerBuilder;
+        private PlayerStates states;
+
+        public void SetState(string _name, bool _value)
+        => states.SetState(_name, _value);
+
+        public bool GetState(string _name)
+        => states.GetState(_name);
 
         private void Start()
         {
+            // Setting states
+            states = new PlayerStates();
+            SetState("Enabled", true);
+
+            // Get components
             controller = GetComponent<CharacterController>();
+            playerCamera = GetComponent<PlayerCamera>();
+            playerBuilder = GetComponent<PlayerBuilder>();
         }
 
         private void FixedUpdate()
@@ -38,16 +79,27 @@ namespace Game.Player
             // Move
             Vector2 moveAxis = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
             Vector3 direction = (transform.forward * moveAxis.y + transform.right * moveAxis.x).normalized;
-            float currentSpeed = (!(Input.GetKey(PlayerKeys.Run) && moveAxis.y > 0) ? (Input.GetKey(PlayerKeys.Crouch) ? crouchSpeed : moveSpeed) : runSpeed) / 100f;
+
+            // Set states
+            SetState("Walking", moveAxis != Vector2.zero && controller.velocity.magnitude > 0);
+            SetState("Running", Input.GetKey(PlayerKeys.Run) && moveAxis.y > 0);
+            SetState("Crouching", Input.GetKey(PlayerKeys.Crouch));
+            SetState("Grounded", controller.isGrounded);
+
+            // Generate speed
+            float currentSpeed = (!GetState("Running") ? GetState("Crouching") ? crouchSpeed : moveSpeed : runSpeed) / 100f;
             currentDirection = direction;
 
-            if (Input.GetKey(PlayerKeys.Crouch) && controller.isGrounded && CrouchCheck(direction))
+            if (GetState("Enabled"))
             {
-                controller.Move(direction * currentSpeed);
-            }
-            else if (!Input.GetKey(PlayerKeys.Crouch))
-            {
-                controller.Move(direction * currentSpeed);
+                if (Input.GetKey(PlayerKeys.Crouch) && controller.isGrounded && CrouchCheck(direction))
+                {
+                    controller.Move(direction * currentSpeed);
+                }
+                else if (!Input.GetKey(PlayerKeys.Crouch))
+                {
+                    controller.Move(direction * currentSpeed);
+                }
             }
 
             // Jump
@@ -64,9 +116,34 @@ namespace Game.Player
         private void Update()
         {
             // Jump
-            if (Input.GetKeyDown(PlayerKeys.Jump) && controller.isGrounded)
+            bool inputConditions = Input.GetKeyDown(PlayerKeys.Jump);
+            bool stateConditions = GetState("Grounded") && GetState("Enabled");
+
+            if (inputConditions && stateConditions)
             {
                 jumpRequested = true;
+            }
+
+            if (Input.GetKeyDown(PlayerKeys.OpenDebug))
+            {
+                debugEnabled = !debugEnabled;
+
+                if (debugEnabled)
+                {
+                    debugPanel.SetActive(true);
+                    SetState("Enabled", false);
+                    playerCamera.SetState("Enabled", false);
+                    playerCamera.SetState("CursorLocked", false);
+                    playerBuilder.canBuild = false;
+                }
+                else
+                {
+                    debugPanel.SetActive(false);
+                    SetState("Enabled", true);
+                    playerCamera.SetState("Enabled", true);
+                    playerCamera.SetState("CursorLocked", true);
+                    playerBuilder.canBuild = true;
+                }
             }
 
             // Debug
