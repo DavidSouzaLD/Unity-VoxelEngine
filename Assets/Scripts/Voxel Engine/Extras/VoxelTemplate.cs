@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using VoxelEngine.Core;
-using VoxelEngine.Classes;
+using VoxelEngine.Core.Classes;
 using QFSW.QC;
 
 namespace VoxelEngine.Extras

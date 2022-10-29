@@ -1,6 +1,6 @@
 using System.IO;
 using UnityEngine;
-using VoxelEngine.Classes;
+using VoxelEngine.Core.Classes;
 
 namespace VoxelEngine.Core
 {

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace VoxelEngine.Classes
+namespace VoxelEngine.Core.Classes
 {
     public class MeshContainer
     {

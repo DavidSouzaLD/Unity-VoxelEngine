@@ -1,7 +1,7 @@
 using UnityEngine;
 using VoxelEngine.Core;
 
-namespace VoxelEngine.Classes
+namespace VoxelEngine.Core.Classes
 {
     public class ChunkCoord
     {

@@ -66,6 +66,8 @@ namespace Game.Player
             controller = GetComponent<CharacterController>();
             playerCamera = GetComponent<PlayerCamera>();
             playerBuilder = GetComponent<PlayerBuilder>();
+
+            debugPanel.SetActive(false);
         }
 
         private void FixedUpdate()

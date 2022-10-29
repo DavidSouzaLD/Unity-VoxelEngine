@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace VoxelEngine.Classes
+namespace VoxelEngine.Core.Classes
 {
     public static class Settings
     {
