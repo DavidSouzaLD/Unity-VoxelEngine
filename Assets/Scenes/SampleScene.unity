@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.09175112, g: 0.2546084, b: 0.27853996, a: 1}
+  m_IndirectSpecularColor: {r: 0.05571825, g: 0.23321705, b: 0.27428854, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -133,7 +133,6 @@ GameObject:
   m_Component:
   - component: {fileID: 152138097}
   - component: {fileID: 152138098}
-  - component: {fileID: 152138099}
   m_Layer: 0
   m_Name: World
   m_TagString: Untagged
@@ -168,23 +167,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33cc4bd83a28410489e6317c4bda8418, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 278733535}
-  useDistanceView: 0
-  timeToCheckDistanceView: 5
+  target: {fileID: 278733535}
+  useRenderView: 0
+  timeToRenderView: 10
   showGizmos: 1
-  showDistanceViewGizmos: 1
---- !u!114 &152138099
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 152138095}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5f8dc1a7bad87546b4c0b83d94e03d5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  showRenderViewGizmos: 0
 --- !u!4 &278733535 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7335639962479187442, guid: 8524d6ce03244fc42b426b74399ff1da,
@@ -582,6 +569,50 @@ MonoBehaviour:
   colorReference: {r: 0.8431373, g: 0.8117648, b: 0.6313726, a: 1}
   voxelPack:
     Voxels: []
+--- !u!1 &2123398661
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2123398663}
+  - component: {fileID: 2123398662}
+  m_Layer: 0
+  m_Name: Island
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2123398662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2123398661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb11dc47b9bbfba43a2eabf9565822e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &2123398663
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2123398661}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1816965967525328942
 PrefabInstance:
   m_ObjectHideFlags: 0

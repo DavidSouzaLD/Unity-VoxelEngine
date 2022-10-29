@@ -21,7 +21,7 @@ namespace VoxelEngine.Core
         public List<Chunk> activeChunks = new List<Chunk>();
         Vector3 lastTargetPos;
 
-        private void Start()
+        private void Awake()
         {
             // Setting and creating all ChunkCoords.
             for (int x = 0; x < Settings.worldSize.x; x++)

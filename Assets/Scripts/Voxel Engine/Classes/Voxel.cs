@@ -16,17 +16,17 @@ namespace VoxelEngine.Classes
         public bool solid = true;
 
         // Texture Values
-        private int back;
-        private int front;
-        private int top;
-        private int bottom;
-        private int left;
-        private int right;
+        public int back;
+        public int front;
+        public int top;
+        public int bottom;
+        public int left;
+        public int right;
 
         // Color Values
-        private byte red;
-        private byte green;
-        private byte blue;
+        public byte red;
+        public byte green;
+        public byte blue;
 
         public int GetTextureID(int _faceID)
         {
