@@ -14,10 +14,10 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
-  m_Fog: 0
-  m_FogColor: {r: 0.7735849, g: 0.7735849, b: 0.7735849, a: 1}
+  m_Fog: 1
+  m_FogColor: {r: 0.28627452, g: 0.43529415, b: 0.47058827, a: 1}
   m_FogMode: 3
-  m_FogDensity: 0.01
+  m_FogDensity: 0.05
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.74509805, g: 0.74509805, b: 0.74509805, a: 1}
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.07340376, g: 0.25703695, b: 0.28554738, a: 1}
+  m_IndirectSpecularColor: {r: 0.033172596, g: 0.13339703, b: 0.20462343, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -425,24 +425,24 @@ MonoBehaviour:
   useRotationSun: 1
   sunLight: {fileID: 410087040}
   sun: {fileID: 329669190}
-  timeSpeed: 0.1
+  timeSpeed: 0.5
   colorSky:
     serializedVersion: 2
-    key0: {r: 0.29411766, g: 0.4392157, b: 0.7529412, a: 1}
-    key1: {r: 0.9528302, g: 0.59645456, b: 0.26517445, a: 1}
-    key2: {r: 0.44281775, g: 0.83530414, b: 0.8773585, a: 1}
-    key3: {r: 0.44313726, g: 0.8352941, b: 0.8784314, a: 0}
-    key4: {r: 0.9529412, g: 0.59607846, b: 0.26666668, a: 0}
-    key5: {r: 0.29411766, g: 0.4392157, b: 0.7529412, a: 0}
-    key6: {r: 0.29411766, g: 0.4392157, b: 0.7529412, a: 0}
-    key7: {r: 0.29411766, g: 0.4392157, b: 0.7529412, a: 0}
+    key0: {r: 0.16491634, g: 0.21419856, b: 0.3207547, a: 1}
+    key1: {r: 0.16470589, g: 0.21568628, b: 0.32156864, a: 1}
+    key2: {r: 0.9528302, g: 0.59645456, b: 0.26517445, a: 1}
+    key3: {r: 0.44281775, g: 0.83530414, b: 0.8773585, a: 0}
+    key4: {r: 0.44313726, g: 0.8352941, b: 0.8784314, a: 0}
+    key5: {r: 0.9529412, g: 0.59607846, b: 0.26666668, a: 0}
+    key6: {r: 0.16470589, g: 0.21568628, b: 0.32156864, a: 0}
+    key7: {r: 0.16470589, g: 0.21568628, b: 0.32156864, a: 0}
     ctime0: 0
-    ctime1: 13300
-    ctime2: 22745
-    ctime3: 43947
-    ctime4: 51272
-    ctime5: 65535
-    ctime6: 65535
+    ctime1: 4241
+    ctime2: 13300
+    ctime3: 22745
+    ctime4: 43947
+    ctime5: 51272
+    ctime6: 60716
     ctime7: 65535
     atime0: 0
     atime1: 65535
@@ -453,7 +453,7 @@ MonoBehaviour:
     atime6: 0
     atime7: 0
     m_Mode: 0
-    m_NumColorKeys: 6
+    m_NumColorKeys: 8
     m_NumAlphaKeys: 2
   colorHorizon:
     serializedVersion: 2
@@ -620,6 +620,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7335639962193597646, guid: 8524d6ce03244fc42b426b74399ff1da,
+        type: 3}
+      propertyPath: far clip plane
+      value: 2000
+      objectReference: {fileID: 0}
     - target: {fileID: 7335639962479187405, guid: 8524d6ce03244fc42b426b74399ff1da,
         type: 3}
       propertyPath: debugPanel

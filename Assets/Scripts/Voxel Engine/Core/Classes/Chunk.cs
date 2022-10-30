@@ -153,7 +153,7 @@ namespace VoxelEngine.Core.Classes
         {
             _destroyChunk = true;
 
-            MeshContainer meshContainer = new MeshContainer();
+            MeshData.Container meshContainer = new MeshData.Container();
 
             for (int x = 0; x < Settings.chunkSize.x; x++)
             {
@@ -205,7 +205,7 @@ namespace VoxelEngine.Core.Classes
         }
 
         // Adds a face in the desired position and direction.
-        private void AddFace(MeshContainer _meshContainer, Vector3 _voxelPos, int _faceIndex, int _textureID)
+        private void AddFace(MeshData.Container _meshContainer, Vector3 _voxelPos, int _faceIndex, int _textureID)
         {
             // Vertices
             _meshContainer.vertices.Add(_voxelPos - MeshData.fixedPos + MeshData.vertices[MeshData.triangles[_faceIndex, 0]]);
@@ -227,7 +227,7 @@ namespace VoxelEngine.Core.Classes
         }
 
         // Reworks the UV map based on the Atlas map.
-        private void AddTexture(MeshContainer _meshContainer, int _textureID)
+        private void AddTexture(MeshData.Container _meshContainer, int _textureID)
         {
             float y = _textureID / Settings.textureAtlasSize;
             float x = _textureID - (y * Settings.textureAtlasSize);

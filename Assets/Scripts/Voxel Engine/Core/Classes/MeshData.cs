@@ -3,16 +3,16 @@ using UnityEngine;
 
 namespace VoxelEngine.Core.Classes
 {
-    public class MeshContainer
-    {
-        public int vertexIndex = 0;
-        public List<Vector3> vertices = new List<Vector3>();
-        public List<int> triangles = new List<int>();
-        public List<Vector2> uvs = new List<Vector2>();
-    }
-
     public static class MeshData
     {
+        public class Container
+        {
+            public int vertexIndex = 0;
+            public List<Vector3> vertices = new List<Vector3>();
+            public List<int> triangles = new List<int>();
+            public List<Vector2> uvs = new List<Vector2>();
+        }
+
         // Fixed value for creating mesh voxels.
         public static readonly Vector3 fixedPos = new Vector3(0.5f, 0.5f, 0.5f);
 
