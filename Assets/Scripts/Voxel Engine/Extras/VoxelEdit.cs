@@ -28,22 +28,33 @@ namespace VoxelEngine.Extras
             if (save)
             {
                 string value = JsonUtility.ToJson(build);
-                System.IO.File.WriteAllText(Settings.buildPath + nameObject, value);
+                System.IO.File.WriteAllText(Settings.buildPath + nameObject + ".build", value);
 
                 save = false;
             }
 
             if (load)
             {
-                for (int i = 0; i < build.datas.Count; i++)
+                if (build != null)
                 {
-                    Destroy(voxelObjects[i]);
-                    voxelObjects.RemoveAt(i);
-                    build.datas.RemoveAt(i);
+                    for (int i = 0; i < build.datas.Count; i++)
+                    {
+                        Destroy(voxelObjects[i]);
+                        voxelObjects.RemoveAt(i);
+                        build.datas.RemoveAt(i);
+                    }
                 }
 
-                string test = File.ReadAllText(Settings.buildPath + nameObject);
+                string test = File.ReadAllText(Settings.buildPath + nameObject + ".build");
                 build = JsonUtility.FromJson<VoxelSerializer.Build>(test);
+
+                if (build != null)
+                {
+                    for (int i = 0; i < build.datas.Count; i++)
+                    {
+                        AddVoxel(build.datas[i].position, build.datas[i].type);
+                    }
+                }
 
                 load = false;
             }

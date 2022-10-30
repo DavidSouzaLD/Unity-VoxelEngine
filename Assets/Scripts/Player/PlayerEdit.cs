@@ -1,6 +1,10 @@
+using System.IO;
 using UnityEngine;
 using Game.Player.Others;
+using VoxelEngine.Core;
+using VoxelEngine.Core.Classes;
 using VoxelEngine.Extras;
+using TMPro;
 
 namespace Game.Player
 {
@@ -12,14 +16,27 @@ namespace Game.Player
 
         [Header("Ray")]
         [SerializeField] private VoxelEdit voxelEdit;
-        [SerializeField] private LayerMask layerMask;
+        [SerializeField] private byte type;
         [SerializeField] private float distance;
         [SerializeField] private Highlight highlightPrefab;
+
+        [Header("UI")]
+        [SerializeField] private TextMeshProUGUI textUI;
 
         Vector2 _mouseRotation = Vector2.zero;
         float rotTransformY;
         float rotCameraX;
         private Highlight highlight;
+
+        // Voxel class imported into Unity from JSON.
+        VoxelPack voxelPack;
+
+        private void Awake()
+        {
+            // Get VoxelPack
+            string test = File.ReadAllText(Settings.voxelPackPath);
+            voxelPack = JsonUtility.FromJson<VoxelPack>(test);
+        }
 
         private void Start()
         {
@@ -52,14 +69,14 @@ namespace Game.Player
             transform.position += direction * moveSpeed * Time.deltaTime;
 
             UpdateRaycast();
-            //UpdateScroll();
+            UpdateScroll();
         }
 
         private void UpdateRaycast()
         {
             RaycastHit hit;
 
-            if (Physics.Raycast(transform.position, transform.forward, out hit, distance, layerMask))
+            if (Physics.Raycast(transform.position, transform.forward, out hit, distance))
             {
                 if (highlight == null)
                 {
@@ -85,13 +102,15 @@ namespace Game.Player
 
                 if (Input.GetKeyDown(PlayerKeys.PlaceVoxel))
                 {
-                    voxelEdit.AddVoxel(placePosition.ToVector3Int(), 1);
+                    voxelEdit.AddVoxel(placePosition.ToVector3Int(), type);
                 }
 
                 if (Input.GetKeyDown(PlayerKeys.DestroyVoxel))
                 {
                     voxelEdit.RemoveVoxel(highlight.transform.position.ToVector3Int());
                 }
+
+                textUI.text = "CurrentBlock: " + voxelPack.Voxels[type].name;
             }
             else
             {
@@ -99,6 +118,23 @@ namespace Game.Player
                 {
                     Destroy(highlight.gameObject);
                 }
+            }
+        }
+
+        private void UpdateScroll()
+        {
+            if (type < 1)
+            {
+                type = 1;
+            }
+
+            if (Input.mouseScrollDelta.y > 0 && type < VoxelSystem.GetVoxelPack.Length - 1)
+            {
+                type++;
+            }
+            else if (Input.mouseScrollDelta.y < 0 && type > 1)
+            {
+                type--;
             }
         }
 
