@@ -11,6 +11,14 @@ namespace VoxelEngine.Core.Classes
             public List<Vector3> vertices = new List<Vector3>();
             public List<int> triangles = new List<int>();
             public List<Vector2> uvs = new List<Vector2>();
+
+            public void Clear()
+            {
+                vertexIndex = 0;
+                vertices.Clear();
+                triangles.Clear();
+                uvs.Clear();
+            }
         }
 
         // Fixed value for creating mesh voxels.

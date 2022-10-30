@@ -124,10 +124,10 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _StarDensity: 10
-    - _StarsOpacity: 1.6473864e-13
+    - _StarsOpacity: 3e-45
     - _StartDensity: 10
     - _Surface: 0
-    - _WindSpeed: 5
+    - _WindSpeed: 0.25
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
@@ -135,8 +135,8 @@ Material:
     - _CloudColors: {r: 0.5754717, g: 0.5754717, b: 0.5754717, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _HorizonColor: {r: 0.19945791, g: 0.40046948, b: 0.48951477, a: 1}
-    - _SkyColor: {r: 0.8981936, g: 0.58341247, b: 0.30563205, a: 1}
+    - _HorizonColor: {r: 0.41969508, g: 0.53569955, b: 0.54846007, a: 1}
+    - _SkyColor: {r: 0.44282782, g: 0.83530384, b: 0.87739235, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &6390684791218317546

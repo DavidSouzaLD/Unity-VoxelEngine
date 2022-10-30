@@ -84,7 +84,7 @@ namespace VoxelEngine.Core.Classes
 
             // Others
             meshCollider = gameObject.AddComponent<MeshCollider>();
-            material = VoxelManager.AtlasMaterial;
+            material = VoxelSystem.AtlasMaterial;
             coord = _coord;
             world = _world;
         }
@@ -169,11 +169,11 @@ namespace VoxelEngine.Core.Classes
 
                             try
                             {
-                                if (!VoxelManager.GetVoxelPack[map[(int)voxelToCheck.x, (int)voxelToCheck.y, (int)voxelToCheck.z]].solid)
+                                if (!VoxelSystem.GetVoxelPack[map[(int)voxelToCheck.x, (int)voxelToCheck.y, (int)voxelToCheck.z]].solid)
                                 {
                                     if (map[(int)voxelPos.x, (int)voxelPos.y, (int)voxelPos.z] != 0)
                                     {
-                                        AddFace(meshContainer, voxelPos, f, VoxelManager.GetVoxelPack[map[x, y, z]].GetTextureID(f));
+                                        AddFace(meshContainer, voxelPos, f, VoxelSystem.GetVoxelPack[map[x, y, z]].GetTextureID(f));
                                         _destroyChunk = false;
                                     }
                                 }
@@ -182,7 +182,7 @@ namespace VoxelEngine.Core.Classes
                             {
                                 if (map[(int)voxelPos.x, (int)voxelPos.y, (int)voxelPos.z] != 0)
                                 {
-                                    AddFace(meshContainer, voxelPos, f, VoxelManager.GetVoxelPack[map[x, y, z]].GetTextureID(f));
+                                    AddFace(meshContainer, voxelPos, f, VoxelSystem.GetVoxelPack[map[x, y, z]].GetTextureID(f));
                                     _destroyChunk = false;
                                 }
                             }
@@ -263,7 +263,7 @@ namespace VoxelEngine.Core.Classes
 
             try
             {
-                return VoxelManager.GetVoxelPack[map[pos.x, pos.y, pos.z]].solid;
+                return VoxelSystem.GetVoxelPack[map[pos.x, pos.y, pos.z]].solid;
             }
             catch (System.Exception)
             {

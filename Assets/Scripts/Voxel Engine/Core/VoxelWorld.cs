@@ -145,7 +145,7 @@ namespace VoxelEngine.Core
             }
             else
             {
-                Debug.Log("sem chunk");
+                Debug.Log("Sem chunk");
             }
         }
 

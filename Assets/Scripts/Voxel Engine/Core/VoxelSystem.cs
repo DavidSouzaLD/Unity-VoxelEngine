@@ -4,21 +4,13 @@ using VoxelEngine.Core.Classes;
 
 namespace VoxelEngine.Core
 {
-    public class VoxelManager : StaticInstance<VoxelManager>
+    public class VoxelSystem : StaticInstance<VoxelSystem>
     {
         [Header("Settings")]
-        // Material like all blocks as texture.
-        [SerializeField] private Material atlasMaterial;
-
-        [Header("Voxels")]
-        // Location where all voxel information is found.
-        [SerializeField] private string voxelsPath;
-
-        // Color reference for creating new voxels.
-        [SerializeField] private Color colorReference;
+        [SerializeField] private Material atlasMaterial; // Material like all blocks as texture.
 
         // Voxel class imported into Unity from JSON.
-        [SerializeField] private VoxelPack voxelPack;
+        VoxelPack voxelPack;
 
         public static Material AtlasMaterial
         {
@@ -41,7 +33,7 @@ namespace VoxelEngine.Core
             base.Awake();
 
             // Get VoxelPack
-            string test = File.ReadAllText(Instance.voxelsPath + "/VoxelPack.cfg");
+            string test = File.ReadAllText(Settings.voxelPackPath);
             Instance.voxelPack = JsonUtility.FromJson<VoxelPack>(test);
         }
     }

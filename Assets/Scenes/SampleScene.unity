@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.033172596, g: 0.13339703, b: 0.20462343, a: 1}
+  m_IndirectSpecularColor: {r: 0.1473245, g: 0.24869308, b: 0.26175776, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -564,11 +564,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   atlasMaterial: {fileID: 2100000, guid: 384b057ed3c587044b11c592db81540a, type: 2}
-  voxelsPath: G:\Projetos\VoxelEngine REP\Unity-VoxelEngine\Assets\Scripts\Voxel
-    Engine
-  colorReference: {r: 0.8431373, g: 0.8117648, b: 0.6313726, a: 1}
-  voxelPack:
-    Voxels: []
 --- !u!1 &2123398661
 GameObject:
   m_ObjectHideFlags: 0
@@ -772,7 +767,7 @@ PrefabInstance:
     - target: {fileID: 2795135425421114614, guid: 9f0acb7f1587f31439493a8538a18801,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 12
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2795135425421114614, guid: 9f0acb7f1587f31439493a8538a18801,
         type: 3}

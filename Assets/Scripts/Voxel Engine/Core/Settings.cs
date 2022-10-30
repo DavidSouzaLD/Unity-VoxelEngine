@@ -1,9 +1,25 @@
 using UnityEngine;
 
-namespace VoxelEngine.Core.Classes
+namespace VoxelEngine.Core
 {
     public static class Settings
     {
+        public static string buildPath
+        {
+            get
+            {
+                return "G:/Projetos/VoxelEngine REP/Unity-VoxelEngine/Assets/Scripts/Voxel Engine/Builds/";
+            }
+        }
+
+        public static string voxelPackPath
+        {
+            get
+            {
+                return "G:/Projetos/VoxelEngine REP/Unity-VoxelEngine/Assets/Scripts/Voxel Engine/Voxels.cfg";
+            }
+        }
+
         // Value of blocks by textures
         public static int maxRenderView
         {

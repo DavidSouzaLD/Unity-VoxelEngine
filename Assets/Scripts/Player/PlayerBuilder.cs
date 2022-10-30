@@ -96,7 +96,7 @@ namespace Game.Player
                     byte type = voxelWorld.GetVoxelType(highlight.transform.position.ToVector3Int());
                     ParticleSystem effect = Instantiate(destroyEffect, highlight.transform.position.ToVector3Int(), Quaternion.identity);
                     ParticleSystem.MainModule ps = effect.main;
-                    ps.startColor = VoxelManager.GetVoxelPack[type].GetColor();
+                    ps.startColor = VoxelSystem.GetVoxelPack[type].GetColor();
 
                     // Setting the voxel like air
                     voxelWorld.EditVoxel(highlight.transform.position.ToVector3Int(), 0);
@@ -150,7 +150,7 @@ namespace Game.Player
                 type = 1;
             }
 
-            if (Input.mouseScrollDelta.y > 0 && type < VoxelManager.GetVoxelPack.Length - 1)
+            if (Input.mouseScrollDelta.y > 0 && type < VoxelSystem.GetVoxelPack.Length - 1)
             {
                 type++;
             }

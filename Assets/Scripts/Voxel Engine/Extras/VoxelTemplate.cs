@@ -8,6 +8,65 @@ namespace VoxelEngine.Extras
 {
     public class VoxelTemplate
     {
+        [Command("Voxel.CreateBuild")]
+        public static void CreateBuild(Vector3Int _position, string _name)
+        {
+            VoxelWorld activeWorld = GameObject.FindObjectOfType<VoxelWorld>();
+
+            if (activeWorld != null)
+            {
+                VoxelSerializer.Build build = VoxelSerializer.GetBuild(_name + ".build");
+
+                List<Chunk> chunksToUpdate = new List<Chunk>();
+                Chunk lastChunk = null;
+
+                for (int i = 0; i < build.datas.Count; i++)
+                {
+                    if (lastChunk == null)
+                    {
+                        // Try get chunk
+                        lastChunk = activeWorld.GetChunk(build.datas[i].position + _position);
+
+                        if (lastChunk == null)
+                        {
+                            // Create new chunk
+                            ChunkCoord coord = activeWorld.GetChunkCoord(build.datas[i].position + _position);
+                            lastChunk = new Chunk(coord, activeWorld);
+                            coord.chunk = lastChunk;
+                        }
+                    }
+
+                    if (lastChunk != null)
+                    {
+                        // Check if have a same chunk in list
+                        if (!chunksToUpdate.Contains(lastChunk))
+                        {
+                            chunksToUpdate.Add(lastChunk);
+                        }
+
+                        // Change last chunk
+                        if (!lastChunk.IsVoxelInChunk(build.datas[i].position + _position))
+                        {
+                            lastChunk = activeWorld.GetChunk(build.datas[i].position + _position);
+                        }
+                    }
+
+                    // Create voxel
+                    activeWorld.EditVoxel(build.datas[i].position + _position, build.datas[i].type, false);
+                }
+
+                for (int i = 0; i < chunksToUpdate.Count; i++)
+                {
+                    chunksToUpdate[i].Update();
+
+                    if (!activeWorld.activeChunks.Contains(chunksToUpdate[i]))
+                    {
+                        activeWorld.activeChunks.Add(chunksToUpdate[i]);
+                    }
+                }
+            }
+        }
+
         [Command("Voxel.CreatePlane")]
         public static void CreatePlane(Vector3Int position, byte type, int size)
         {
