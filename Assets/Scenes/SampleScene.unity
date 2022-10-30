@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.24167326, g: 0.24163724, b: 0.24163352, a: 1}
+  m_IndirectSpecularColor: {r: 0.060410403, g: 0.25429377, b: 0.28787172, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -615,11 +615,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 7335639962193597646, guid: 8524d6ce03244fc42b426b74399ff1da,
-        type: 3}
-      propertyPath: far clip plane
-      value: 2000
-      objectReference: {fileID: 0}
     - target: {fileID: 7335639962479187405, guid: 8524d6ce03244fc42b426b74399ff1da,
         type: 3}
       propertyPath: debugPanel
@@ -767,22 +762,12 @@ PrefabInstance:
     - target: {fileID: 2795135425421114614, guid: 9f0acb7f1587f31439493a8538a18801,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 2795135425421114614, guid: 9f0acb7f1587f31439493a8538a18801,
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7245489584331653831, guid: 9f0acb7f1587f31439493a8538a18801,
-        type: 3}
-      propertyPath: _showCurrentJobs
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7286621599907746029, guid: 9f0acb7f1587f31439493a8538a18801,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7350386307180744911, guid: 9f0acb7f1587f31439493a8538a18801,
         type: 3}
@@ -827,11 +812,6 @@ PrefabInstance:
     - target: {fileID: 7351093691618927327, guid: 9f0acb7f1587f31439493a8538a18801,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7351641727990175755, guid: 9f0acb7f1587f31439493a8538a18801,
-        type: 3}
-      propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7351641727990175755, guid: 9f0acb7f1587f31439493a8538a18801,

@@ -8,7 +8,8 @@ public class StartIsland : MonoBehaviour
     private void Start()
     {
         VoxelTemplate.CreateBuild(Vector3Int.zero, "Island");
-        VoxelTemplate.CreateBuild(new Vector3Int(1, 1, 0), "Tree");
+        VoxelTemplate.CreateBuild(new Vector3Int(7, 0, 8), "Island");
+        VoxelTemplate.CreateBuild(new Vector3Int(-7, 0, -8), "Island2");
         Destroy(this);
     }
 }
