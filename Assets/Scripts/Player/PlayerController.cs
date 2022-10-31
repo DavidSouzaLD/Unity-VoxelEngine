@@ -157,12 +157,12 @@ namespace Game.Player
 
             if (Input.GetKey(PlayerKeys.Jump))
             {
-                currentVelocity.y += CurrentSpeed * Time.deltaTime;
+                currentVelocity.y += CurrentSpeed * 2f * Time.deltaTime;
             }
 
             if (Input.GetKey(PlayerKeys.Down))
             {
-                currentVelocity.y -= CurrentSpeed * Time.deltaTime;
+                currentVelocity.y -= CurrentSpeed * 2f * Time.deltaTime;
             }
 
             if (inputConditions && walkConditions)

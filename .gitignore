@@ -75,3 +75,4 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 *.meta
 .vscode/settings.json
+Assets/Art/Materials/Skybox.mat
