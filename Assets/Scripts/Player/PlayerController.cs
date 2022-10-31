@@ -41,7 +41,7 @@ namespace Game.Player
         {
             get
             {
-                return new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")).normalized;
+                return new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
             }
         }
 
