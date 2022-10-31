@@ -192,7 +192,6 @@ MonoBehaviour:
   crouchSpeed: 0.5
   jumpForce: 1.5
   gravityScale: 2
-  angleToCheck: 0.1
   flyMode: 0
 --- !u!114 &7335639962479187404
 MonoBehaviour:
@@ -223,12 +222,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36592855568293f4b93a54dd1b707fa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  highlightPrefab: {fileID: 2343239023342767788, guid: 5e12ae5762825134586c356d92b7e906,
+    type: 3}
   layerMask:
     serializedVersion: 2
     m_Bits: 8
-  distance: 200
-  highlightPrefab: {fileID: 2343239023342767788, guid: 5e12ae5762825134586c356d92b7e906,
-    type: 3}
+  distance: 8
   destroyEffect: {fileID: 4516121507915525828, guid: 0d2906efc7844724a874491ea8588a99,
     type: 3}
   onPlaceVoxel:
@@ -263,7 +262,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  canBuild: 0
 --- !u!114 &713776008929641422
 MonoBehaviour:
   m_ObjectHideFlags: 0
