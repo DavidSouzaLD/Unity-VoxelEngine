@@ -677,9 +677,8 @@ GameObject:
   - component: {fileID: 2440003018269922057}
   - component: {fileID: 2440003018269922059}
   - component: {fileID: 2440003018269922056}
-  - component: {fileID: 2440003018269922058}
   m_Layer: 5
-  m_Name: DebugSystem
+  m_Name: Informations
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -805,19 +804,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &2440003018269922058
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2440003018269922062}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61b6a9da3a14c454491f42f97f69f066, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  textMesh: {fileID: 2440003018269922056}
 --- !u!1 &2440003018972335329
 GameObject:
   m_ObjectHideFlags: 0
@@ -3580,7 +3566,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 7350386307180744911}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.93617034
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

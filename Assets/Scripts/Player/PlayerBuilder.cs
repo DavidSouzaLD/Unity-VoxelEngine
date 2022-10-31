@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using Game.Player.Others;
 using VoxelEngine.Core;
+using VoxelEngine.Core.Classes;
 
 namespace Game.Player
 {
@@ -20,8 +21,10 @@ namespace Game.Player
         public UnityEvent onPlaceVoxel;
         public UnityEvent onDestroyVoxel;
 
+        public byte type { get; private set; }
+        public Vector3 viewPosition { get; private set; }
+
         // Privates
-        private byte type;
         private Transform m_camera;
 
         // Components
@@ -71,7 +74,10 @@ namespace Game.Player
                         Mathf.RoundToInt(hit.point.z + (hit.normal.z * 0.5f))
                     );
 
-                    DebugSystem.AddInfo("ViewPosition", "View Position (" + highlight.transform.position.x + ", " + highlight.transform.position.y + ", " + highlight.transform.position.z + ")");
+                    // Setting view position
+                    viewPosition = highlight.transform.position;
+
+                    // Checking directions
                     CheckDirections(hit.normal.ToVector3Int());
 
                     if (Input.GetKeyDown(PlayerKeys.PlaceVoxel))
@@ -102,7 +108,6 @@ namespace Game.Player
                 {
                     if (highlight != null)
                     {
-                        DebugSystem.RemoveInfo("View Position");
                         Destroy(highlight.gameObject);
                     }
                 }
@@ -152,6 +157,11 @@ namespace Game.Player
             {
                 type--;
             }
+        }
+
+        public Voxel GetVoxelWithByte(byte type)
+        {
+            return VoxelSystem.GetVoxelPack[type];
         }
     }
 }

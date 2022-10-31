@@ -21,6 +21,9 @@ public class Skybox : MonoBehaviour
     public Gradient colorHorizon;
     public Material skyboxMaterial;
 
+    [Header("Clouds")]
+    public float windSpeed = 0.2f;
+
     private void Start()
     {
         sunTransform.position = -directionalLight.transform.forward * 1800f;
@@ -43,7 +46,7 @@ public class Skybox : MonoBehaviour
         directionalLight.color = colorLight.Evaluate(timePercent);
         skyboxMaterial.SetColor("_SkyColor", colorSky.Evaluate(timePercent));
         skyboxMaterial.SetColor("_HorizonColor", colorHorizon.Evaluate(timePercent));
-        skyboxMaterial.SetFloat("_WindSpeed", lenghtOfDay / 2f);
+        skyboxMaterial.SetFloat("_WindSpeed", windSpeed);
 
         // Active stars if is night
         if (directionalLight.transform.localEulerAngles.x > 180f)

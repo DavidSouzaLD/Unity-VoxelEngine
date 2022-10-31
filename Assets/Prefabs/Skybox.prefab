@@ -421,3 +421,4 @@ MonoBehaviour:
     m_NumColorKeys: 6
     m_NumAlphaKeys: 2
   skyboxMaterial: {fileID: 2100000, guid: 76d4d90458438ca45b1be0689d1b38bb, type: 2}
+  windSpeed: 0.2
