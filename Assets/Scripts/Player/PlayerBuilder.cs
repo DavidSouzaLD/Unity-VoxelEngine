@@ -5,45 +5,36 @@ using VoxelEngine.Core;
 
 namespace Game.Player
 {
+    [RequireComponent(typeof(PlayerConsole))]
     public class PlayerBuilder : MonoBehaviour
     {
         [Header("Settings")]
-        [SerializeField] private LayerMask layerMask;
-        [SerializeField] private float distance;
-        [SerializeField] private Highlight highlightPrefab;
+        public Highlight highlightPrefab;
+        public LayerMask layerMask;
+        public float distance;
 
         [Header("Effects")]
-        [SerializeField] private ParticleSystem destroyEffect;
+        public ParticleSystem destroyEffect;
 
         [Header("Events")]
-        [SerializeField] private UnityEvent onPlaceVoxel;
-        [SerializeField] private UnityEvent onDestroyVoxel;
+        public UnityEvent onPlaceVoxel;
+        public UnityEvent onDestroyVoxel;
 
-        [HideInInspector]
-        public bool canBuild;
+        // Privates
         private byte type;
+        private Transform m_camera;
+
+        // Components
         private Highlight highlight;
         private VoxelWorld voxelWorld;
-        private Transform m_camera;
+        private PlayerConsole playerConsole;
 
         private void Start()
         {
+            // Get components
             voxelWorld = GameObject.FindObjectOfType<VoxelWorld>();
             m_camera = GetComponentInChildren<Camera>().transform;
-
-            if (voxelWorld == null)
-            {
-                Debug.Log("(PlayerBuilder) VoxelWorld not finded!");
-                this.enabled = false;
-            }
-
-            if (m_camera == null)
-            {
-                Debug.Log("(PlayerBuilder) Camera not finded!");
-                this.enabled = false;
-            }
-
-            canBuild = true;
+            playerConsole = GetComponent<PlayerConsole>();
         }
 
         private void Update()
@@ -54,63 +45,66 @@ namespace Game.Player
 
         private void UpdateRaycast()
         {
-            if (!canBuild) return;
+            bool buildConditions = !playerConsole.consoleEnabled;
 
-            RaycastHit hit;
-
-            if (Physics.Raycast(m_camera.position, m_camera.forward, out hit, distance, layerMask))
+            if (buildConditions)
             {
-                if (highlight == null)
+                RaycastHit hit;
+
+                if (Physics.Raycast(m_camera.position, m_camera.forward, out hit, distance, layerMask))
                 {
-                    highlight = Instantiate(highlightPrefab, Vector3.zero, Quaternion.identity).GetComponent<Highlight>();
+                    if (highlight == null)
+                    {
+                        highlight = Instantiate(highlightPrefab, Vector3.zero, Quaternion.identity).GetComponent<Highlight>();
+                    }
+
+                    highlight.transform.position = new Vector3(
+                        Mathf.RoundToInt(hit.point.x - (hit.normal.x * 0.5f)),
+                        Mathf.RoundToInt(hit.point.y - (hit.normal.y * 0.5f)),
+                        Mathf.RoundToInt(hit.point.z - (hit.normal.z * 0.5f))
+                    );
+
+
+                    Vector3 placePosition = new Vector3(
+                        Mathf.RoundToInt(hit.point.x + (hit.normal.x * 0.5f)),
+                        Mathf.RoundToInt(hit.point.y + (hit.normal.y * 0.5f)),
+                        Mathf.RoundToInt(hit.point.z + (hit.normal.z * 0.5f))
+                    );
+
+                    DebugSystem.AddInfo("ViewPosition", "View Position (" + highlight.transform.position.x + ", " + highlight.transform.position.y + ", " + highlight.transform.position.z + ")");
+                    CheckDirections(hit.normal.ToVector3Int());
+
+                    if (Input.GetKeyDown(PlayerKeys.PlaceVoxel))
+                    {
+                        // Setting voxel
+                        voxelWorld.EditVoxel(placePosition.ToVector3Int(), type);
+
+                        // Apply event
+                        onPlaceVoxel.Invoke();
+                    }
+
+                    if (Input.GetKeyDown(PlayerKeys.DestroyVoxel))
+                    {
+                        // Destroy effet
+                        byte type = voxelWorld.GetVoxelType(highlight.transform.position.ToVector3Int());
+                        ParticleSystem effect = Instantiate(destroyEffect, highlight.transform.position.ToVector3Int(), Quaternion.identity);
+                        ParticleSystem.MainModule ps = effect.main;
+                        ps.startColor = VoxelSystem.GetVoxelPack[type].GetColor();
+
+                        // Setting the voxel like air
+                        voxelWorld.EditVoxel(highlight.transform.position.ToVector3Int(), 0);
+
+                        // Apply event
+                        onDestroyVoxel.Invoke();
+                    }
                 }
-
-                highlight.transform.position = new Vector3(
-                    Mathf.RoundToInt(hit.point.x - (hit.normal.x * 0.5f)),
-                    Mathf.RoundToInt(hit.point.y - (hit.normal.y * 0.5f)),
-                    Mathf.RoundToInt(hit.point.z - (hit.normal.z * 0.5f))
-                );
-
-
-                Vector3 placePosition = new Vector3(
-                    Mathf.RoundToInt(hit.point.x + (hit.normal.x * 0.5f)),
-                    Mathf.RoundToInt(hit.point.y + (hit.normal.y * 0.5f)),
-                    Mathf.RoundToInt(hit.point.z + (hit.normal.z * 0.5f))
-                );
-
-                DebugSystem.AddInfo("ViewPosition", "View Position (" + highlight.transform.position.x + ", " + highlight.transform.position.y + ", " + highlight.transform.position.z + ")");
-                CheckDirections(hit.normal.ToVector3Int());
-
-                if (Input.GetKeyDown(PlayerKeys.PlaceVoxel))
+                else
                 {
-                    // Setting voxel
-                    voxelWorld.EditVoxel(placePosition.ToVector3Int(), type);
-
-                    // Apply event
-                    onPlaceVoxel.Invoke();
-                }
-
-                if (Input.GetKeyDown(PlayerKeys.DestroyVoxel))
-                {
-                    // Destroy effet
-                    byte type = voxelWorld.GetVoxelType(highlight.transform.position.ToVector3Int());
-                    ParticleSystem effect = Instantiate(destroyEffect, highlight.transform.position.ToVector3Int(), Quaternion.identity);
-                    ParticleSystem.MainModule ps = effect.main;
-                    ps.startColor = VoxelSystem.GetVoxelPack[type].GetColor();
-
-                    // Setting the voxel like air
-                    voxelWorld.EditVoxel(highlight.transform.position.ToVector3Int(), 0);
-
-                    // Apply event
-                    onDestroyVoxel.Invoke();
-                }
-            }
-            else
-            {
-                if (highlight != null)
-                {
-                    DebugSystem.RemoveInfo("View Position");
-                    Destroy(highlight.gameObject);
+                    if (highlight != null)
+                    {
+                        DebugSystem.RemoveInfo("View Position");
+                        Destroy(highlight.gameObject);
+                    }
                 }
             }
         }

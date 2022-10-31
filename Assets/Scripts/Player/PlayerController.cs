@@ -1,183 +1,200 @@
-using System.Collections.Generic;
 using UnityEngine;
-using Game.Utilities;
+using QFSW.QC;
 
 namespace Game.Player
 {
-    [System.Serializable]
-    public class PlayerStates : States
-    {
-        public PlayerStates()
-        {
-            states = new List<State>()
-            {
-               new State("Enabled"),
-               new State("Grounded"),
-               new State("Walking"),
-               new State("Running"),
-               new State("Crouching")
-            };
-        }
-    }
-
     [RequireComponent(typeof(CharacterController))]
+    [RequireComponent(typeof(PlayerCamera))]
+    [RequireComponent(typeof(PlayerBuilder))]
+    [RequireComponent(typeof(PlayerConsole))]
     public class PlayerController : MonoBehaviour
     {
-        [Header("Move")]
-        public float moveSpeed = 5f;
-        public float runSpeed = 8f;
-        public float crouchSpeed = 2f;
+        [Header("Speeds")]
+        [Command("Player.walkSpeed")] public float walkSpeed = 5f;
+        [Command("Player.runSpeed")] public float runSpeed = 8f;
+        [Command("Player.crouchSpeed")] public float crouchSpeed = 2f;
 
         [Header("Jump")]
-        public float jumpForce = 5f;
-        public float gravityScale = 1f;
+        [Command("Player.jumpForce")] public float jumpForce = 5f;
+        [Command("Player.gravityScale")] public float gravityScale = 1f;
 
-        [Header("Crouch Extents")]
-        public float angleToCheck;
+        [Header("Habilities")]
+        [Command("Player.canFly")] public bool flyMode;
 
-        [Header("Debug")]
-        public GameObject debugPanel;
+        // Bools
+        public bool isWalking { get; private set; }
+        public bool isRunning { get; private set; }
+        public bool isCrouching { get; private set; }
+        public bool isGrounded { get; private set; }
 
         // Private
         private bool jumpRequested;
-        private bool debugEnabled;
-        private Vector3 currentDirection;
-        private Vector3 velocity;
+        private float verticalVelocity;
 
         // Components
-        private CharacterController controller;
+        private CharacterController characterController;
         private PlayerCamera playerCamera;
         private PlayerBuilder playerBuilder;
-        private PlayerStates states;
+        private PlayerConsole playerConsole;
 
-        public void SetState(string _name, bool _value)
-        => states.SetState(_name, _value);
+        private Vector2 InputAxis
+        {
+            get
+            {
+                return new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")).normalized;
+            }
+        }
 
-        public bool GetState(string _name)
-        => states.GetState(_name);
+        private Vector3 Direction
+        {
+            get
+            {
+                return transform.forward * InputAxis.y + transform.right * InputAxis.x;
+            }
+        }
+
+        private float CurrentSpeed
+        {
+            get
+            {
+                if (isWalking && !isRunning)
+                {
+                    return walkSpeed;
+                }
+
+                if (isRunning)
+                {
+                    return runSpeed;
+                }
+
+                if (isCrouching)
+                {
+                    return crouchSpeed;
+                }
+
+                return 0;
+            }
+        }
 
         private void Start()
         {
-            // Setting states
-            states = new PlayerStates();
-            SetState("Enabled", true);
-
             // Get components
-            controller = GetComponent<CharacterController>();
+            characterController = GetComponent<CharacterController>();
             playerCamera = GetComponent<PlayerCamera>();
             playerBuilder = GetComponent<PlayerBuilder>();
-
-            debugPanel.SetActive(false);
+            playerConsole = GetComponent<PlayerConsole>();
         }
 
         private void FixedUpdate()
         {
             // Reset jump
-            if (controller.isGrounded && velocity.y < 0)
+            if (isGrounded && verticalVelocity < 0)
             {
-                velocity.y = 0;
+                verticalVelocity = 0;
             }
 
-            // Move
-            Vector2 moveAxis = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-            Vector3 direction = (transform.forward * moveAxis.y + transform.right * moveAxis.x).normalized;
-
-            // Set states
-            SetState("Walking", moveAxis != Vector2.zero && controller.velocity.magnitude > 0);
-            SetState("Running", Input.GetKey(PlayerKeys.Run) && moveAxis.y > 0);
-            SetState("Crouching", Input.GetKey(PlayerKeys.Crouch));
-            SetState("Grounded", controller.isGrounded);
-
-            // Generate speed
-            float currentSpeed = (!GetState("Running") ? GetState("Crouching") ? crouchSpeed : moveSpeed : runSpeed) / 100f;
-            currentDirection = direction;
-
-            if (GetState("Enabled"))
+            // Update move
+            if (!flyMode)
             {
-                if (Input.GetKey(PlayerKeys.Crouch) && controller.isGrounded && CrouchCheck(direction))
-                {
-                    controller.Move(direction * currentSpeed);
-                }
-                else if (!Input.GetKey(PlayerKeys.Crouch))
-                {
-                    controller.Move(direction * currentSpeed);
-                }
+                MoveUpdate();
+            }
+            else
+            {
+                FlyMove();
             }
 
             // Jump
             if (jumpRequested)
             {
-                velocity.y = Mathf.Sqrt(jumpForce * -3.0f * Physics.gravity.y);
+                verticalVelocity = Mathf.Sqrt(jumpForce * -3.0f * Physics.gravity.y);
                 jumpRequested = false;
             }
 
-            velocity.y += Physics.gravity.y * gravityScale * Time.deltaTime;
-            controller.Move(velocity * Time.deltaTime);
+            // Apply gravity
+            if (!flyMode)
+            {
+                verticalVelocity += Physics.gravity.y * gravityScale * Time.deltaTime;
+            }
+
+            // Apply jump
+            characterController.Move(new Vector3(0f, verticalVelocity, 0f) * Time.deltaTime);
         }
 
         private void Update()
         {
+            JumpUpdate();
+        }
+
+        private void MoveUpdate()
+        {
+            bool runInputConditions = Input.GetKey(PlayerKeys.Run);
+            bool crouchInputConditions = Input.GetKey(PlayerKeys.Crouch);
+            bool inputConditions = InputAxis != Vector2.zero;
+            bool walkConditions = !playerConsole.consoleEnabled && !flyMode;
+
+            isWalking = (!crouchInputConditions && inputConditions && walkConditions);
+            isRunning = isWalking && runInputConditions;
+
+            if (!crouchInputConditions && inputConditions && walkConditions)
+            {
+                characterController.Move(Direction * CurrentSpeed * Time.deltaTime);
+            }
+            else if (crouchInputConditions)
+            {
+                CrouchUpdate();
+            }
+        }
+
+        private void FlyMove()
+        {
+            bool runInputConditions = Input.GetKey(PlayerKeys.Run);
+            bool inputConditions = InputAxis != Vector2.zero || Input.GetKey(PlayerKeys.Jump) || Input.GetKey(PlayerKeys.Down);
+            bool walkConditions = !playerConsole.consoleEnabled;
+            Vector3 currentVelocity = Direction * CurrentSpeed * 2f * Time.deltaTime;
+
+            isWalking = (inputConditions && walkConditions);
+            isRunning = isWalking && runInputConditions;
+
+            if (Input.GetKey(PlayerKeys.Jump))
+            {
+                currentVelocity.y += CurrentSpeed * Time.deltaTime;
+            }
+
+            if (Input.GetKey(PlayerKeys.Down))
+            {
+                currentVelocity.y -= CurrentSpeed * Time.deltaTime;
+            }
+
+            if (inputConditions && walkConditions)
+            {
+                characterController.Move(currentVelocity);
+            }
+        }
+
+        private void CrouchUpdate()
+        {
+            bool inputConditions = InputAxis != Vector2.zero;
+            bool walkConditions = !flyMode;
+
+            isCrouching = (inputConditions && walkConditions);
+
+            if (inputConditions && walkConditions)
+            {
+                characterController.Move(Direction * CurrentSpeed * Time.deltaTime);
+            }
+        }
+
+        private void JumpUpdate()
+        {
             // Jump
             bool inputConditions = Input.GetKeyDown(PlayerKeys.Jump);
-            bool stateConditions = GetState("Grounded") && GetState("Enabled");
+            bool jumpConditions = !playerConsole.consoleEnabled && !flyMode && isGrounded;
 
-            if (inputConditions && stateConditions)
+            isGrounded = characterController.isGrounded;
+
+            if (inputConditions && jumpConditions)
             {
                 jumpRequested = true;
-            }
-
-            if (Input.GetKeyDown(PlayerKeys.OpenDebug))
-            {
-                debugEnabled = !debugEnabled;
-
-                if (debugEnabled)
-                {
-                    debugPanel.SetActive(true);
-                    SetState("Enabled", false);
-                    playerCamera.SetState("Enabled", false);
-                    playerCamera.SetState("CursorLocked", false);
-                    playerBuilder.canBuild = false;
-                }
-                else
-                {
-                    debugPanel.SetActive(false);
-                    SetState("Enabled", true);
-                    playerCamera.SetState("Enabled", true);
-                    playerCamera.SetState("CursorLocked", true);
-                    playerBuilder.canBuild = true;
-                }
-            }
-
-            // Debug
-            DebugSystem.AddInfo("Player Position", "Position in World (" + transform.position.x.ToString("0") + ", " + transform.position.y.ToString("0") + ", " + transform.position.z.ToString("0") + ")");
-        }
-
-        private bool CrouchCheck(Vector3 _direction)
-        {
-            Vector3 pos = new Vector3(
-                    transform.position.x + controller.center.x,
-                    transform.position.y + controller.center.y - controller.height / 2,
-                    transform.position.z + controller.center.z) - currentDirection * 0.1f;
-
-            return Physics.Raycast(pos, new Vector3(_direction.x, _direction.y - angleToCheck, _direction.z), .5f);
-        }
-
-        private void OnDrawGizmosSelected()
-        {
-            if (controller != null)
-            {
-                Gizmos.color = Color.red;
-
-                Vector3 pos = new Vector3(
-                    transform.position.x + controller.center.x,
-                    transform.position.y + controller.center.y - controller.height / 2,
-                    transform.position.z + controller.center.z);
-
-                Gizmos.DrawRay(pos, new Vector3(currentDirection.x, currentDirection.y - angleToCheck, currentDirection.z));
-            }
-            else
-            {
-                controller = GetComponent<CharacterController>();
             }
         }
     }

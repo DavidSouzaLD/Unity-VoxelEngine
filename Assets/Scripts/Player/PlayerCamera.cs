@@ -1,65 +1,53 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Game.Utilities;
 
 namespace Game.Player
 {
-    [System.Serializable]
-    public class CameraStates : States
-    {
-        public CameraStates()
-        {
-            states = new List<State>()
-            {
-               new State("Enabled"),
-               new State("CursorLocked")
-            };
-        }
-    }
-
+    [RequireComponent(typeof(PlayerConsole))]
     public class PlayerCamera : MonoBehaviour
     {
         [Header("Settings")]
-        [SerializeField] private Transform cameraTransform;
-        [SerializeField] private float sensitivity = 3f;
-        [SerializeField] private bool invertedCamera;
+        public Transform cameraTransform;
+        public float sensitivity = 3f;
+        public bool invertedCamera;
 
         [Header("Clamp")]
-        [SerializeField] private float minClampY = -90f;
-        [SerializeField] private float maxClampY = 90f;
+        public float minClampY = -90f;
+        public float maxClampY = 90f;
 
-        CameraStates states;
-        Vector2 _mouseRotation = Vector2.zero;
-        float rotTransformY;
-        float rotCameraX;
+        private Vector2 _mouseRotation = Vector2.zero;
+        private float rotTransformY;
+        private float rotCameraX;
+        private PlayerConsole playerConsole;
 
-        public void SetState(string _name, bool _value)
-        => states.SetState(_name, _value);
-
-        public bool GetState(string _name)
-        => states.GetState(_name);
+        private Vector2 CameraAxis
+        {
+            get
+            {
+                return new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
+            }
+        }
 
         private void Start()
         {
-            // Setting states
-            states = new CameraStates();
-            SetState("Enabled", true);
-            SetState("CursorLocked", true);
-
             // Setting values
             _mouseRotation.y = rotTransformY;
             _mouseRotation.x = rotCameraX;
+
+            // Get components
+            playerConsole = GetComponent<PlayerConsole>();
         }
 
         private void Update()
         {
-            if (GetState("Enabled"))
+            bool inputConditions = CameraAxis != Vector2.zero;
+            bool lookConditions = !playerConsole.consoleEnabled;
+
+            if (inputConditions && lookConditions)
             {
                 // Mouse Look
-                Vector2 _cameraAxis = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")); // Easy to implement new input system
-
-                _mouseRotation.x += _cameraAxis.x * sensitivity;
-                _mouseRotation.y += (invertedCamera ? _cameraAxis.y : -_cameraAxis.y) * sensitivity;
+                _mouseRotation.x += CameraAxis.x * sensitivity;
+                _mouseRotation.y += (invertedCamera ? CameraAxis.y : -CameraAxis.y) * sensitivity;
                 _mouseRotation.y = Mathf.Clamp(_mouseRotation.y, minClampY, maxClampY); // Limit vertical angle
 
                 // Rotate camera to vertical
@@ -78,7 +66,9 @@ namespace Game.Player
 
         private void LateUpdate()
         {
-            if (GetState("CursorLocked"))
+            bool lockCursorConditions = !playerConsole.consoleEnabled;
+
+            if (lockCursorConditions)
             {
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
