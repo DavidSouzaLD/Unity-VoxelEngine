@@ -1,17 +1,19 @@
 using UnityEngine;
+using QFSW.QC;
 
 public class Skybox : MonoBehaviour
 {
     [Header("Settings")]
     public bool useRotationSun;
-    [SerializeField] private Light sunLight;
-    [SerializeField] private Transform sun;
-    [SerializeField] private float timeSpeed;
+    public Light sunLight;
+    public Transform sun;
+    [Command("Time.setSpeed")]
+    public float timeSpeed;
 
     [Header("Colors")]
-    [SerializeField] private Gradient colorSky;
-    [SerializeField] private Gradient colorHorizon;
-    [SerializeField] private Material skyboxMaterial;
+    public Gradient colorSky;
+    public Gradient colorHorizon;
+    public Material skyboxMaterial;
 
     string shaderName = "_SunDirection";
 
