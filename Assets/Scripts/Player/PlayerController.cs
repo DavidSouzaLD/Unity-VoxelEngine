@@ -10,16 +10,16 @@ namespace Game.Player
     public class PlayerController : MonoBehaviour
     {
         [Header("Speeds")]
-        [Command("Player.walkSpeed")] public float walkSpeed = 5f;
-        [Command("Player.runSpeed")] public float runSpeed = 8f;
-        [Command("Player.crouchSpeed")] public float crouchSpeed = 2f;
+        [Command("Player.SetWalkSpeed")] public float walkSpeed = 5f;
+        [Command("Player.SetRunSpeed")] public float runSpeed = 8f;
+        [Command("Player.SetCrouchSpeed")] public float crouchSpeed = 2f;
 
         [Header("Jump")]
-        [Command("Player.jumpForce")] public float jumpForce = 5f;
-        [Command("Player.gravityScale")] public float gravityScale = 1f;
+        [Command("Player.SetJumpForce")] public float jumpForce = 5f;
+        [Command("Player.SetGravityScale")] public float gravityScale = 1f;
 
         [Header("Habilities")]
-        [Command("Player.canFly")] public bool flyMode;
+        [Command("Player.Fly")] public bool flyMode;
 
         // Bools
         public bool isWalking { get; private set; }
@@ -196,6 +196,16 @@ namespace Game.Player
             {
                 jumpRequested = true;
             }
+        }
+
+        [Command("Player.SetPosition")]
+        private void SetPosition(Vector3 position)
+        {
+            Vector3 pos = position;
+            pos.y += 1;
+            characterController.enabled = false;
+            transform.position = pos;
+            characterController.enabled = true;
         }
     }
 }

@@ -7,7 +7,7 @@ public class Skybox : MonoBehaviour
     public bool useRotationSun;
     public Light sunLight;
     public Transform sun;
-    [Command("Time.setSpeed")]
+    [Command("Time.SetSpeed")]
     public float timeSpeed;
 
     [Header("Colors")]

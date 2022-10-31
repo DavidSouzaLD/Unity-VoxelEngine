@@ -9,13 +9,13 @@ namespace VoxelEngine.Extras
     public class VoxelTemplate
     {
         [Command("Voxel.CreateBuild")]
-        public static void CreateBuild(Vector3Int _position, string _name)
+        public static void CreateBuild(Vector3Int position, string name)
         {
             VoxelWorld activeWorld = GameObject.FindObjectOfType<VoxelWorld>();
 
             if (activeWorld != null)
             {
-                VoxelSerializer.Build build = VoxelSerializer.GetBuild(_name + ".build");
+                VoxelSerializer.Build build = VoxelSerializer.GetBuild(name + ".build");
 
                 List<Chunk> chunksToUpdate = new List<Chunk>();
                 Chunk lastChunk = null;
@@ -25,12 +25,12 @@ namespace VoxelEngine.Extras
                     if (lastChunk == null)
                     {
                         // Try get chunk
-                        lastChunk = activeWorld.GetChunk(build.datas[i].position + _position);
+                        lastChunk = activeWorld.GetChunk(build.datas[i].position + position);
 
                         if (lastChunk == null)
                         {
                             // Create new chunk
-                            ChunkCoord coord = activeWorld.GetChunkCoord(build.datas[i].position + _position);
+                            ChunkCoord coord = activeWorld.GetChunkCoord(build.datas[i].position + position);
                             lastChunk = new Chunk(coord, activeWorld);
                             coord.chunk = lastChunk;
                         }
@@ -45,14 +45,14 @@ namespace VoxelEngine.Extras
                         }
 
                         // Change last chunk
-                        if (!lastChunk.IsVoxelInChunk(build.datas[i].position + _position))
+                        if (!lastChunk.IsVoxelInChunk(build.datas[i].position + position))
                         {
-                            lastChunk = activeWorld.GetChunk(build.datas[i].position + _position);
+                            lastChunk = activeWorld.GetChunk(build.datas[i].position + position);
                         }
                     }
 
                     // Create voxel
-                    activeWorld.EditVoxel(build.datas[i].position + _position, build.datas[i].type, false);
+                    activeWorld.EditVoxel(build.datas[i].position + position, build.datas[i].type, false);
                 }
 
                 for (int i = 0; i < chunksToUpdate.Count; i++)
