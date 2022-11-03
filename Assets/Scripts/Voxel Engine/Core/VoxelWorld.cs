@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using VoxelEngine.Core.Classes;
 
 namespace VoxelEngine.Core
@@ -7,19 +8,22 @@ namespace VoxelEngine.Core
     public class VoxelWorld : MonoBehaviour
     {
         [Header("Settings")]
-        [SerializeField] private Transform target;
+        public Transform target;
 
         [Header("Render View")]
-        [SerializeField] private bool useRenderView;
-        [SerializeField] private float timeToRenderView = 10;
+        public bool useRenderView;
+        public float timeToRenderView = 10;
+
+        [Header("Events")]
+        public UnityEvent OnWorldChanged;
 
         [Header("Gizmos")]
-        [SerializeField] private bool showGizmos;
-        [SerializeField] private bool showRenderViewGizmos;
+        public bool showGizmos;
+        public bool showRenderViewGizmos;
 
-        private ChunkCoord[,,] coordMap = new ChunkCoord[Settings.worldSize.x, Settings.worldSize.y, Settings.worldSize.z];
-        public List<Chunk> activeChunks = new List<Chunk>();
-        Vector3 lastTargetPos;
+        [HideInInspector] public ChunkCoord[,,] coordMap = new ChunkCoord[Settings.worldSize.x, Settings.worldSize.y, Settings.worldSize.z];
+        [HideInInspector] public List<Chunk> activeChunks = new List<Chunk>();
+        private Vector3 lastTargetPos;
 
         private void Awake()
         {
@@ -38,6 +42,7 @@ namespace VoxelEngine.Core
                 }
             }
 
+            // Settings render view
             if (useRenderView)
             {
                 InvokeRepeating("UpdateRenderView", 0f, timeToRenderView);
@@ -142,6 +147,11 @@ namespace VoxelEngine.Core
             if (chunk != null)
             {
                 chunk.EditMap(_position, _type, _updateChunk);
+
+                if (_updateChunk)
+                {
+                    OnWorldChanged.Invoke();
+                }
             }
             else
             {

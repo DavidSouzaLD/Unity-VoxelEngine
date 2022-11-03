@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 784755555989288463}
   - component: {fileID: 2343239023342767788}
   m_Layer: 0
-  m_Name: Hightlight
+  m_Name: HightlightPreview
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

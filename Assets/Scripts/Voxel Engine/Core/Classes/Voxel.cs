@@ -14,6 +14,7 @@ namespace VoxelEngine.Core.Classes
         // Infos
         public string name = "Default";
         public bool solid = true;
+        public float timeToDestroy;
 
         // Texture Values
         public int back;

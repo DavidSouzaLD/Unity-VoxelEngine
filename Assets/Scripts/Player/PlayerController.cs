@@ -19,6 +19,7 @@ namespace Game.Player
         [Command("Player.SetGravityScale")] public float gravityScale = 1f;
 
         [Header("Habilities")]
+        [Command("Player.Creative")] public bool creativeMode;
         [Command("Player.Fly")] public bool flyMode;
 
         // Bools

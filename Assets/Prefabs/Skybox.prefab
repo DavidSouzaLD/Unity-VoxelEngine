@@ -11,12 +11,12 @@ GameObject:
   - component: {fileID: 52388935}
   - component: {fileID: 52388937}
   - component: {fileID: 52388936}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Moon Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 126
   m_IsActive: 1
 --- !u!4 &52388935
 Transform:
@@ -211,12 +211,12 @@ GameObject:
   - component: {fileID: 7333348334289259336}
   - component: {fileID: 7333348334289259339}
   - component: {fileID: 7333348334289259338}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Sun Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 126
   m_IsActive: 1
 --- !u!4 &7333348334289259336
 Transform:
@@ -328,7 +328,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2eb0bb4ef1c01ad42bafe0fd014ece45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeOfDay: 0
+  timeOfDay: 12
   lenghtOfDay: 1200
   directionalLight: {fileID: 7333348334101643150}
   sunTransform: {fileID: 7333348334289259336}

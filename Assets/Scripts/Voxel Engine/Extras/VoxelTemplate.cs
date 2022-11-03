@@ -65,6 +65,7 @@ namespace VoxelEngine.Extras
                     }
                 }
             }
+            activeWorld.OnWorldChanged.Invoke();
         }
 
         [Command("Voxel.CreatePlane")]
@@ -127,10 +128,11 @@ namespace VoxelEngine.Extras
                     }
                 }
             }
+            activeWorld.OnWorldChanged.Invoke();
         }
 
         [Command("Voxel.CreateCube")]
-        public static void CreateCube(Vector3Int position, byte type, int size)
+        public static void CreateCube(Vector3Int position, byte type, Vector3Int size)
         {
             VoxelWorld activeWorld = GameObject.FindObjectOfType<VoxelWorld>();
 
@@ -139,11 +141,11 @@ namespace VoxelEngine.Extras
                 List<Chunk> chunksToUpdate = new List<Chunk>();
                 Chunk lastChunk = null;
 
-                for (int x = -size / 2; x < size / 2; x++)
+                for (int x = -size.x / 2; x < size.x / 2; x++)
                 {
-                    for (int y = -size / 2; y < size / 2; y++)
+                    for (int y = -size.y / 2; y < size.y / 2; y++)
                     {
-                        for (int z = -size / 2; z < size / 2; z++)
+                        for (int z = -size.z / 2; z < size.z / 2; z++)
                         {
                             Vector3Int pos = position + new Vector3Int(x, y, z);
 
@@ -192,6 +194,7 @@ namespace VoxelEngine.Extras
                     }
                 }
             }
+            activeWorld.OnWorldChanged.Invoke();
         }
 
         [Command("Voxel.CreateSphere")]
@@ -261,6 +264,7 @@ namespace VoxelEngine.Extras
                     }
                 }
             }
+            activeWorld.OnWorldChanged.Invoke();
         }
 
         [Command("Voxel.CreatePyramid")]
@@ -331,6 +335,7 @@ namespace VoxelEngine.Extras
                     }
                 }
             }
+            activeWorld.OnWorldChanged.Invoke();
         }
 
         [Command("Voxel.CreateTorus")]
@@ -407,6 +412,7 @@ namespace VoxelEngine.Extras
                         activeWorld.activeChunks.Add(chunksToUpdate[i]);
                     }
                 }
+                activeWorld.OnWorldChanged.Invoke();
             }
         }
     }

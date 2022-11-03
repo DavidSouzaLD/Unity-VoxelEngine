@@ -193,6 +193,7 @@ MonoBehaviour:
   crouchSpeed: 0.5
   jumpForce: 1.5
   gravityScale: 2
+  creativeMode: 0
   flyMode: 0
 --- !u!114 &7335639962479187404
 MonoBehaviour:
@@ -229,8 +230,17 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   distance: 8
+  destroyPrefab: {fileID: 7013749848422556866, guid: b5b2e56bf30e77546ab1393fccb45725,
+    type: 3}
   destroyEffect: {fileID: 4516121507915525828, guid: 0d2906efc7844724a874491ea8588a99,
     type: 3}
+  destroyMaterial: {fileID: 2100000, guid: 5f58b80e59ecf79499603c791b45a5e8, type: 2}
+  destroySprites:
+  - {fileID: 21300000, guid: 6dce09192ab68e84e9b484b1088a4992, type: 3}
+  - {fileID: 21300000, guid: a3cd652e10e951647a9eb15d10c1c1ea, type: 3}
+  - {fileID: 21300000, guid: 5ce1514a87ce542468fb871255fe6cf4, type: 3}
+  - {fileID: 21300000, guid: 67ab437f67e0a8b418d40956da93d36e, type: 3}
+  - {fileID: 21300000, guid: 1d34216c2b47c3449ae18bf241fb4802, type: 3}
   onPlaceVoxel:
     m_PersistentCalls:
       m_Calls:

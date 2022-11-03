@@ -1,5 +1,5 @@
 using UnityEngine;
-using VoxelEngine.Core;
+using UnityEngine.AI;
 
 namespace VoxelEngine.Core.Classes
 {
@@ -103,6 +103,7 @@ namespace VoxelEngine.Core.Classes
         {
             bool destroyChunk = true;
 
+            // Mesh
             Mesh newMesh = CreateMesh(out destroyChunk);
             mesh = newMesh;
             meshCollider.sharedMesh = newMesh;
