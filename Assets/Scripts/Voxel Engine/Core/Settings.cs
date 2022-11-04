@@ -34,7 +34,7 @@ namespace VoxelEngine.Core
         {
             get
             {
-                return 4;
+                return 8;
             }
         }
 
