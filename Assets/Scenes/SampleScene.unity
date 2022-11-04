@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.24226555, g: 0.24222672, b: 0.24222036, a: 1}
+  m_IndirectSpecularColor: {r: 0.018042121, g: 0.06475177, b: 0.14675094, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -494,6 +494,11 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7350386307180744911, guid: 9f0acb7f1587f31439493a8538a18801,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7350393803406338785, guid: 9f0acb7f1587f31439493a8538a18801,
         type: 3}
       propertyPath: m_SizeDelta.x
@@ -531,8 +536,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7351641727990175755, guid: 9f0acb7f1587f31439493a8538a18801,
         type: 3}
-      propertyPath: m_AnchoredPosition.y
+      propertyPath: m_SizeDelta.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7351641727990175755, guid: 9f0acb7f1587f31439493a8538a18801,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.000061035156
       objectReference: {fileID: 0}
     - target: {fileID: 7351674063910901271, guid: 9f0acb7f1587f31439493a8538a18801,
         type: 3}
@@ -574,6 +584,111 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1581971789}
     m_Modifications:
+    - target: {fileID: 7333348334731664676, guid: b33937c4b094a4e40bd3bbf4db15ae4c,
+        type: 3}
+      propertyPath: colorSky.ctime1
+      value: 9252
+      objectReference: {fileID: 0}
+    - target: {fileID: 7333348334731664676, guid: b33937c4b094a4e40bd3bbf4db15ae4c,
+        type: 3}
+      propertyPath: colorSky.ctime2
+      value: 15806
+      objectReference: {fileID: 0}
+    - target: {fileID: 7333348334731664676, guid: b33937c4b094a4e40bd3bbf4db15ae4c,
+        type: 3}
+      propertyPath: colorSky.ctime5
+      value: 49344
+      objectReference: {fileID: 0}
+    - target: {fileID: 7333348334731664676, guid: b33937c4b094a4e40bd3bbf4db15ae4c,
+        type: 3}
+      propertyPath: colorSky.ctime6
+      value: 55319
+      objectReference: {fileID: 0}
+    - target: {fileID: 7333348334731664676, guid: b33937c4b094a4e40bd3bbf4db15ae4c,
+        type: 3}
+      propertyPath: colorLight.ctime1
+      value: 6746
+      objectReference: {fileID: 0}
+    - target: {fileID: 7333348334731664676, guid: b33937c4b094a4e40bd3bbf4db15ae4c,
+        type: 3}
+      propertyPath: colorLight.ctime2
+      value: 18311
+      objectReference: {fileID: 0}
+    - target: {fileID: 7333348334731664676, guid: b33937c4b094a4e40bd3bbf4db15ae4c,
+        type: 3}
+      propertyPath: colorLight.ctime3
+      value: 46260
+      objectReference: {fileID: 0}
+    - target: {fileID: 7333348334731664676, guid: b33937c4b094a4e40bd3bbf4db15ae4c,
+        type: 3}
+      propertyPath: colorLight.ctime4
+      value: 58982
+      objectReference: {fileID: 0}
+    - target: {fileID: 7333348334731664676, guid: b33937c4b094a4e40bd3bbf4db15ae4c,
+        type: 3}
+      propertyPath: colorLight.ctime5
+      value: 65535
+      objectReference: {fileID: 0}
+    - target: {fileID: 7333348334731664676, guid: b33937c4b094a4e40bd3bbf4db15ae4c,
+        type: 3}
+      propertyPath: colorLight.key1.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7333348334731664676, guid: b33937c4b094a4e40bd3bbf4db15ae4c,
+        type: 3}
+      propertyPath: colorLight.key1.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7333348334731664676, guid: b33937c4b094a4e40bd3bbf4db15ae4c,
+        type: 3}
+      propertyPath: colorLight.key1.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7333348334731664676, guid: b33937c4b094a4e40bd3bbf4db15ae4c,
+        type: 3}
+      propertyPath: colorLight.key2.b
+      value: 0.8066038
+      objectReference: {fileID: 0}
+    - target: {fileID: 7333348334731664676, guid: b33937c4b094a4e40bd3bbf4db15ae4c,
+        type: 3}
+      propertyPath: colorLight.key2.g
+      value: 0.99079525
+      objectReference: {fileID: 0}
+    - target: {fileID: 7333348334731664676, guid: b33937c4b094a4e40bd3bbf4db15ae4c,
+        type: 3}
+      propertyPath: colorLight.key3.b
+      value: 0.80784315
+      objectReference: {fileID: 0}
+    - target: {fileID: 7333348334731664676, guid: b33937c4b094a4e40bd3bbf4db15ae4c,
+        type: 3}
+      propertyPath: colorLight.key3.g
+      value: 0.99215686
+      objectReference: {fileID: 0}
+    - target: {fileID: 7333348334731664676, guid: b33937c4b094a4e40bd3bbf4db15ae4c,
+        type: 3}
+      propertyPath: colorLight.key3.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7333348334731664676, guid: b33937c4b094a4e40bd3bbf4db15ae4c,
+        type: 3}
+      propertyPath: colorLight.key4.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7333348334731664676, guid: b33937c4b094a4e40bd3bbf4db15ae4c,
+        type: 3}
+      propertyPath: colorLight.key4.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7333348334731664676, guid: b33937c4b094a4e40bd3bbf4db15ae4c,
+        type: 3}
+      propertyPath: colorLight.key4.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7333348334731664676, guid: b33937c4b094a4e40bd3bbf4db15ae4c,
+        type: 3}
+      propertyPath: colorLight.m_NumColorKeys
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 7333348334731664678, guid: b33937c4b094a4e40bd3bbf4db15ae4c,
         type: 3}
       propertyPath: m_Name

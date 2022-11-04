@@ -26,7 +26,7 @@ public class Skybox : MonoBehaviour
 
     private void Start()
     {
-        sunTransform.position = -directionalLight.transform.forward * 1800f;
+        sunTransform.position = directionalLight.transform.forward * -1800f;
         moonTransform.position = directionalLight.transform.forward * 1800f;
     }
 

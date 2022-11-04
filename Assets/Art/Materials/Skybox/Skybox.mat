@@ -124,7 +124,7 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _StarDensity: 10
-    - _StarsOpacity: 3.9900613e-28
+    - _StarsOpacity: 0.999999
     - _StartDensity: 10
     - _Surface: 0
     - _WindSpeed: 0.2
@@ -135,8 +135,8 @@ Material:
     - _CloudColors: {r: 0.5754717, g: 0.5754717, b: 0.5754717, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _HorizonColor: {r: 0.52923423, g: 0.52923423, b: 0.52923423, a: 1}
-    - _SkyColor: {r: 0.44299448, g: 0.8352986, b: 0.8779519, a: 1}
+    - _HorizonColor: {r: 0.082750194, g: 0.17372188, b: 0.35522965, a: 1}
+    - _SkyColor: {r: 0.16490415, g: 0.21428475, b: 0.32080185, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &6390684791218317546
