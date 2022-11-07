@@ -16,6 +16,14 @@ namespace VoxelEngine.Core.Classes
             chunk = _chunk;
         }
 
+        public ChunkCoord(Vector3Int _pos, Chunk _chunk)
+        {
+            x = _pos.x;
+            y = _pos.y;
+            z = _pos.z;
+            chunk = _chunk;
+        }
+
         public Vector3Int position
         {
             get
@@ -28,7 +36,7 @@ namespace VoxelEngine.Core.Classes
         {
             get
             {
-                return new Vector3Int(x, y, z) + (Settings.chunkSize / 2);
+                return new Vector3Int(x, y, z) + (VoxelSystem.GetChunkSize / 2);
             }
         }
     }
@@ -70,10 +78,10 @@ namespace VoxelEngine.Core.Classes
         public Vector3Int position { get { return coord.position; } }
 
         // Create the chunk based on past information.
-        public Chunk(ChunkCoord _coord, VoxelWorld _world)
+        public Chunk(ChunkCoord _coord, VoxelWorld _world, bool _usePopulate = false)
         {
             // Generate map
-            map = new byte[Settings.chunkSize.x, Settings.chunkSize.y, Settings.chunkSize.z];
+            map = new byte[VoxelSystem.GetChunkSize.x, VoxelSystem.GetChunkSize.y, VoxelSystem.GetChunkSize.z];
 
             // Creating object
             gameObject = new GameObject();
@@ -87,6 +95,31 @@ namespace VoxelEngine.Core.Classes
             material = VoxelSystem.AtlasMaterial;
             coord = _coord;
             world = _world;
+
+            if (_usePopulate)
+            {
+                PopulateMap();
+            }
+        }
+
+        private void PopulateMap()
+        {
+            for (int x = 0; x < VoxelSystem.GetChunkSize.x; x++)
+            {
+                for (int y = 0; y < VoxelSystem.GetChunkSize.y; y++)
+                {
+                    for (int z = 0; z < VoxelSystem.GetChunkSize.z; z++)
+                    {
+                        Vector3Int pos = new Vector3Int(
+                                x + position.x,
+                                y + position.y,
+                                z + position.z
+                            );
+
+                        map[x, y, z] = 0;
+                    }
+                }
+            }
         }
 
         // Render the chunk every frame on the gpu.
@@ -156,11 +189,11 @@ namespace VoxelEngine.Core.Classes
 
             MeshData.Container meshContainer = new MeshData.Container();
 
-            for (int x = 0; x < Settings.chunkSize.x; x++)
+            for (int x = 0; x < VoxelSystem.GetChunkSize.x; x++)
             {
-                for (int y = 0; y < Settings.chunkSize.y; y++)
+                for (int y = 0; y < VoxelSystem.GetChunkSize.y; y++)
                 {
-                    for (int z = 0; z < Settings.chunkSize.z; z++)
+                    for (int z = 0; z < VoxelSystem.GetChunkSize.z; z++)
                     {
                         Vector3Int voxelPos = new Vector3Int(x, y, z);
 
@@ -230,26 +263,28 @@ namespace VoxelEngine.Core.Classes
         // Reworks the UV map based on the Atlas map.
         private void AddTexture(MeshData.Container _meshContainer, int _textureID)
         {
-            float y = _textureID / Settings.textureAtlasSize;
-            float x = _textureID - (y * Settings.textureAtlasSize);
+            float y = _textureID / VoxelSystem.GetTextureAtlasSize;
+            float x = _textureID - (y * VoxelSystem.GetTextureAtlasSize);
 
-            x *= Settings.textureNormalizedSize;
-            y *= Settings.textureNormalizedSize;
+            x *= VoxelSystem.GetTextureNormalizedSize;
+            y *= VoxelSystem.GetTextureNormalizedSize;
 
-            y = 1f - y - Settings.textureNormalizedSize;
+            y = 1f - y - VoxelSystem.GetTextureNormalizedSize;
 
             _meshContainer.uvs.Add(new Vector2(x, y));
-            _meshContainer.uvs.Add(new Vector2(x, y + Settings.textureNormalizedSize));
-            _meshContainer.uvs.Add(new Vector2(x + Settings.textureNormalizedSize, y));
-            _meshContainer.uvs.Add(new Vector2(x + Settings.textureNormalizedSize, y + Settings.textureNormalizedSize));
+            _meshContainer.uvs.Add(new Vector2(x, y + VoxelSystem.GetTextureNormalizedSize));
+            _meshContainer.uvs.Add(new Vector2(x + VoxelSystem.GetTextureNormalizedSize, y));
+            _meshContainer.uvs.Add(new Vector2(x + VoxelSystem.GetTextureNormalizedSize, y + VoxelSystem.GetTextureNormalizedSize));
         }
 
         // Get voxel type with position
         public byte GetVoxelType(Vector3Int _position)
         {
+            Vector3Int pos = _position - position;
+
             try
             {
-                return map[_position.x, _position.y, _position.z];
+                return map[pos.x, pos.y, pos.z];
             }
             catch (System.Exception)
             {
@@ -278,9 +313,9 @@ namespace VoxelEngine.Core.Classes
             Vector3 pos = _position - position;
 
             return !(
-                pos.x < 0 || pos.x > Settings.chunkSize.x - 1 ||
-                pos.y < 0 || pos.y > Settings.chunkSize.y - 1 ||
-                pos.z < 0 || pos.z > Settings.chunkSize.z - 1
+                pos.x < 0 || pos.x > VoxelSystem.GetChunkSize.x - 1 ||
+                pos.y < 0 || pos.y > VoxelSystem.GetChunkSize.y - 1 ||
+                pos.z < 0 || pos.z > VoxelSystem.GetChunkSize.z - 1
             );
         }
     }

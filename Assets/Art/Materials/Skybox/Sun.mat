@@ -8,10 +8,10 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Sun
-  m_Shader: {fileID: 4800000, guid: e260cfa7296ee7642b167f1eb5be5023, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: efae4d5a85f594fdf8427d9f4611b500,
+    type: 3}
   m_ValidKeywords: []
-  m_InvalidKeywords:
-  - _EMISSION
+  m_InvalidKeywords: []
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -110,6 +110,7 @@ Material:
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
+    - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 0
     - _SampleGI: 0
@@ -123,6 +124,8 @@ Material:
     m_Colors:
     - _BaseColor: {r: 1, g: 0.8814938, b: 0, a: 1}
     - _Color: {r: 1, g: 0.8814938, b: 0, a: 1}
+    - _ColorA: {r: 1, g: 0.78266555, b: 0, a: 1}
+    - _ColorB: {r: 0.9716981, g: 0.5245556, b: 0.26125845, a: 1}
     - _EmissionColor: {r: 1, g: 0.65445024, b: 0, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}

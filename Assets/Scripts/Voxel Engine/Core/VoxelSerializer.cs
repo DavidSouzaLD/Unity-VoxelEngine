@@ -40,7 +40,7 @@ namespace VoxelEngine.Core
 
         public static Build GetBuild(string _name)
         {
-            string path = (Settings.buildPath + _name);
+            string path = (VoxelSystem.GetBuildsPath + _name);
             string test = File.ReadAllText(path);
             return JsonUtility.FromJson<Build>(test);
         }

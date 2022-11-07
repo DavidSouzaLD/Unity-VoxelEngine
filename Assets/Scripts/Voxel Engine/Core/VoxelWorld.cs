@@ -2,13 +2,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using VoxelEngine.Core.Classes;
+using VoxelEngine.Utilities;
 
 namespace VoxelEngine.Core
 {
     public class VoxelWorld : MonoBehaviour
     {
-        [Header("Settings")]
+        [Header("VoxelSystem")]
         public Transform target;
+        public float scale;
+        public float threshold;
 
         [Header("Render View")]
         public bool useRenderView;
@@ -21,28 +24,31 @@ namespace VoxelEngine.Core
         public bool showGizmos;
         public bool showRenderViewGizmos;
 
-        [HideInInspector] public ChunkCoord[,,] coordMap = new ChunkCoord[Settings.worldSize.x, Settings.worldSize.y, Settings.worldSize.z];
+        [HideInInspector] public ChunkCoord[,,] coordMap;
         [HideInInspector] public List<Chunk> activeChunks = new List<Chunk>();
         private Vector3 lastTargetPos;
 
         private void Awake()
         {
+            // Generate map
+            coordMap = new ChunkCoord[VoxelSystem.GetWorldSize.x, VoxelSystem.GetWorldSize.y, VoxelSystem.GetWorldSize.z];
+
             // Setting and creating all ChunkCoords.
-            for (int x = 0; x < Settings.worldSize.x; x++)
+            for (int x = 0; x < VoxelSystem.GetWorldSize.x; x++)
             {
-                for (int y = 0; y < Settings.worldSize.y; y++)
+                for (int y = 0; y < VoxelSystem.GetWorldSize.y; y++)
                 {
-                    for (int z = 0; z < Settings.worldSize.z; z++)
+                    for (int z = 0; z < VoxelSystem.GetWorldSize.z; z++)
                     {
-                        Vector3Int fix = ((Settings.worldSize * Settings.chunkSize) / 2);
-                        Vector3Int pos = new Vector3Int(x, y, z) * Settings.chunkSize - fix;
+                        Vector3Int fix = ((VoxelSystem.GetWorldSize * VoxelSystem.GetChunkSize) / 2);
+                        Vector3Int pos = new Vector3Int(x, y, z) * VoxelSystem.GetChunkSize - fix;
 
                         coordMap[x, y, z] = new ChunkCoord(pos.x, pos.y, pos.z, null);
                     }
                 }
             }
 
-            // Settings render view
+            // VoxelSystem render view
             if (useRenderView)
             {
                 InvokeRepeating("UpdateRenderView", 0f, timeToRenderView);
@@ -69,7 +75,7 @@ namespace VoxelEngine.Core
         {
             float distance = Vector3.Distance(target.position, lastTargetPos);
 
-            if (distance > Settings.maxRenderView)
+            if (distance > VoxelSystem.GetMaxRenderView)
             {
                 for (int i = 0; i < activeChunks.Count; i++)
                 {
@@ -78,8 +84,8 @@ namespace VoxelEngine.Core
 
                 activeChunks.Clear();
 
-                int distanceView = Settings.maxRenderView / 2;
-                int height = Settings.worldSize.y / 2;
+                int distanceView = VoxelSystem.GetMaxRenderView / 2;
+                int height = VoxelSystem.GetWorldSize.y / 2;
 
                 for (int x = -distanceView; x < distanceView; x++)
                 {
@@ -87,13 +93,18 @@ namespace VoxelEngine.Core
                     {
                         for (int z = -distanceView; z < distanceView; z++)
                         {
-                            Vector3Int chunksPos = target.position.ToVector3Int() + new Vector3Int(x, y, z) * Settings.chunkSize + (Settings.chunkSize / 2);
-                            chunksPos.y -= (Settings.chunkSize.y / 2);
+                            Vector3Int chunksPos = target.position.ToVector3Int() + new Vector3Int(x, y, z) * VoxelSystem.GetChunkSize + (VoxelSystem.GetChunkSize / 2);
+                            chunksPos.y -= (VoxelSystem.GetChunkSize.y / 2);
 
                             ChunkCoord coord = GetChunkCoord(chunksPos);
 
                             if (coord != null && coord.chunk != null)
                             {
+                                activeChunks.Add(coord.chunk);
+                            }
+                            else if (coord != null && coord.chunk == null)
+                            {
+                                coord.chunk = CreateChunk(coord.worldPosition);
                                 activeChunks.Add(coord.chunk);
                             }
                         }
@@ -103,6 +114,7 @@ namespace VoxelEngine.Core
                 for (int i = 0; i < activeChunks.Count; i++)
                 {
                     activeChunks[i].isActived = true;
+                    activeChunks[i].Update();
                 }
 
                 lastTargetPos = target.position;
@@ -163,11 +175,10 @@ namespace VoxelEngine.Core
         public byte GetVoxelType(Vector3Int _position)
         {
             Chunk chunk = GetChunk(_position);
-            Vector3Int pos = _position - chunk.position;
 
             if (chunk != null)
             {
-                return chunk.GetVoxelType(pos);
+                return chunk.GetVoxelType(_position);
             }
             else
             {
@@ -204,12 +215,12 @@ namespace VoxelEngine.Core
         // Returns the ChunkCoord based on position.
         public ChunkCoord GetChunkCoord(Vector3 _position)
         {
-            Vector3 fix = ((Settings.worldSize * Settings.chunkSize) / 2) - (Settings.chunkSize / 2);
+            Vector3 fix = ((VoxelSystem.GetWorldSize * VoxelSystem.GetChunkSize) / 2) - (VoxelSystem.GetChunkSize / 2);
             Vector3 pos = _position + fix;
 
-            int x = Mathf.RoundToInt(pos.x / Settings.chunkSize.x);
-            int y = Mathf.RoundToInt(pos.y / Settings.chunkSize.y);
-            int z = Mathf.RoundToInt(pos.z / Settings.chunkSize.z);
+            int x = Mathf.RoundToInt(pos.x / VoxelSystem.GetChunkSize.x);
+            int y = Mathf.RoundToInt(pos.y / VoxelSystem.GetChunkSize.y);
+            int z = Mathf.RoundToInt(pos.z / VoxelSystem.GetChunkSize.z);
 
             try
             {
@@ -231,29 +242,29 @@ namespace VoxelEngine.Core
 
                 if (Application.isPlaying)
                 {
-                    for (int x = 0; x < Settings.worldSize.x; x++)
+                    for (int x = 0; x < VoxelSystem.GetWorldSize.x; x++)
                     {
-                        for (int y = 0; y < Settings.worldSize.y; y++)
+                        for (int y = 0; y < VoxelSystem.GetWorldSize.y; y++)
                         {
-                            for (int z = 0; z < Settings.worldSize.z; z++)
+                            for (int z = 0; z < VoxelSystem.GetWorldSize.z; z++)
                             {
-                                Gizmos.DrawWireCube(coordMap[x, y, z].position + (Settings.chunkSize / 2), Settings.chunkSize);
+                                Gizmos.DrawWireCube(coordMap[x, y, z].position + (VoxelSystem.GetChunkSize / 2), VoxelSystem.GetChunkSize);
                             }
                         }
                     }
                 }
                 else
                 {
-                    for (int x = 0; x < Settings.worldSize.x; x++)
+                    for (int x = 0; x < VoxelSystem.GetWorldSize.x; x++)
                     {
-                        for (int y = 0; y < Settings.worldSize.y; y++)
+                        for (int y = 0; y < VoxelSystem.GetWorldSize.y; y++)
                         {
-                            for (int z = 0; z < Settings.worldSize.z; z++)
+                            for (int z = 0; z < VoxelSystem.GetWorldSize.z; z++)
                             {
-                                Vector3Int fix = ((Settings.worldSize * Settings.chunkSize) / 2);
-                                Vector3Int pos = new Vector3Int(x, y, z) * Settings.chunkSize - fix;
+                                Vector3Int fix = ((VoxelSystem.GetWorldSize * VoxelSystem.GetChunkSize) / 2);
+                                Vector3Int pos = new Vector3Int(x, y, z) * VoxelSystem.GetChunkSize - fix;
 
-                                Gizmos.DrawWireCube(pos + (Settings.chunkSize / 2), Settings.chunkSize);
+                                Gizmos.DrawWireCube(pos + (VoxelSystem.GetChunkSize / 2), VoxelSystem.GetChunkSize);
                             }
                         }
                     }
@@ -263,8 +274,8 @@ namespace VoxelEngine.Core
                 {
                     Gizmos.color = Color.red;
 
-                    int distanceView = Settings.maxRenderView / 2;
-                    int height = Settings.worldSize.y / 2;
+                    int distanceView = VoxelSystem.GetMaxRenderView / 2;
+                    int height = VoxelSystem.GetWorldSize.y / 2;
 
                     for (int x = -distanceView; x < distanceView; x++)
                     {
@@ -272,15 +283,15 @@ namespace VoxelEngine.Core
                         {
                             for (int z = -distanceView; z < distanceView; z++)
                             {
-                                Vector3Int chunksPos = target.position.ToVector3Int() + new Vector3Int(x, y, z) * Settings.chunkSize + (Settings.chunkSize / 2);
-                                chunksPos.y -= (Settings.chunkSize.y / 2);
+                                Vector3Int chunksPos = target.position.ToVector3Int() + new Vector3Int(x, y, z) * VoxelSystem.GetChunkSize + (VoxelSystem.GetChunkSize / 2);
+                                chunksPos.y -= (VoxelSystem.GetChunkSize.y / 2);
 
                                 ChunkCoord coord = GetChunkCoord(chunksPos);
 
                                 if (coord != null)
                                 {
                                     Gizmos.color = Color.blue;
-                                    Gizmos.DrawWireCube(coord.worldPosition, Settings.chunkSize);
+                                    Gizmos.DrawWireCube(coord.worldPosition, VoxelSystem.GetChunkSize);
                                 }
                             }
                         }

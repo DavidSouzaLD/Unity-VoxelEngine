@@ -34,7 +34,7 @@ namespace Game.Player
         private void Awake()
         {
             // Get VoxelPack
-            string test = File.ReadAllText(Settings.voxelPackPath);
+            string test = File.ReadAllText(VoxelSystem.GetVoxelPackPath);
             voxelPack = JsonUtility.FromJson<VoxelPack>(test);
         }
 

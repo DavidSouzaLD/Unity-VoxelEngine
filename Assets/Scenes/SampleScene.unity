@@ -14,7 +14,7 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
-  m_Fog: 1
+  m_Fog: 0
   m_FogColor: {r: 0.28627452, g: 0.43529415, b: 0.47058827, a: 1}
   m_FogMode: 3
   m_FogDensity: 0.05
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.018042121, g: 0.06475177, b: 0.14675094, a: 1}
+  m_IndirectSpecularColor: {r: 0.24211094, g: 0.24207278, b: 0.24206312, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -123,71 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &152138095
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 152138097}
-  - component: {fileID: 152138098}
-  - component: {fileID: 152138099}
-  m_Layer: 0
-  m_Name: World
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &152138097
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 152138095}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1606952258}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &152138098
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 152138095}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33cc4bd83a28410489e6317c4bda8418, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 278733535}
-  useRenderView: 1
-  timeToRenderView: 12
-  OnWorldChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  showGizmos: 0
-  showRenderViewGizmos: 0
---- !u!114 &152138099
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 152138095}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &278733535 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7335639962479187442, guid: 8524d6ce03244fc42b426b74399ff1da,
@@ -243,8 +178,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1606952258}
   - component: {fileID: 1606952259}
+  - component: {fileID: 1606952260}
   m_Layer: 0
-  m_Name: Manager
+  m_Name: VoxelEngine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -261,8 +197,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 152138097}
+  m_Children: []
   m_Father: {fileID: 1581971789}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -278,7 +213,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afbf64871de336b4a870f294fbcbd337, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  chunkSize: {x: 15, y: 55, z: 15}
+  worldSize: {x: 24, y: 5, z: 24}
+  textureAtlasSize: 8
   atlasMaterial: {fileID: 2100000, guid: 384b057ed3c587044b11c592db81540a, type: 2}
+  maxRenderView: 8
+  buildsPath: G:/Projetos/VoxelEngine REP/Unity-VoxelEngine/Assets/Scripts/Voxel
+    Engine/Builds/
+  voxelsPath: G:/Projetos/VoxelEngine REP/Unity-VoxelEngine/Assets/Scripts/Voxel
+    Engine/Voxels.cfg
+--- !u!114 &1606952260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1606952256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33cc4bd83a28410489e6317c4bda8418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 278733535}
+  scale: 0.2
+  threshold: 0.4
+  useRenderView: 0
+  timeToRenderView: 6
+  OnWorldChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  showGizmos: 1
+  showRenderViewGizmos: 0
 --- !u!1 &2123398661
 GameObject:
   m_ObjectHideFlags: 0
@@ -335,10 +300,30 @@ PrefabInstance:
       propertyPath: console
       value: 
       objectReference: {fileID: 4955057367703087288}
+    - target: {fileID: 7335639962193597646, guid: 8524d6ce03244fc42b426b74399ff1da,
+        type: 3}
+      propertyPath: m_Depth
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7335639962479187405, guid: 8524d6ce03244fc42b426b74399ff1da,
+        type: 3}
+      propertyPath: flyMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7335639962479187405, guid: 8524d6ce03244fc42b426b74399ff1da,
+        type: 3}
+      propertyPath: creativeMode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7335639962479187440, guid: 8524d6ce03244fc42b426b74399ff1da,
         type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 7335639962479187440, guid: 8524d6ce03244fc42b426b74399ff1da,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7335639962479187442, guid: 8524d6ce03244fc42b426b74399ff1da,
         type: 3}
@@ -353,7 +338,7 @@ PrefabInstance:
     - target: {fileID: 7335639962479187442, guid: 8524d6ce03244fc42b426b74399ff1da,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7335639962479187442, guid: 8524d6ce03244fc42b426b74399ff1da,
         type: 3}

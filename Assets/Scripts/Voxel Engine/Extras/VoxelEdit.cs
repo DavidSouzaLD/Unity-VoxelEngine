@@ -7,7 +7,7 @@ namespace VoxelEngine.Extras
 {
     public class VoxelEdit : MonoBehaviour
     {
-        [Header("Settings")]
+        [Header("VoxelSystem")]
         public GameObject prefab;
         public string nameObject = "Default";
 
@@ -28,7 +28,7 @@ namespace VoxelEngine.Extras
             if (save)
             {
                 string value = JsonUtility.ToJson(build);
-                System.IO.File.WriteAllText(Settings.buildPath + nameObject + ".build", value);
+                System.IO.File.WriteAllText(VoxelSystem.GetBuildsPath + nameObject + ".build", value);
 
                 save = false;
             }
@@ -45,7 +45,7 @@ namespace VoxelEngine.Extras
                     }
                 }
 
-                string test = File.ReadAllText(Settings.buildPath + nameObject + ".build");
+                string test = File.ReadAllText(VoxelSystem.GetBuildsPath + nameObject + ".build");
                 build = JsonUtility.FromJson<VoxelSerializer.Build>(test);
 
                 if (build != null)
