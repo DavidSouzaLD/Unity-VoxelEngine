@@ -253,22 +253,6 @@ namespace VoxelEngine.Core
                         }
                     }
                 }
-                else
-                {
-                    for (int x = 0; x < VoxelSystem.GetWorldSize.x; x++)
-                    {
-                        for (int y = 0; y < VoxelSystem.GetWorldSize.y; y++)
-                        {
-                            for (int z = 0; z < VoxelSystem.GetWorldSize.z; z++)
-                            {
-                                Vector3Int fix = ((VoxelSystem.GetWorldSize * VoxelSystem.GetChunkSize) / 2);
-                                Vector3Int pos = new Vector3Int(x, y, z) * VoxelSystem.GetChunkSize - fix;
-
-                                Gizmos.DrawWireCube(pos + (VoxelSystem.GetChunkSize / 2), VoxelSystem.GetChunkSize);
-                            }
-                        }
-                    }
-                }
 
                 if (showRenderViewGizmos)
                 {

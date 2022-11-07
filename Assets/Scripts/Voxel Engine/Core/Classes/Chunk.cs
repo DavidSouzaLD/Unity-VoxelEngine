@@ -173,7 +173,7 @@ namespace VoxelEngine.Core.Classes
         // Edit the voxel map to change the mesh.
         public void EditMap(Vector3Int _position, byte _type, bool _updateChunk = true)
         {
-            Vector3Int pos = _position - position;
+            Vector3Int pos = WorldToChunk(_position);
             map[pos.x, pos.y, pos.z] = _type;
 
             if (_updateChunk)
@@ -280,7 +280,7 @@ namespace VoxelEngine.Core.Classes
         // Get voxel type with position
         public byte GetVoxelType(Vector3Int _position)
         {
-            Vector3Int pos = _position - position;
+            Vector3Int pos = WorldToChunk(_position);
 
             try
             {
@@ -295,7 +295,7 @@ namespace VoxelEngine.Core.Classes
         // Checks if there is a solid voxel at that position.
         public bool ExistsVoxel(Vector3Int _position)
         {
-            Vector3Int pos = _position - position;
+            Vector3Int pos = WorldToChunk(_position);
 
             try
             {
@@ -310,13 +310,19 @@ namespace VoxelEngine.Core.Classes
         // Check if a block is inside chunk
         public bool IsVoxelInChunk(Vector3Int _position)
         {
-            Vector3 pos = _position - position;
+            Vector3 pos = WorldToChunk(_position);
 
             return !(
                 pos.x < 0 || pos.x > VoxelSystem.GetChunkSize.x - 1 ||
                 pos.y < 0 || pos.y > VoxelSystem.GetChunkSize.y - 1 ||
                 pos.z < 0 || pos.z > VoxelSystem.GetChunkSize.z - 1
             );
+        }
+
+        // Transforms the global value into the local value of the chunk.
+        public Vector3Int WorldToChunk(Vector3Int _position)
+        {
+            return WorldToChunk(_position);
         }
     }
 }

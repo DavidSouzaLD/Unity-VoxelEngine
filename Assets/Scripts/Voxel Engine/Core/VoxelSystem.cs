@@ -9,8 +9,8 @@ namespace VoxelEngine.Core
         public static VoxelSystem Instance;
 
         [Header("World Settings")]
-        [SerializeField] private Vector3Int chunkSize = new Vector3Int(15, 55, 15);
         [SerializeField] private Vector3Int worldSize = new Vector3Int(24, 5, 24);
+        [SerializeField] private Vector3Int chunkSize = new Vector3Int(15, 55, 15);
         [SerializeField] private int textureAtlasSize = 8;
 
         [Header("Materials")]
@@ -22,39 +22,37 @@ namespace VoxelEngine.Core
         [Header("Paths")]
         [SerializeField] private string buildsPath;
         [SerializeField] private string voxelsPath;
-        private VoxelPack voxelPack;
 
-        public static Material AtlasMaterial
-        { get { return Instance.atlasMaterial; } }
+        [Header("Gizmos")]
+        [SerializeField] private bool showGizmos;
+        [SerializeField] private VoxelPack voxelPack;
 
-        public static Voxel[] GetVoxelPack
-        { get { return Instance.voxelPack.Voxels; } }
+        // Returns the atlas material.
+        public static Material AtlasMaterial { get { return Instance.atlasMaterial; } }
 
-        public static string GetBuildsPath
-        { get { return Instance.buildsPath; } }
+        // Returns the voxel pack.
+        public static Voxel[] GetVoxelPack { get { return Instance.voxelPack.Voxels; } }
 
-        public static string GetVoxelPackPath
-        { get { return Instance.voxelsPath; } }
+        // Returns the build location.
+        public static string GetBuildsPath { get { return Instance.buildsPath; } }
 
-        // Value of blocks by textures
-        public static int GetMaxRenderView
-        { get { return Instance.maxRenderView; } }
+        // Returns the location of the voxel pack.
+        public static string GetVoxelPackPath { get { return Instance.voxelsPath; } }
 
-        // Value of blocks by textures
-        public static int GetTextureAtlasSize
-        { get { return 8; } }
+        // Value of blocks by textures.
+        public static int GetMaxRenderView { get { return Instance.maxRenderView; } }
 
-        // Normalized texture value
-        public static float GetTextureNormalizedSize
-        { get { return 1f / Instance.textureAtlasSize; } }
+        // Value of blocks by textures.
+        public static int GetTextureAtlasSize { get { return 8; } }
 
-        // Number of chunks to be generated in the world from the central point
-        public static Vector3Int GetWorldSize
-        { get { return Instance.worldSize; } }
+        // Normalized texture value.
+        public static float GetTextureNormalizedSize { get { return 1f / Instance.textureAtlasSize; } }
 
-        // Full chunk size
-        public static Vector3Int GetChunkSize
-        { get { return Instance.chunkSize; } }
+        // Number of chunks to be generated in the world from the central point.
+        public static Vector3Int GetWorldSize { get { return Instance.worldSize; } }
+
+        // Full chunk size.
+        public static Vector3Int GetChunkSize { get { return Instance.chunkSize; } }
 
         private void OnValidate()
         {
@@ -77,5 +75,32 @@ namespace VoxelEngine.Core
             string test = File.ReadAllText(GetVoxelPackPath);
             Instance.voxelPack = JsonUtility.FromJson<VoxelPack>(test);
         }
+#if UNITY_EDITOR
+        // Draw the positions of the chunks.
+        private void OnDrawGizmos()
+        {
+            if (showGizmos)
+            {
+                Gizmos.color = Color.green;
+
+                if (!Application.isPlaying)
+                {
+                    for (int x = 0; x < worldSize.x; x++)
+                    {
+                        for (int y = 0; y < worldSize.y; y++)
+                        {
+                            for (int z = 0; z < worldSize.z; z++)
+                            {
+                                Vector3Int fix = ((worldSize * chunkSize) / 2);
+                                Vector3Int pos = new Vector3Int(x, y, z) * chunkSize - fix;
+
+                                Gizmos.DrawWireCube(pos + (chunkSize / 2), chunkSize);
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
+#endif
 }
