@@ -197,24 +197,13 @@ namespace VoxelEngine.Core.Classes
                     {
                         Vector3Int voxelPos = new Vector3Int(x, y, z);
 
-                        for (int f = 0; f < 6; f++)
+                        if (VoxelSystem.GetVoxelPack[map[x, y, z]].solid)
                         {
-                            Vector3Int voxelToCheck = voxelPos + MeshData.directions[f];
+                            for (int f = 0; f < 6; f++)
+                            {
+                                Vector3Int voxelToCheck = voxelPos + MeshData.directions[f];
 
-                            try
-                            {
-                                if (!VoxelSystem.GetVoxelPack[map[(int)voxelToCheck.x, (int)voxelToCheck.y, (int)voxelToCheck.z]].solid)
-                                {
-                                    if (map[(int)voxelPos.x, (int)voxelPos.y, (int)voxelPos.z] != 0)
-                                    {
-                                        AddFace(meshContainer, voxelPos, f, VoxelSystem.GetVoxelPack[map[x, y, z]].GetTextureID(f));
-                                        _destroyChunk = false;
-                                    }
-                                }
-                            }
-                            catch (System.Exception)
-                            {
-                                if (map[(int)voxelPos.x, (int)voxelPos.y, (int)voxelPos.z] != 0)
+                                if (!ExistsVoxel(voxelToCheck))
                                 {
                                     AddFace(meshContainer, voxelPos, f, VoxelSystem.GetVoxelPack[map[x, y, z]].GetTextureID(f));
                                     _destroyChunk = false;
@@ -282,40 +271,36 @@ namespace VoxelEngine.Core.Classes
         {
             Vector3Int pos = WorldToChunk(_position);
 
-            try
+            if (!IsVoxelInChunk(pos))
+            {
+                return world.GetVoxelType(pos + position);
+            }
+            else
             {
                 return map[pos.x, pos.y, pos.z];
-            }
-            catch (System.Exception)
-            {
-                return world.GetVoxelType(_position);
             }
         }
 
         // Checks if there is a solid voxel at that position.
         public bool ExistsVoxel(Vector3Int _position)
         {
-            Vector3Int pos = WorldToChunk(_position);
-
-            try
+            if (!IsVoxelInChunk(_position))
             {
-                return VoxelSystem.GetVoxelPack[map[pos.x, pos.y, pos.z]].solid;
+                return world.ExistsVoxel(_position + position);
             }
-            catch (System.Exception)
+            else
             {
-                return false;
+                return VoxelSystem.GetVoxelPack[map[_position.x, _position.y, _position.z]].solid;
             }
         }
 
         // Check if a block is inside chunk
         public bool IsVoxelInChunk(Vector3Int _position)
         {
-            Vector3 pos = WorldToChunk(_position);
-
             return !(
-                pos.x < 0 || pos.x > VoxelSystem.GetChunkSize.x - 1 ||
-                pos.y < 0 || pos.y > VoxelSystem.GetChunkSize.y - 1 ||
-                pos.z < 0 || pos.z > VoxelSystem.GetChunkSize.z - 1
+                _position.x < 0 || _position.x > VoxelSystem.GetChunkSize.x - 1 ||
+                _position.y < 0 || _position.y > VoxelSystem.GetChunkSize.y - 1 ||
+                _position.z < 0 || _position.z > VoxelSystem.GetChunkSize.z - 1
             );
         }
 
