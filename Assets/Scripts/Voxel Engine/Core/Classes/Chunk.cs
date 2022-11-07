@@ -322,7 +322,7 @@ namespace VoxelEngine.Core.Classes
         // Transforms the global value into the local value of the chunk.
         public Vector3Int WorldToChunk(Vector3Int _position)
         {
-            return WorldToChunk(_position);
+            return _position - position;
         }
     }
 }

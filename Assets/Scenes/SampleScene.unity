@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.24211094, g: 0.24207278, b: 0.24206312, a: 1}
+  m_IndirectSpecularColor: {r: 0.2421105, g: 0.2420719, b: 0.2420618, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -213,8 +213,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afbf64871de336b4a870f294fbcbd337, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  worldSize: {x: 24, y: 4, z: 24}
   chunkSize: {x: 15, y: 55, z: 15}
-  worldSize: {x: 24, y: 5, z: 24}
   textureAtlasSize: 8
   atlasMaterial: {fileID: 2100000, guid: 384b057ed3c587044b11c592db81540a, type: 2}
   maxRenderView: 8
@@ -222,6 +222,9 @@ MonoBehaviour:
     Engine/Builds/
   voxelsPath: G:/Projetos/VoxelEngine REP/Unity-VoxelEngine/Assets/Scripts/Voxel
     Engine/Voxels.cfg
+  showGizmos: 0
+  voxelPack:
+    Voxels: []
 --- !u!114 &1606952260
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -462,7 +465,7 @@ PrefabInstance:
     - target: {fileID: 2795135425421114614, guid: 9f0acb7f1587f31439493a8538a18801,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 12
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2795135425421114614, guid: 9f0acb7f1587f31439493a8538a18801,
         type: 3}
@@ -527,7 +530,7 @@ PrefabInstance:
     - target: {fileID: 7351641727990175755, guid: 9f0acb7f1587f31439493a8538a18801,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.000061035156
+      value: -0.000045776367
       objectReference: {fileID: 0}
     - target: {fileID: 7351674063910901271, guid: 9f0acb7f1587f31439493a8538a18801,
         type: 3}
